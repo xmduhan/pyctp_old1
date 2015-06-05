@@ -23,4 +23,4 @@ query_api_tests.py : template/query_api_tests.py.tpl
 
 clean :
 	touch template/*
-	rm *.pyc *.pk
+	rm -f *.pyc *.pk *.con
