@@ -1,9 +1,26 @@
 # -*- coding: utf-8 -*-
+import os
 from channel import CTPChannel
 from CTPStruct import *
 from time import sleep
 from nose.plugins.attrib import attr
 from datetime import datetime
+
+ch = None
+
+def setup():
+    '''
+    所有用例的公共初始化代码
+    '''
+    global ch
+    # 读取环境变量中的信息
+    frontAddress = os.environ.get('CTP_FRONT_ADDRESS')
+    brokerID = os.environ.get('CTP_BROKER_ID')
+    userID = os.environ.get('CTP_USER_ID')
+    password = os.environ.get('CTP_PASSWORD')
+    # 创建通道
+    ch = CTPChannel(frontAddress,brokerID,userID,password)
+    sleep(1)
 
 {% for method in reqMethodDict.itervalues() %}
 {% if method['name'][3:6] == 'Qry' or method['name'][3:8] == 'Query' %}
@@ -14,11 +31,12 @@ def test_{{ method['name'][3:]}}():
     '''
     测试{{ method['name'][3:]}}
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_{{ method['name'][3:]}}():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = {{parameter['raw_type']}}()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.{{method['name'][3:]}}(data)

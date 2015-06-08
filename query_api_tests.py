@@ -1,9 +1,26 @@
 # -*- coding: utf-8 -*-
+import os
 from channel import CTPChannel
 from CTPStruct import *
 from time import sleep
 from nose.plugins.attrib import attr
 from datetime import datetime
+
+ch = None
+
+def setup():
+    '''
+    所有用例的公共初始化代码
+    '''
+    global ch
+    # 读取环境变量中的信息
+    frontAddress = os.environ.get('CTP_FRONT_ADDRESS')
+    brokerID = os.environ.get('CTP_BROKER_ID')
+    userID = os.environ.get('CTP_USER_ID')
+    password = os.environ.get('CTP_PASSWORD')
+    # 创建通道
+    ch = CTPChannel(frontAddress,brokerID,userID,password)
+    sleep(1)
 
 
 
@@ -14,11 +31,12 @@ def test_QryTradingAccount():
     '''
     测试QryTradingAccount
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTradingAccount():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryTradingAccountField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryTradingAccount(data)
@@ -52,11 +70,12 @@ def test_QryCFMMCTradingAccountKey():
     '''
     测试QryCFMMCTradingAccountKey
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryCFMMCTradingAccountKey():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryCFMMCTradingAccountKeyField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryCFMMCTradingAccountKey(data)
@@ -92,11 +111,12 @@ def test_QryTradingNotice():
     '''
     测试QryTradingNotice
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTradingNotice():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryTradingNoticeField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryTradingNotice(data)
@@ -130,11 +150,12 @@ def test_QryTrade():
     '''
     测试QryTrade
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTrade():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryTradeField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryTrade(data)
@@ -168,11 +189,12 @@ def test_QueryMaxOrderVolume():
     '''
     测试QueryMaxOrderVolume
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QueryMaxOrderVolume():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQueryMaxOrderVolumeField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QueryMaxOrderVolume(data)
@@ -208,11 +230,12 @@ def test_QryInvestorPosition():
     '''
     测试QryInvestorPosition
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInvestorPosition():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryInvestorPositionField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryInvestorPosition(data)
@@ -246,11 +269,12 @@ def test_QryBrokerTradingAlgos():
     '''
     测试QryBrokerTradingAlgos
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryBrokerTradingAlgos():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryBrokerTradingAlgosField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryBrokerTradingAlgos(data)
@@ -284,11 +308,12 @@ def test_QryOrder():
     '''
     测试QryOrder
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryOrder():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryOrderField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryOrder(data)
@@ -322,11 +347,12 @@ def test_QryExchange():
     '''
     测试QryExchange
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryExchange():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryExchangeField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryExchange(data)
@@ -364,11 +390,12 @@ def test_QryExchangeRate():
     '''
     测试QryExchangeRate
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryExchangeRate():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryExchangeRateField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryExchangeRate(data)
@@ -402,11 +429,12 @@ def test_QryInvestorPositionDetail():
     '''
     测试QryInvestorPositionDetail
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInvestorPositionDetail():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryInvestorPositionDetailField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryInvestorPositionDetail(data)
@@ -440,11 +468,12 @@ def test_QrySettlementInfoConfirm():
     '''
     测试QrySettlementInfoConfirm
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QrySettlementInfoConfirm():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQrySettlementInfoConfirmField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QrySettlementInfoConfirm(data)
@@ -478,11 +507,12 @@ def test_QryBrokerTradingParams():
     '''
     测试QryBrokerTradingParams
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryBrokerTradingParams():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryBrokerTradingParamsField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryBrokerTradingParams(data)
@@ -516,11 +546,12 @@ def test_QueryCFMMCTradingAccountToken():
     '''
     测试QueryCFMMCTradingAccountToken
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QueryCFMMCTradingAccountToken():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQueryCFMMCTradingAccountTokenField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QueryCFMMCTradingAccountToken(data)
@@ -554,11 +585,12 @@ def test_QryNotice():
     '''
     测试QryNotice
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryNotice():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryNoticeField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryNotice(data)
@@ -596,11 +628,12 @@ def test_QryInvestorPositionCombineDetail():
     '''
     测试QryInvestorPositionCombineDetail
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInvestorPositionCombineDetail():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryInvestorPositionCombineDetailField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryInvestorPositionCombineDetail(data)
@@ -636,11 +669,12 @@ def test_QrySecAgentACIDMap():
     '''
     测试QrySecAgentACIDMap
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QrySecAgentACIDMap():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQrySecAgentACIDMapField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QrySecAgentACIDMap(data)
@@ -676,11 +710,12 @@ def test_QueryBankAccountMoneyByFuture():
     '''
     测试QueryBankAccountMoneyByFuture
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QueryBankAccountMoneyByFuture():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcReqQueryAccountField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QueryBankAccountMoneyByFuture(data)
@@ -714,11 +749,12 @@ def test_QryParkedOrderAction():
     '''
     测试QryParkedOrderAction
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryParkedOrderAction():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryParkedOrderActionField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryParkedOrderAction(data)
@@ -754,11 +790,12 @@ def test_QryExchangeMarginRate():
     '''
     测试QryExchangeMarginRate
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryExchangeMarginRate():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryExchangeMarginRateField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryExchangeMarginRate(data)
@@ -796,11 +833,12 @@ def test_QryInstrument():
     '''
     测试QryInstrument
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInstrument():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryInstrumentField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryInstrument(data)
@@ -836,11 +874,12 @@ def test_QryInstrumentCommissionRate():
     '''
     测试QryInstrumentCommissionRate
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInstrumentCommissionRate():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryInstrumentCommissionRateField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryInstrumentCommissionRate(data)
@@ -874,11 +913,12 @@ def test_QryInstrumentMarginRate():
     '''
     测试QryInstrumentMarginRate
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInstrumentMarginRate():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryInstrumentMarginRateField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryInstrumentMarginRate(data)
@@ -912,11 +952,12 @@ def test_QryInvestor():
     '''
     测试QryInvestor
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInvestor():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryInvestorField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryInvestor(data)
@@ -950,11 +991,12 @@ def test_QryExchangeMarginRateAdjust():
     '''
     测试QryExchangeMarginRateAdjust
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryExchangeMarginRateAdjust():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryExchangeMarginRateAdjustField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryExchangeMarginRateAdjust(data)
@@ -988,11 +1030,12 @@ def test_QryInvestorProductGroupMargin():
     '''
     测试QryInvestorProductGroupMargin
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInvestorProductGroupMargin():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryInvestorProductGroupMarginField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryInvestorProductGroupMargin(data)
@@ -1026,11 +1069,12 @@ def test_QryEWarrantOffset():
     '''
     测试QryEWarrantOffset
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryEWarrantOffset():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryEWarrantOffsetField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryEWarrantOffset(data)
@@ -1064,11 +1108,12 @@ def test_QryDepthMarketData():
     '''
     测试QryDepthMarketData
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryDepthMarketData():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryDepthMarketDataField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryDepthMarketData(data)
@@ -1102,11 +1147,12 @@ def test_QryTransferBank():
     '''
     测试QryTransferBank
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTransferBank():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryTransferBankField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryTransferBank(data)
@@ -1142,11 +1188,12 @@ def test_QryProduct():
     '''
     测试QryProduct
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryProduct():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryProductField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryProduct(data)
@@ -1180,11 +1227,12 @@ def test_QryTradingCode():
     '''
     测试QryTradingCode
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTradingCode():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryTradingCodeField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryTradingCode(data)
@@ -1218,11 +1266,12 @@ def test_QrySettlementInfo():
     '''
     测试QrySettlementInfo
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QrySettlementInfo():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQrySettlementInfoField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QrySettlementInfo(data)
@@ -1256,11 +1305,12 @@ def test_QryAccountregister():
     '''
     测试QryAccountregister
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryAccountregister():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryAccountregisterField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryAccountregister(data)
@@ -1294,11 +1344,12 @@ def test_QryParkedOrder():
     '''
     测试QryParkedOrder
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryParkedOrder():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryParkedOrderField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryParkedOrder(data)
@@ -1332,11 +1383,12 @@ def test_QryTransferSerial():
     '''
     测试QryTransferSerial
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTransferSerial():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryTransferSerialField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryTransferSerial(data)
@@ -1370,11 +1422,12 @@ def test_QryContractBank():
     '''
     测试QryContractBank
     '''
+    global ch
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryContractBank():开始'
     sleep(1)
-    ch = CTPChannel()
+
     data = CThostFtdcQryContractBankField()
     startTime = datetime.now()
     errorID,errorMsg,responeDataList =  ch.QryContractBank(data)

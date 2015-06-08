@@ -6,6 +6,7 @@
 1、如何防止子进程的stdout无线膨胀(ok)
 1、CTPChannel中的ctp tarder转换器进程的创建与清除（ok）
 1、请求延时机制响应机制(查询请求流量控制)
+1、测试用例
 
 
 #%%
@@ -65,7 +66,7 @@ assert userID
 password = os.environ.get('CTP_PASSWORD')
 assert password
 
-ch = CTPChannel(frontAddress,brokerID,userID,password)
+ch = CTPChannel(frontAddress,brokerID,userID,password,'/tmp/trader.log')
 data = CThostFtdcQryTradingAccountField()
 ch.QryTradingAccount(data)
 
