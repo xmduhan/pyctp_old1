@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-
 import os
 import zmq
 import json
+import uuid
+import tempfile
+import subprocess
 from CTPStruct import *
 from message import *
-import subprocess
 
 
 def packageReqInfo(apiName,data):
@@ -25,33 +26,86 @@ ResponseTimeOut = [-2001,u'请求超时未响应',[]]
 InvalidRequestFormat = [-2002,u'接收到异常消息格式',[]]
 
 
+
+
+
 class CTPChannel :
 	'''
 	CTP通讯管道类,该类和CTPConverter进程通讯,对外实现python语言封装的CTP接口,在设计上该类
 	既支持同步接口也支持异步接口,但是目前暂时先实现同步接口.
 	'''
+	def __mallocIpcAddress(self):
+	    return 'ipc://%s/%s' % (tempfile.gettempdir(),uuid.uuid1())
 
-	def __init__(self):
+	def __testChannel(self):
+		'''
+		检查ctp交易通道是否运行正常，该方法在构造函数内调用如果失败，构造函数会抛出异常
+		成功返回True，失败返回False
+		'''
+		data = CThostFtdcQryTradingAccountField()
+		result = self.QryTradingAccount(data)
+		return result[0] == 0
+
+	def __delTraderProcess(self):
+		'''
+		清除trader转换器进程
+		'''
+		self.traderProcess.kill()
+		self.traderProcess.wait()
+
+
+	def __init__(self,frontAddress,brokerID,userID,password,fileOutput='/dev/null'):
 		'''
 		初始化过程
+		1.创建ctp转换器进程
+		2.创建和ctp通讯进程的通讯管道
+		3.测试ctp连接是否正常
+		如果ctp连接测试失败，将抛出异常阻止对象的创建
 		'''
-		address = os.getenv('CTP_REQUEST_PIPE',None)
-		assert address
-		# 连接request通讯管道
-		context = zmq.Context()
-		socket = context.socket(zmq.DEALER)
-		socket.connect(address)
-		socket.setsockopt(zmq.LINGER,0)
+		# 为ctp转换器分配通讯管道地址
+		self.requestPipe = self.__mallocIpcAddress()
+		self.pushbackPipe = self.__mallocIpcAddress()
+		self.publishPipe = self.__mallocIpcAddress()
 
+		# 构造调用命令
+		commandLine = ['trader',
+		'--FrontAddress',frontAddress,
+		'--BrokerID',brokerID,
+		'--UserID',userID,
+		'--Password', password,
+		'--RequestPipe', self.requestPipe,
+		'--PushbackPipe', self.pushbackPipe,
+		'--PublishPipe', self.publishPipe,
+		]
+
+		# 创建转换器子进程
+		devnull = open(fileOutput, 'w')
+		self.traderProcess = subprocess.Popen(commandLine,stdout=devnull)
+
+		# 创建请求通讯通道
+		context = zmq.Context()
+		self.context = context
+		socket = context.socket(zmq.DEALER)
+		socket.connect(self.requestPipe)
+		socket.setsockopt(zmq.LINGER,0)
 		self.request = socket
 		self.timeout = 1000 * 1
 
-		self.mdProcess = subprocess.Popen(["md","--env"],stdout=subprocess.PIPE)
+		# 检查ctp通道是否建立，如果失败抛出异常
+		if not self.__testChannel():
+			self.__delTraderProcess()
+			raise Exception('无法建立ctp连接,具体错误请查看ctp转换器的日志信息')
+			#raise Exception('''can't not connect to ctp server.''')
 
 
 	def __del__(self):
-		''' '''
-		self.mdProcess.kill()
+		'''
+		对象移出过程
+		1.结束ctp转换器进程
+		'''
+		self.__delTraderProcess()
+
+
 
 
 {% for method in reqMethodDict.itervalues() %}

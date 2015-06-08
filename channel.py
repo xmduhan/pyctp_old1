@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-
 import os
 import zmq
 import json
+import uuid
+import tempfile
+import subprocess
 from CTPStruct import *
 from message import *
-import subprocess
 
 
 def packageReqInfo(apiName,data):
@@ -25,33 +26,86 @@ ResponseTimeOut = [-2001,u'请求超时未响应',[]]
 InvalidRequestFormat = [-2002,u'接收到异常消息格式',[]]
 
 
+
+
+
 class CTPChannel :
 	'''
 	CTP通讯管道类,该类和CTPConverter进程通讯,对外实现python语言封装的CTP接口,在设计上该类
 	既支持同步接口也支持异步接口,但是目前暂时先实现同步接口.
 	'''
+	def __mallocIpcAddress(self):
+	    return 'ipc://%s/%s' % (tempfile.gettempdir(),uuid.uuid1())
 
-	def __init__(self):
+	def __testChannel(self):
+		'''
+		检查ctp交易通道是否运行正常，该方法在构造函数内调用如果失败，构造函数会抛出异常
+		成功返回True，失败返回False
+		'''
+		data = CThostFtdcQryTradingAccountField()
+		result = self.QryTradingAccount(data)
+		return result[0] == 0
+
+	def __delTraderProcess(self):
+		'''
+		清除trader转换器进程
+		'''
+		self.traderProcess.kill()
+		self.traderProcess.wait()
+
+
+	def __init__(self,frontAddress,brokerID,userID,password,fileOutput='/dev/null'):
 		'''
 		初始化过程
+		1.创建ctp转换器进程
+		2.创建和ctp通讯进程的通讯管道
+		3.测试ctp连接是否正常
+		如果ctp连接测试失败，将抛出异常阻止对象的创建
 		'''
-		address = os.getenv('CTP_REQUEST_PIPE',None)
-		assert address
-		# 连接request通讯管道
-		context = zmq.Context()
-		socket = context.socket(zmq.DEALER)
-		socket.connect(address)
-		socket.setsockopt(zmq.LINGER,0)
+		# 为ctp转换器分配通讯管道地址
+		self.requestPipe = self.__mallocIpcAddress()
+		self.pushbackPipe = self.__mallocIpcAddress()
+		self.publishPipe = self.__mallocIpcAddress()
 
+		# 构造调用命令
+		commandLine = ['trader',
+		'--FrontAddress',frontAddress,
+		'--BrokerID',brokerID,
+		'--UserID',userID,
+		'--Password', password,
+		'--RequestPipe', self.requestPipe,
+		'--PushbackPipe', self.pushbackPipe,
+		'--PublishPipe', self.publishPipe,
+		]
+
+		# 创建转换器子进程
+		devnull = open(fileOutput, 'w')
+		self.traderProcess = subprocess.Popen(commandLine,stdout=devnull)
+
+		# 创建请求通讯通道
+		context = zmq.Context()
+		self.context = context
+		socket = context.socket(zmq.DEALER)
+		socket.connect(self.requestPipe)
+		socket.setsockopt(zmq.LINGER,0)
 		self.request = socket
 		self.timeout = 1000 * 1
 
-		self.mdProcess = subprocess.Popen(["md","--env"],stdout=subprocess.PIPE)
+		# 检查ctp通道是否建立，如果失败抛出异常
+		if not self.__testChannel():
+			self.__delTraderProcess()
+			raise Exception('无法建立ctp连接,具体错误请查看ctp转换器的日志信息')
+			#raise Exception('''can't not connect to ctp server.''')
 
 
 	def __del__(self):
-		''' '''
-		self.mdProcess.kill()
+		'''
+		对象移出过程
+		1.结束ctp转换器进程
+		'''
+		self.__delTraderProcess()
+
+
 
 
 
@@ -334,103 +388,6 @@ class CTPChannel :
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcUserPasswordUpdateField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
-
-
-
-
-	
-	def ParkedOrderAction(self,data):
-		'''
-		预埋撤单录入请求
-		data 调用api需要填写参数表单,类型为CThostFtdcParkedOrderActionField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcParkedOrderActionField):
-			return InvalidRequestFormat
-
-		requestApiName = 'ReqParkedOrderAction'
-		responseApiName = 'OnRspParkedOrderAction'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidRequestFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeout))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName == responseApiName
-			if not (c1 and c2 and c3) :
-				return InvalidRequestFormat
-
-			# 提取消息中的出错信息
-			#print responseMessage.respInfo
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcParkedOrderActionField(**respnoseDataDict)
 				respnoseDataList.append(respnoseData)
 
 			# 判断是否已是最后一条消息
@@ -1414,18 +1371,18 @@ class CTPChannel :
 
 
 	
-	def FromBankToFutureByFuture(self,data):
+	def QryExchangeRate(self,data):
 		'''
-		期货发起银行资金转期货请求
-		data 调用api需要填写参数表单,类型为CThostFtdcReqTransferField,具体参见其定义文件
+		请求查询汇率
+		data 调用api需要填写参数表单,类型为CThostFtdcQryExchangeRateField,具体参见其定义文件
 		返回信息格式[errorID,errorMsg,responseData=[...]]
 		注意:同步调用没有metaData参数,因为没有意义
 		'''
-		if not isinstance(data,CThostFtdcReqTransferField):
+		if not isinstance(data,CThostFtdcQryExchangeRateField):
 			return InvalidRequestFormat
 
-		requestApiName = 'ReqFromBankToFutureByFuture'
-		responseApiName = 'OnRspFromBankToFutureByFuture'
+		requestApiName = 'ReqQryExchangeRate'
+		responseApiName = 'OnRspQryExchangeRate'
 
 		# 打包消息格式
 		reqInfo = packageReqInfo(requestApiName,data.toDict())
@@ -1497,7 +1454,104 @@ class CTPChannel :
 			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
-				respnoseData = CThostFtdcReqTransferField(**respnoseDataDict)
+				respnoseData = CThostFtdcExchangeRateField(**respnoseDataDict)
+				respnoseDataList.append(respnoseData)
+
+			# 判断是否已是最后一条消息
+			if int(responseMessage.isLast) == 1:
+				break;
+
+		# 返回成功
+		return 0,'',respnoseDataList
+
+
+
+
+	
+	def QryInvestorPositionDetail(self,data):
+		'''
+		请求查询投资者持仓明细
+		data 调用api需要填写参数表单,类型为CThostFtdcQryInvestorPositionDetailField,具体参见其定义文件
+		返回信息格式[errorID,errorMsg,responseData=[...]]
+		注意:同步调用没有metaData参数,因为没有意义
+		'''
+		if not isinstance(data,CThostFtdcQryInvestorPositionDetailField):
+			return InvalidRequestFormat
+
+		requestApiName = 'ReqQryInvestorPositionDetail'
+		responseApiName = 'OnRspQryInvestorPositionDetail'
+
+		# 打包消息格式
+		reqInfo = packageReqInfo(requestApiName,data.toDict())
+		metaData={}
+		requestMessage = RequestMessage()
+		requestMessage.header = 'REQUEST'
+		requestMessage.apiName = requestApiName
+		requestMessage.reqInfo = json.dumps(reqInfo)
+		requestMessage.metaData = json.dumps(metaData)
+
+		# 发送到服务器
+		requestMessage.send(self.request)
+
+		################### 等待服务器的REQUESTID响应 ###################
+		# 读取服务
+		poller = zmq.Poller()
+		poller.register(self.request, zmq.POLLIN)
+		sockets = dict(poller.poll(self.timeout))
+		if not (self.request in sockets) :
+			return ResponseTimeOut
+
+		# 从request通讯管道读取返回信息
+		requestIDMessage = RequestIDMessage()
+		requestIDMessage.recv(self.request)
+
+		# 检查接收的消息格式
+		c1 = requestIDMessage.header == 'REQUESTID'
+		c2 = requestIDMessage.apiName == requestApiName
+		if not ( c1 and c2 ):
+			return InvalidRequestFormat
+
+		# 如果没有收到RequestID,返回转换器的出错信息
+		if not (int(requestIDMessage.requestID) > 0):
+			errorInfo = json.loads(requestIDMessage.errorInfo)
+			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
+
+
+		################### 等待服务器的返回的数据信息 ###################
+		poller = zmq.Poller()
+		poller.register(self.request, zmq.POLLIN)
+
+		# 循环读取所有数据
+		respnoseDataList = []
+		while(True):
+			sockets = dict(poller.poll(self.timeout))
+			if not (self.request in sockets) :
+				return ResponseTimeOut
+
+			# 从request通讯管道读取返回信息
+			responseMessage = ResponseMessage()
+			responseMessage.recv(self.request)
+
+			# 返回数据信息格式符合要求
+			c1 = responseMessage.header == 'RESPONSE'
+			c2 = responseMessage.requestID == requestIDMessage.requestID
+			c3 = responseMessage.apiName == responseApiName
+			if not (c1 and c2 and c3) :
+				return InvalidRequestFormat
+
+			# 提取消息中的出错信息
+			#print responseMessage.respInfo
+			respInfo = json.loads(responseMessage.respInfo)
+			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
+			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
+			if errorID != 0 :
+				return errorID,errorMsg,[]
+
+			# 提取消息中的数据
+			
+			respnoseDataDict = respInfo['Parameters']['Data']
+			if respnoseDataDict:
+				respnoseData = CThostFtdcInvestorPositionDetailField(**respnoseDataDict)
 				respnoseDataList.append(respnoseData)
 
 			# 判断是否已是最后一条消息
@@ -1899,18 +1953,18 @@ class CTPChannel :
 
 
 	
-	def QryExchangeRate(self,data):
+	def FromBankToFutureByFuture(self,data):
 		'''
-		请求查询汇率
-		data 调用api需要填写参数表单,类型为CThostFtdcQryExchangeRateField,具体参见其定义文件
+		期货发起银行资金转期货请求
+		data 调用api需要填写参数表单,类型为CThostFtdcReqTransferField,具体参见其定义文件
 		返回信息格式[errorID,errorMsg,responseData=[...]]
 		注意:同步调用没有metaData参数,因为没有意义
 		'''
-		if not isinstance(data,CThostFtdcQryExchangeRateField):
+		if not isinstance(data,CThostFtdcReqTransferField):
 			return InvalidRequestFormat
 
-		requestApiName = 'ReqQryExchangeRate'
-		responseApiName = 'OnRspQryExchangeRate'
+		requestApiName = 'ReqFromBankToFutureByFuture'
+		responseApiName = 'OnRspFromBankToFutureByFuture'
 
 		# 打包消息格式
 		reqInfo = packageReqInfo(requestApiName,data.toDict())
@@ -1982,7 +2036,7 @@ class CTPChannel :
 			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
-				respnoseData = CThostFtdcExchangeRateField(**respnoseDataDict)
+				respnoseData = CThostFtdcReqTransferField(**respnoseDataDict)
 				respnoseDataList.append(respnoseData)
 
 			# 判断是否已是最后一条消息
@@ -2093,103 +2147,6 @@ class CTPChannel :
 
 
 	
-	def QryContractBank(self,data):
-		'''
-		请求查询签约银行
-		data 调用api需要填写参数表单,类型为CThostFtdcQryContractBankField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcQryContractBankField):
-			return InvalidRequestFormat
-
-		requestApiName = 'ReqQryContractBank'
-		responseApiName = 'OnRspQryContractBank'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidRequestFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeout))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName == responseApiName
-			if not (c1 and c2 and c3) :
-				return InvalidRequestFormat
-
-			# 提取消息中的出错信息
-			#print responseMessage.respInfo
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcContractBankField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
-
-
-
-
-	
 	def QryInvestorPositionCombineDetail(self,data):
 		'''
 		请求查询投资者持仓明细
@@ -2287,18 +2244,18 @@ class CTPChannel :
 
 
 	
-	def QryExchangeMarginRate(self,data):
+	def OrderInsert(self,data):
 		'''
-		请求查询交易所保证金率
-		data 调用api需要填写参数表单,类型为CThostFtdcQryExchangeMarginRateField,具体参见其定义文件
+		报单录入请求
+		data 调用api需要填写参数表单,类型为CThostFtdcInputOrderField,具体参见其定义文件
 		返回信息格式[errorID,errorMsg,responseData=[...]]
 		注意:同步调用没有metaData参数,因为没有意义
 		'''
-		if not isinstance(data,CThostFtdcQryExchangeMarginRateField):
+		if not isinstance(data,CThostFtdcInputOrderField):
 			return InvalidRequestFormat
 
-		requestApiName = 'ReqQryExchangeMarginRate'
-		responseApiName = 'OnRspQryExchangeMarginRate'
+		requestApiName = 'ReqOrderInsert'
+		responseApiName = 'OnRspOrderInsert'
 
 		# 打包消息格式
 		reqInfo = packageReqInfo(requestApiName,data.toDict())
@@ -2370,7 +2327,7 @@ class CTPChannel :
 			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
-				respnoseData = CThostFtdcExchangeMarginRateField(**respnoseDataDict)
+				respnoseData = CThostFtdcInputOrderField(**respnoseDataDict)
 				respnoseDataList.append(respnoseData)
 
 			# 判断是否已是最后一条消息
@@ -2481,18 +2438,18 @@ class CTPChannel :
 
 
 	
-	def QryTransferSerial(self,data):
+	def ParkedOrderAction(self,data):
 		'''
-		请求查询转帐流水
-		data 调用api需要填写参数表单,类型为CThostFtdcQryTransferSerialField,具体参见其定义文件
+		预埋撤单录入请求
+		data 调用api需要填写参数表单,类型为CThostFtdcParkedOrderActionField,具体参见其定义文件
 		返回信息格式[errorID,errorMsg,responseData=[...]]
 		注意:同步调用没有metaData参数,因为没有意义
 		'''
-		if not isinstance(data,CThostFtdcQryTransferSerialField):
+		if not isinstance(data,CThostFtdcParkedOrderActionField):
 			return InvalidRequestFormat
 
-		requestApiName = 'ReqQryTransferSerial'
-		responseApiName = 'OnRspQryTransferSerial'
+		requestApiName = 'ReqParkedOrderAction'
+		responseApiName = 'OnRspParkedOrderAction'
 
 		# 打包消息格式
 		reqInfo = packageReqInfo(requestApiName,data.toDict())
@@ -2564,7 +2521,7 @@ class CTPChannel :
 			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
-				respnoseData = CThostFtdcTransferSerialField(**respnoseDataDict)
+				respnoseData = CThostFtdcParkedOrderActionField(**respnoseDataDict)
 				respnoseDataList.append(respnoseData)
 
 			# 判断是否已是最后一条消息
@@ -2869,18 +2826,18 @@ class CTPChannel :
 
 
 	
-	def OrderInsert(self,data):
+	def QryExchangeMarginRate(self,data):
 		'''
-		报单录入请求
-		data 调用api需要填写参数表单,类型为CThostFtdcInputOrderField,具体参见其定义文件
+		请求查询交易所保证金率
+		data 调用api需要填写参数表单,类型为CThostFtdcQryExchangeMarginRateField,具体参见其定义文件
 		返回信息格式[errorID,errorMsg,responseData=[...]]
 		注意:同步调用没有metaData参数,因为没有意义
 		'''
-		if not isinstance(data,CThostFtdcInputOrderField):
+		if not isinstance(data,CThostFtdcQryExchangeMarginRateField):
 			return InvalidRequestFormat
 
-		requestApiName = 'ReqOrderInsert'
-		responseApiName = 'OnRspOrderInsert'
+		requestApiName = 'ReqQryExchangeMarginRate'
+		responseApiName = 'OnRspQryExchangeMarginRate'
 
 		# 打包消息格式
 		reqInfo = packageReqInfo(requestApiName,data.toDict())
@@ -2952,7 +2909,7 @@ class CTPChannel :
 			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
-				respnoseData = CThostFtdcInputOrderField(**respnoseDataDict)
+				respnoseData = CThostFtdcExchangeMarginRateField(**respnoseDataDict)
 				respnoseDataList.append(respnoseData)
 
 			# 判断是否已是最后一条消息
@@ -2966,18 +2923,18 @@ class CTPChannel :
 
 
 	
-	def QrySettlementInfo(self,data):
+	def TradingAccountPasswordUpdate(self,data):
 		'''
-		请求查询投资者结算结果
-		data 调用api需要填写参数表单,类型为CThostFtdcQrySettlementInfoField,具体参见其定义文件
+		资金账户口令更新请求
+		data 调用api需要填写参数表单,类型为CThostFtdcTradingAccountPasswordUpdateField,具体参见其定义文件
 		返回信息格式[errorID,errorMsg,responseData=[...]]
 		注意:同步调用没有metaData参数,因为没有意义
 		'''
-		if not isinstance(data,CThostFtdcQrySettlementInfoField):
+		if not isinstance(data,CThostFtdcTradingAccountPasswordUpdateField):
 			return InvalidRequestFormat
 
-		requestApiName = 'ReqQrySettlementInfo'
-		responseApiName = 'OnRspQrySettlementInfo'
+		requestApiName = 'ReqTradingAccountPasswordUpdate'
+		responseApiName = 'OnRspTradingAccountPasswordUpdate'
 
 		# 打包消息格式
 		reqInfo = packageReqInfo(requestApiName,data.toDict())
@@ -3049,7 +3006,7 @@ class CTPChannel :
 			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
-				respnoseData = CThostFtdcSettlementInfoField(**respnoseDataDict)
+				respnoseData = CThostFtdcTradingAccountPasswordUpdateField(**respnoseDataDict)
 				respnoseDataList.append(respnoseData)
 
 			# 判断是否已是最后一条消息
@@ -3645,18 +3602,18 @@ class CTPChannel :
 
 
 	
-	def QryParkedOrder(self,data):
+	def QryExchangeMarginRateAdjust(self,data):
 		'''
-		请求查询预埋单
-		data 调用api需要填写参数表单,类型为CThostFtdcQryParkedOrderField,具体参见其定义文件
+		请求查询交易所调整保证金率
+		data 调用api需要填写参数表单,类型为CThostFtdcQryExchangeMarginRateAdjustField,具体参见其定义文件
 		返回信息格式[errorID,errorMsg,responseData=[...]]
 		注意:同步调用没有metaData参数,因为没有意义
 		'''
-		if not isinstance(data,CThostFtdcQryParkedOrderField):
+		if not isinstance(data,CThostFtdcQryExchangeMarginRateAdjustField):
 			return InvalidRequestFormat
 
-		requestApiName = 'ReqQryParkedOrder'
-		responseApiName = 'OnRspQryParkedOrder'
+		requestApiName = 'ReqQryExchangeMarginRateAdjust'
+		responseApiName = 'OnRspQryExchangeMarginRateAdjust'
 
 		# 打包消息格式
 		reqInfo = packageReqInfo(requestApiName,data.toDict())
@@ -3728,7 +3685,7 @@ class CTPChannel :
 			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
-				respnoseData = CThostFtdcParkedOrderField(**respnoseDataDict)
+				respnoseData = CThostFtdcExchangeMarginRateAdjustField(**respnoseDataDict)
 				respnoseDataList.append(respnoseData)
 
 			# 判断是否已是最后一条消息
@@ -3826,6 +3783,103 @@ class CTPChannel :
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcInvestorProductGroupMarginField(**respnoseDataDict)
+				respnoseDataList.append(respnoseData)
+
+			# 判断是否已是最后一条消息
+			if int(responseMessage.isLast) == 1:
+				break;
+
+		# 返回成功
+		return 0,'',respnoseDataList
+
+
+
+
+	
+	def QryEWarrantOffset(self,data):
+		'''
+		请求查询仓单折抵信息
+		data 调用api需要填写参数表单,类型为CThostFtdcQryEWarrantOffsetField,具体参见其定义文件
+		返回信息格式[errorID,errorMsg,responseData=[...]]
+		注意:同步调用没有metaData参数,因为没有意义
+		'''
+		if not isinstance(data,CThostFtdcQryEWarrantOffsetField):
+			return InvalidRequestFormat
+
+		requestApiName = 'ReqQryEWarrantOffset'
+		responseApiName = 'OnRspQryEWarrantOffset'
+
+		# 打包消息格式
+		reqInfo = packageReqInfo(requestApiName,data.toDict())
+		metaData={}
+		requestMessage = RequestMessage()
+		requestMessage.header = 'REQUEST'
+		requestMessage.apiName = requestApiName
+		requestMessage.reqInfo = json.dumps(reqInfo)
+		requestMessage.metaData = json.dumps(metaData)
+
+		# 发送到服务器
+		requestMessage.send(self.request)
+
+		################### 等待服务器的REQUESTID响应 ###################
+		# 读取服务
+		poller = zmq.Poller()
+		poller.register(self.request, zmq.POLLIN)
+		sockets = dict(poller.poll(self.timeout))
+		if not (self.request in sockets) :
+			return ResponseTimeOut
+
+		# 从request通讯管道读取返回信息
+		requestIDMessage = RequestIDMessage()
+		requestIDMessage.recv(self.request)
+
+		# 检查接收的消息格式
+		c1 = requestIDMessage.header == 'REQUESTID'
+		c2 = requestIDMessage.apiName == requestApiName
+		if not ( c1 and c2 ):
+			return InvalidRequestFormat
+
+		# 如果没有收到RequestID,返回转换器的出错信息
+		if not (int(requestIDMessage.requestID) > 0):
+			errorInfo = json.loads(requestIDMessage.errorInfo)
+			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
+
+
+		################### 等待服务器的返回的数据信息 ###################
+		poller = zmq.Poller()
+		poller.register(self.request, zmq.POLLIN)
+
+		# 循环读取所有数据
+		respnoseDataList = []
+		while(True):
+			sockets = dict(poller.poll(self.timeout))
+			if not (self.request in sockets) :
+				return ResponseTimeOut
+
+			# 从request通讯管道读取返回信息
+			responseMessage = ResponseMessage()
+			responseMessage.recv(self.request)
+
+			# 返回数据信息格式符合要求
+			c1 = responseMessage.header == 'RESPONSE'
+			c2 = responseMessage.requestID == requestIDMessage.requestID
+			c3 = responseMessage.apiName == responseApiName
+			if not (c1 and c2 and c3) :
+				return InvalidRequestFormat
+
+			# 提取消息中的出错信息
+			#print responseMessage.respInfo
+			respInfo = json.loads(responseMessage.respInfo)
+			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
+			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
+			if errorID != 0 :
+				return errorID,errorMsg,[]
+
+			# 提取消息中的数据
+			
+			respnoseDataDict = respInfo['Parameters']['Data']
+			if respnoseDataDict:
+				respnoseData = CThostFtdcEWarrantOffsetField(**respnoseDataDict)
 				respnoseDataList.append(respnoseData)
 
 			# 判断是否已是最后一条消息
@@ -4324,18 +4378,18 @@ class CTPChannel :
 
 
 	
-	def TradingAccountPasswordUpdate(self,data):
+	def QrySettlementInfo(self,data):
 		'''
-		资金账户口令更新请求
-		data 调用api需要填写参数表单,类型为CThostFtdcTradingAccountPasswordUpdateField,具体参见其定义文件
+		请求查询投资者结算结果
+		data 调用api需要填写参数表单,类型为CThostFtdcQrySettlementInfoField,具体参见其定义文件
 		返回信息格式[errorID,errorMsg,responseData=[...]]
 		注意:同步调用没有metaData参数,因为没有意义
 		'''
-		if not isinstance(data,CThostFtdcTradingAccountPasswordUpdateField):
+		if not isinstance(data,CThostFtdcQrySettlementInfoField):
 			return InvalidRequestFormat
 
-		requestApiName = 'ReqTradingAccountPasswordUpdate'
-		responseApiName = 'OnRspTradingAccountPasswordUpdate'
+		requestApiName = 'ReqQrySettlementInfo'
+		responseApiName = 'OnRspQrySettlementInfo'
 
 		# 打包消息格式
 		reqInfo = packageReqInfo(requestApiName,data.toDict())
@@ -4407,7 +4461,7 @@ class CTPChannel :
 			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
-				respnoseData = CThostFtdcTradingAccountPasswordUpdateField(**respnoseDataDict)
+				respnoseData = CThostFtdcSettlementInfoField(**respnoseDataDict)
 				respnoseDataList.append(respnoseData)
 
 			# 判断是否已是最后一条消息
@@ -4518,18 +4572,18 @@ class CTPChannel :
 
 
 	
-	def QryExchangeMarginRateAdjust(self,data):
+	def QryParkedOrder(self,data):
 		'''
-		请求查询交易所调整保证金率
-		data 调用api需要填写参数表单,类型为CThostFtdcQryExchangeMarginRateAdjustField,具体参见其定义文件
+		请求查询预埋单
+		data 调用api需要填写参数表单,类型为CThostFtdcQryParkedOrderField,具体参见其定义文件
 		返回信息格式[errorID,errorMsg,responseData=[...]]
 		注意:同步调用没有metaData参数,因为没有意义
 		'''
-		if not isinstance(data,CThostFtdcQryExchangeMarginRateAdjustField):
+		if not isinstance(data,CThostFtdcQryParkedOrderField):
 			return InvalidRequestFormat
 
-		requestApiName = 'ReqQryExchangeMarginRateAdjust'
-		responseApiName = 'OnRspQryExchangeMarginRateAdjust'
+		requestApiName = 'ReqQryParkedOrder'
+		responseApiName = 'OnRspQryParkedOrder'
 
 		# 打包消息格式
 		reqInfo = packageReqInfo(requestApiName,data.toDict())
@@ -4601,7 +4655,7 @@ class CTPChannel :
 			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
-				respnoseData = CThostFtdcExchangeMarginRateAdjustField(**respnoseDataDict)
+				respnoseData = CThostFtdcParkedOrderField(**respnoseDataDict)
 				respnoseDataList.append(respnoseData)
 
 			# 判断是否已是最后一条消息
@@ -4615,18 +4669,18 @@ class CTPChannel :
 
 
 	
-	def QryEWarrantOffset(self,data):
+	def QryTransferSerial(self,data):
 		'''
-		请求查询仓单折抵信息
-		data 调用api需要填写参数表单,类型为CThostFtdcQryEWarrantOffsetField,具体参见其定义文件
+		请求查询转帐流水
+		data 调用api需要填写参数表单,类型为CThostFtdcQryTransferSerialField,具体参见其定义文件
 		返回信息格式[errorID,errorMsg,responseData=[...]]
 		注意:同步调用没有metaData参数,因为没有意义
 		'''
-		if not isinstance(data,CThostFtdcQryEWarrantOffsetField):
+		if not isinstance(data,CThostFtdcQryTransferSerialField):
 			return InvalidRequestFormat
 
-		requestApiName = 'ReqQryEWarrantOffset'
-		responseApiName = 'OnRspQryEWarrantOffset'
+		requestApiName = 'ReqQryTransferSerial'
+		responseApiName = 'OnRspQryTransferSerial'
 
 		# 打包消息格式
 		reqInfo = packageReqInfo(requestApiName,data.toDict())
@@ -4698,7 +4752,7 @@ class CTPChannel :
 			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
-				respnoseData = CThostFtdcEWarrantOffsetField(**respnoseDataDict)
+				respnoseData = CThostFtdcTransferSerialField(**respnoseDataDict)
 				respnoseDataList.append(respnoseData)
 
 			# 判断是否已是最后一条消息
@@ -4712,18 +4766,18 @@ class CTPChannel :
 
 
 	
-	def QryInvestorPositionDetail(self,data):
+	def QryContractBank(self,data):
 		'''
-		请求查询投资者持仓明细
-		data 调用api需要填写参数表单,类型为CThostFtdcQryInvestorPositionDetailField,具体参见其定义文件
+		请求查询签约银行
+		data 调用api需要填写参数表单,类型为CThostFtdcQryContractBankField,具体参见其定义文件
 		返回信息格式[errorID,errorMsg,responseData=[...]]
 		注意:同步调用没有metaData参数,因为没有意义
 		'''
-		if not isinstance(data,CThostFtdcQryInvestorPositionDetailField):
+		if not isinstance(data,CThostFtdcQryContractBankField):
 			return InvalidRequestFormat
 
-		requestApiName = 'ReqQryInvestorPositionDetail'
-		responseApiName = 'OnRspQryInvestorPositionDetail'
+		requestApiName = 'ReqQryContractBank'
+		responseApiName = 'OnRspQryContractBank'
 
 		# 打包消息格式
 		reqInfo = packageReqInfo(requestApiName,data.toDict())
@@ -4795,7 +4849,7 @@ class CTPChannel :
 			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
-				respnoseData = CThostFtdcInvestorPositionDetailField(**respnoseDataDict)
+				respnoseData = CThostFtdcContractBankField(**respnoseDataDict)
 				respnoseDataList.append(respnoseData)
 
 			# 判断是否已是最后一条消息
