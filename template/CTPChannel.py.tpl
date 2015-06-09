@@ -77,6 +77,14 @@ class MdChannel :
 		with open(self.tempConfigFile, 'w') as f:
 			f.write(instrumentIdListJson.encode('utf-8'))
 
+		# 创建接受行情数据的管道
+		context = zmq.Context()
+		self.context = context
+		socket = context.socket(zmq.SUB)
+		socket.connect(self.publishPipe)
+		socket.setsockopt(zmq.SUBSCRIBE, '');
+		self.reader = socket
+
 		# 构造调用命令
 		commandLine = ['md',
 		'--FrontAddress',frontAddress,
@@ -85,7 +93,7 @@ class MdChannel :
 		'--Password', password,
 		'--PushbackPipe', self.pushbackPipe,
 		'--PublishPipe', self.publishPipe,
-		'--PnstrumentIDConfigFile',self.tempConfigFile
+		'--instrumentIDConfigFile',self.tempConfigFile
 		]
 
 		# 创建转换器子进程
@@ -98,9 +106,22 @@ class MdChannel :
 			raise Exception('无法建立ctp连接,具体错误请查看ctp转换器的日志信息')
 
 
-
-
-
+	def readMarketData(self,timeout=1):
+		'''
+		读取行情数据
+		参数
+		timeout 如果当前没有消息的等待时间(毫秒)
+		'''
+		socket = self.reader
+		poller = zmq.Poller()
+		poller.register(socket, zmq.POLLIN)
+		sockets = poller.poll(timeout)
+		if socket in sockets :
+			result = socket.recv_multipart()
+			marketData = CThostFtdcDepthMarketDataField(**result)
+			return marketData
+		else:
+			return None
 
 
 
