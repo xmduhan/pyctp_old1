@@ -46,7 +46,7 @@ class MdChannel :
 		检查和ctp md 进程是否连通
 		在md进程启动后会先发送一个空消息,提供测试通路使用
 		'''
-		# 由于zmq publisher需要等待客户端连接，这里等待响应时间才能接受到消息
+		# 由于zmq publisher需要等待客户端连接，这里等待相应时间才能接受到消息
 		timeout = 2000
 		reader = self.reader
 		poller = zmq.Poller()
