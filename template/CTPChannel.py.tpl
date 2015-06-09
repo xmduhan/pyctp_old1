@@ -9,6 +9,7 @@ from CTPStruct import *
 from message import *
 
 
+
 def packageReqInfo(apiName,data):
 	'''
 	获取一个默认的调用结构
@@ -39,6 +40,20 @@ class MdChannel :
 	Md通讯管道类,该类通过和CTPConverter的Md(行情)进程通讯,实线行情数据的传送
 	'''
 
+	def __testChannel(self):
+		return True
+
+
+
+	def __delTraderProcess(self):
+		'''
+		清除trader转换器进程
+		'''
+		self.mdProcess.kill()
+		self.mdProcess.wait()
+
+
+
 	def __init__(self,frontAddress,brokerID,userID,password,instrumentIdList,fileOutput='/dev/null'):
 		'''
 		1.创建ctp转换器进程
@@ -56,16 +71,35 @@ class MdChannel :
 		self.pushbackPipe = mallocIpcAddress()
 		self.publishPipe = mallocIpcAddress()
 
+		# 生成md命令需要的临时配置文件(描述品种ID列表)
+		self.tempConfigFile = tempfile.mktemp(suffix='.json')
+		instrumentIdListJson = json.dumps(instrumentIdList)
+		with open(self.tempConfigFile, 'w') as f:
+			f.write(instrumentIdListJson.encode('utf-8'))
+
 		# 构造调用命令
-		commandLine = ['trader',
+		commandLine = ['md',
 		'--FrontAddress',frontAddress,
 		'--BrokerID',brokerID,
 		'--UserID',userID,
 		'--Password', password,
 		'--PushbackPipe', self.pushbackPipe,
 		'--PublishPipe', self.publishPipe,
-		'--'
+		'--PnstrumentIDConfigFile',self.tempConfigFile
 		]
+
+		# 创建转换器子进程
+		traderStdout = open(fileOutput, 'w')
+		self.mdProcess = subprocess.Popen(commandLine,stdout=traderStdout)
+
+		# 检查ctp通道是否建立，如果失败抛出异常
+		if not self.__testChannel():
+			self.__delTraderProcess()
+			raise Exception('无法建立ctp连接,具体错误请查看ctp转换器的日志信息')
+
+
+
+
 
 
 
