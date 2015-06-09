@@ -7,6 +7,7 @@ import tempfile
 import subprocess
 from CTPStruct import *
 from message import *
+from time import sleep
 
 
 
@@ -41,7 +42,26 @@ class MdChannel :
 	'''
 
 	def __testChannel(self):
-		return True
+		'''
+		检查和ctp md 进程是否连通
+		在md进程启动后会先发送一个空消息,提供测试通路使用
+		'''
+		# 由于zmq publisher需要等待客户端连接，这里等待响应时间才能接受到消息
+		timeout = 2000
+		reader = self.reader
+		poller = zmq.Poller()
+		poller.register(reader, zmq.POLLIN)
+		sockets = dict(poller.poll(timeout))
+		if reader in sockets :
+			result = reader.recv_multipart()
+			print result
+			if len(result) == 1 and result[0] == "":
+				return True
+			else:
+				self.__delTraderProcess()
+				raise Exception(u'接收到不正确的消息格式')
+		else:
+			return False
 
 
 
@@ -93,17 +113,28 @@ class MdChannel :
 		'--Password', password,
 		'--PushbackPipe', self.pushbackPipe,
 		'--PublishPipe', self.publishPipe,
-		'--instrumentIDConfigFile',self.tempConfigFile
+		'--InstrumentIDConfigFile',self.tempConfigFile
 		]
 
 		# 创建转换器子进程
 		traderStdout = open(fileOutput, 'w')
 		self.mdProcess = subprocess.Popen(commandLine,stdout=traderStdout)
 
+
 		# 检查ctp通道是否建立，如果失败抛出异常
 		if not self.__testChannel():
 			self.__delTraderProcess()
-			raise Exception('无法建立ctp连接,具体错误请查看ctp转换器的日志信息')
+			raise Exception(u'无法建立ctp连接,具体错误请查看ctp转换器的日志信息')
+
+
+
+	def __del__(self):
+		'''
+		对象移出过程
+		1.结束ctp转换器进程
+		'''
+		self.__delTraderProcess()
+
 
 
 	def readMarketData(self,timeout=1):
@@ -112,13 +143,15 @@ class MdChannel :
 		参数
 		timeout 如果当前没有消息的等待时间(毫秒)
 		'''
-		socket = self.reader
+		reader = self.reader
 		poller = zmq.Poller()
-		poller.register(socket, zmq.POLLIN)
-		sockets = poller.poll(timeout)
-		if socket in sockets :
-			result = socket.recv_multipart()
-			marketData = CThostFtdcDepthMarketDataField(**result)
+		poller.register(reader, zmq.POLLIN)
+		sockets = dict(poller.poll(timeout))
+		if reader in sockets :
+			result = reader.recv_multipart()
+			resultDict = json.loads(result[0])
+			# TODO 这里假设了result只有一个元素,最好是检查一下
+			marketData = CThostFtdcDepthMarketDataField(**resultDict)
 			return marketData
 		else:
 			return None

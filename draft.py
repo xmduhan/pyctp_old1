@@ -6,11 +6,11 @@
 1、如何防止子进程的stdout无线膨胀(ok)
 1、CTPChannel中的ctp tarder转换器进程的创建与清除（ok）
 1、查询类api的通用测试用例全部通过(ok)
-
-#%%
-1、增加MdChannel支持
+1、增加MdChannel支持(ok)
 (1)修改CTPChannel为TraderChannel,channel.py为CTPChannel.py
 (2)增加初始化代码内容
+
+#%%
 1、请求延时机制响应机制(查询请求流量控制)
 1、按照实际交易的需求编写一个测试用例集合
 1、增加一个守护进程负责当主进程强行关闭的时候可以杀死通道进程
@@ -111,7 +111,7 @@ commandLine = ['md',
 '--Password', password,
 '--PushbackPipe', pushbackPipe,
 '--PublishPipe', publishPipe,
-'--instrumentIDConfigFile',tempConfigFile
+'--InstrumentIDConfigFile',tempConfigFile
 ]
 traderStdout = open(fileOutput, 'w')
 mdProcess = subprocess.Popen(commandLine,stdout=traderStdout)
@@ -131,8 +131,14 @@ assert userID
 password = os.environ.get('CTP_PASSWORD')
 assert password
 
-ch = MdChannel(frontAddress,brokerID,userID,password,['IF1506'],fileOutput='/tmp/md.log')
-ch.readMarketData()
+ch = MdChannel(frontAddress,brokerID,userID,password,['IF1506','IF1507'],fileOutput='/tmp/md.log')
+ch.readMarketData(1000)
+
+
+#%%
+a = ['{\n   "ActionDay" : "20150609",\n   "AskPrice1" : 5250.8000000000002,\n   "AskPrice2" : 1.7976931348623157e+308,\n   "AskPrice3" : 1.7976931348623157e+308,\n   "AskPrice4" : 1.7976931348623157e+308,\n   "AskPrice5" : 1.7976931348623157e+308,\n   "AskVolume1" : 3,\n   "AskVolume2" : 0,\n   "AskVolume3" : 0,\n   "AskVolume4" : 0,\n   "AskVolume5" : 0,\n   "AveragePrice" : 1583048.7369148347,\n   "BidPrice1" : 5250.2000000000007,\n   "BidPrice2" : 1.7976931348623157e+308,\n   "BidPrice3" : 1.7976931348623157e+308,\n   "BidPrice4" : 1.7976931348623157e+308,\n   "BidPrice5" : 1.7976931348623157e+308,\n   "BidVolume1" : 4,\n   "BidVolume2" : 0,\n   "BidVolume3" : 0,\n   "BidVolume4" : 0,\n   "BidVolume5" : 0,\n   "ClosePrice" : 5250.3999999999996,\n   "CurrDelta" : 1.7976931348623157e+308,\n   "ExchangeID" : "",\n   "ExchangeInstID" : "",\n   "HighestPrice" : 5364.3999999999996,\n   "InstrumentID" : "IF1506",\n   "LastPrice" : 5250.4000000000005,\n   "LowerLimitPrice" : 4811.3999999999996,\n   "LowestPrice" : 5186.1999999999998,\n   "OpenInterest" : 59736,\n   "OpenPrice" : 5343,\n   "PreClosePrice" : 5336.3999999999996,\n   "PreDelta" : 1.7976931348623157e+308,\n   "PreOpenInterest" : 55534,\n   "PreSettlementPrice" : 5346,\n   "SettlementPrice" : 5272.6000000000004,\n   "TradingDay" : "20150609",\n   "Turnover" : 1610703015300,\n   "UpdateMillisec" : 800,\n   "UpdateTime" : "16:05:00",\n   "UpperLimitPrice" : 5880.6000000000004,\n   "Volume" : 1017469\n}\n']
+
+
 
 #%%
 def test():
