@@ -26,15 +26,54 @@ ResponseTimeOut = [-2001,u'请求超时未响应',[]]
 InvalidRequestFormat = [-2002,u'接收到异常消息格式',[]]
 
 
+#def mallocIpcAddress():
+#	return 'ipc://%s/%s' % (tempfile.gettempdir(),uuid.uuid1())
+
+
 def mallocIpcAddress():
-	return 'ipc://%s/%s' % (tempfile.gettempdir(),uuid.uuid1())
+	return 'ipc://%s' % tempfile.mktemp(suffix='.ipc',prefix='tmp_')
+
+
+class MdChannel :
+	'''
+	Md通讯管道类,该类通过和CTPConverter的Md(行情)进程通讯,实线行情数据的传送
+	'''
+
+	def __init__(self,frontAddress,brokerID,userID,password,instrumentIdList,fileOutput='/dev/null'):
+		'''
+		1.创建ctp转换器进程
+		2.创建和ctp通讯进程的通讯管道
+		3.测试ctp连接是否正常
+		参数:
+		frontAddress   ctp服务器地址
+		brokerID   代理商Id
+		userID   用户Id
+		password   密码
+		instrumentIdList   需要订阅的品种的Id列表
+		fileOutput   ctp trader通讯进程的日志信息的保存路径,默认抛弃('/dev/null')
+		'''
+		# 为ctp md转换器分配通讯管道地址
+		self.pushbackPipe = mallocIpcAddress()
+		self.publishPipe = mallocIpcAddress()
+
+		# 构造调用命令
+		commandLine = ['trader',
+		'--FrontAddress',frontAddress,
+		'--BrokerID',brokerID,
+		'--UserID',userID,
+		'--Password', password,
+		'--PushbackPipe', self.pushbackPipe,
+		'--PublishPipe', self.publishPipe,
+		'--'
+		]
+
 
 
 
 class TraderChannel :
 	'''
-	Trader通讯管道类,该类和CTPConverter进程通讯,对外实现python语言封装的CTP接口,在设计上该类
-	既支持同步接口也支持异步接口,但是目前暂时先实现同步接口.
+	Trader通讯管道类,该类通过和CTPConverter的Trader进程通讯,对外实现python语言封装的CTP接口,
+	在设计上该类既支持同步接口也支持异步接口,但是目前暂时先实现同步接口.
 	'''
 
 	def __testChannel(self):
@@ -46,6 +85,7 @@ class TraderChannel :
 		result = self.QryTradingAccount(data)
 		return result[0] == 0
 
+
 	def __delTraderProcess(self):
 		'''
 		清除trader转换器进程
@@ -56,11 +96,17 @@ class TraderChannel :
 
 	def __init__(self,frontAddress,brokerID,userID,password,fileOutput='/dev/null'):
 		'''
-		初始化过程
+		初始化过程:
 		1.创建ctp转换器进程
 		2.创建和ctp通讯进程的通讯管道
 		3.测试ctp连接是否正常
 		如果ctp连接测试失败，将抛出异常阻止对象的创建
+		参数:
+		frontAddress   ctp服务器地址
+		brokerID   代理商编号
+		userID   用户编号
+		password   密码
+		fileOutput   ctp trader通讯进程的日志信息的保存路径,默认抛弃('/dev/null')
 		'''
 		# 为ctp转换器分配通讯管道地址
 		self.requestPipe = mallocIpcAddress()
@@ -79,8 +125,8 @@ class TraderChannel :
 		]
 
 		# 创建转换器子进程
-		devnull = open(fileOutput, 'w')
-		self.traderProcess = subprocess.Popen(commandLine,stdout=devnull)
+		traderStdout = open(fileOutput, 'w')
+		self.traderProcess = subprocess.Popen(commandLine,stdout=traderStdout)
 
 		# 创建请求通讯通道
 		context = zmq.Context()
