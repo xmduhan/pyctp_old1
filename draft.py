@@ -11,13 +11,11 @@
 (2)增加初始化代码内容
 
 #%%
+1、增加一个守护进程负责当主进程强行关闭的时候可以杀死通道进程
 1、请求延时机制响应机制(查询请求流量控制)
 1、按照实际交易的需求编写一个测试用例集合
-1、增加一个守护进程负责当主进程强行关闭的时候可以杀死通道进程
 1、思考是否删除example.py.tpl
 1、打开的文件没有关闭会不会有问题
-
-
 
 #%%
 import uuid
@@ -132,7 +130,7 @@ password = os.environ.get('CTP_PASSWORD')
 assert password
 
 ch = MdChannel(frontAddress,brokerID,userID,password,['IF1506','IF1507'],fileOutput='/tmp/md.log')
-ch.readMarketData(1000)
+ch.readMarketData()
 
 
 #%%

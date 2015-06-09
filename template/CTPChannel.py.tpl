@@ -8,6 +8,7 @@ import subprocess
 from CTPStruct import *
 from message import *
 from time import sleep
+from multiprocessing import Process
 
 
 
@@ -36,10 +37,14 @@ def mallocIpcAddress():
 	return 'ipc://%s' % tempfile.mktemp(suffix='.ipc',prefix='tmp_')
 
 
+
+
 class MdChannel :
 	'''
 	Md通讯管道类,该类通过和CTPConverter的Md(行情)进程通讯,实线行情数据的传送
 	'''
+
+
 
 	def __testChannel(self):
 		'''
@@ -54,7 +59,6 @@ class MdChannel :
 		sockets = dict(poller.poll(timeout))
 		if reader in sockets :
 			result = reader.recv_multipart()
-			print result
 			if len(result) == 1 and result[0] == "":
 				return True
 			else:
@@ -120,6 +124,9 @@ class MdChannel :
 		traderStdout = open(fileOutput, 'w')
 		self.mdProcess = subprocess.Popen(commandLine,stdout=traderStdout)
 
+		# 启动守护进程
+		self.cleanDaemonProcess = Process(target=cleanDaemon,args=(self,))
+		self.cleanDaemonProcess.start()
 
 		# 检查ctp通道是否建立，如果失败抛出异常
 		if not self.__testChannel():
@@ -150,7 +157,7 @@ class MdChannel :
 		if reader in sockets :
 			result = reader.recv_multipart()
 			# TODO 这里假设了result只有一个元素,最好是检查一下
-			if len(result) == 0 and result[0] != "":
+			if len(result) == 1 and result[0] != "":
 				resultDict = json.loads(result[0])
 				marketData = CThostFtdcDepthMarketDataField(**resultDict)
 				return marketData
@@ -319,7 +326,6 @@ class TraderChannel :
 				return InvalidRequestFormat
 
 			# 提取消息中的出错信息
-			#print responseMessage.respInfo
 			respInfo = json.loads(responseMessage.respInfo)
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
