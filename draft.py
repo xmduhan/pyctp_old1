@@ -5,8 +5,16 @@
 1、如何杀死defunct状态的进程(ok,使用wait())
 1、如何防止子进程的stdout无线膨胀(ok)
 1、CTPChannel中的ctp tarder转换器进程的创建与清除（ok）
+1、查询类api的通用测试用例全部通过(ok)
+
+#%%
+1、增加MdChannel支持
+(1)修改CTPChannel为TraderChannel,channel.py为CTPChannel.py
+(2)增加初始化代码内容
 1、请求延时机制响应机制(查询请求流量控制)
-1、测试用例
+1、按照实际交易的需求编写一个测试用例集合
+1、思考是否删除example.py.tpl
+
 
 
 #%%

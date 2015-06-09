@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from channel import CTPChannel
+from CTPChannel import CTPChannel
 from CTPStruct import *
 from time import sleep
 from nose.plugins.attrib import attr
