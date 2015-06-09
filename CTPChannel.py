@@ -38,21 +38,6 @@ def mallocIpcAddress():
 
 
 
-def cleanDaemon(mdChannel):
-	'''
-	守护进程,主要用于检查父进程是否还在,否则将清理通讯进程
-	'''
-	print u'cleanDaemon():start'
-	ppid = os.getppid()
-	while ppid != 1 :
-		sleep(1)
-		ppid = os.getppid()
-	print u'cleanDaemon():main process stop'
-	# 这行到这里说明主进程终止(ppid=1),需要对通讯进程进行清理
-	mdChannel.__delTraderProcess()
-	print u'cleanDaemon():clean'
-
-
 
 class MdChannel :
 	'''
@@ -132,16 +117,13 @@ class MdChannel :
 		'--Password', password,
 		'--PushbackPipe', self.pushbackPipe,
 		'--PublishPipe', self.publishPipe,
-		'--InstrumentIDConfigFile',self.tempConfigFile
+		'--InstrumentIDConfigFile',self.tempConfigFile,
+		'--loyalty'
 		]
 
 		# 创建转换器子进程
 		traderStdout = open(fileOutput, 'w')
 		self.mdProcess = subprocess.Popen(commandLine,stdout=traderStdout)
-
-		# 启动守护进程
-		self.cleanDaemonProcess = Process(target=cleanDaemon,args=(self,))
-		self.cleanDaemonProcess.start()
 
 		# 检查ctp通道是否建立，如果失败抛出异常
 		if not self.__testChannel():
@@ -235,6 +217,7 @@ class TraderChannel :
 		'--RequestPipe', self.requestPipe,
 		'--PushbackPipe', self.pushbackPipe,
 		'--PublishPipe', self.publishPipe,
+		'--loyalty'
 		]
 
 		# 创建转换器子进程

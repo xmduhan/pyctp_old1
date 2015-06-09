@@ -117,16 +117,13 @@ class MdChannel :
 		'--Password', password,
 		'--PushbackPipe', self.pushbackPipe,
 		'--PublishPipe', self.publishPipe,
-		'--InstrumentIDConfigFile',self.tempConfigFile
+		'--InstrumentIDConfigFile',self.tempConfigFile,
+		'--loyalty'
 		]
 
 		# 创建转换器子进程
 		traderStdout = open(fileOutput, 'w')
 		self.mdProcess = subprocess.Popen(commandLine,stdout=traderStdout)
-
-		# 启动守护进程
-		self.cleanDaemonProcess = Process(target=cleanDaemon,args=(self,))
-		self.cleanDaemonProcess.start()
 
 		# 检查ctp通道是否建立，如果失败抛出异常
 		if not self.__testChannel():
@@ -220,6 +217,7 @@ class TraderChannel :
 		'--RequestPipe', self.requestPipe,
 		'--PushbackPipe', self.pushbackPipe,
 		'--PublishPipe', self.publishPipe,
+		'--loyalty'
 		]
 
 		# 创建转换器子进程
