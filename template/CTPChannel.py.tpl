@@ -26,16 +26,16 @@ ResponseTimeOut = [-2001,u'请求超时未响应',[]]
 InvalidRequestFormat = [-2002,u'接收到异常消息格式',[]]
 
 
+def mallocIpcAddress():
+	return 'ipc://%s/%s' % (tempfile.gettempdir(),uuid.uuid1())
 
 
 
-class CTPChannel :
+class TraderChannel :
 	'''
-	CTP通讯管道类,该类和CTPConverter进程通讯,对外实现python语言封装的CTP接口,在设计上该类
+	Trader通讯管道类,该类和CTPConverter进程通讯,对外实现python语言封装的CTP接口,在设计上该类
 	既支持同步接口也支持异步接口,但是目前暂时先实现同步接口.
 	'''
-	def __mallocIpcAddress(self):
-	    return 'ipc://%s/%s' % (tempfile.gettempdir(),uuid.uuid1())
 
 	def __testChannel(self):
 		'''
@@ -63,9 +63,9 @@ class CTPChannel :
 		如果ctp连接测试失败，将抛出异常阻止对象的创建
 		'''
 		# 为ctp转换器分配通讯管道地址
-		self.requestPipe = self.__mallocIpcAddress()
-		self.pushbackPipe = self.__mallocIpcAddress()
-		self.publishPipe = self.__mallocIpcAddress()
+		self.requestPipe = mallocIpcAddress()
+		self.pushbackPipe = mallocIpcAddress()
+		self.publishPipe = mallocIpcAddress()
 
 		# 构造调用命令
 		commandLine = ['trader',

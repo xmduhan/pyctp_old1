@@ -1,25 +1,25 @@
 # -*- coding: utf-8 -*-
 import os
-from CTPChannel import CTPChannel
+from CTPChannel import TraderChannel
 from CTPStruct import *
 from time import sleep
 from nose.plugins.attrib import attr
 from datetime import datetime
 
-ch = None
+traderChannel = None
 
 def setup():
     '''
     所有用例的公共初始化代码
     '''
-    global ch
+    global traderChannel
     # 读取环境变量中的信息
     frontAddress = os.environ.get('CTP_FRONT_ADDRESS')
     brokerID = os.environ.get('CTP_BROKER_ID')
     userID = os.environ.get('CTP_USER_ID')
     password = os.environ.get('CTP_PASSWORD')
     # 创建通道
-    ch = CTPChannel(frontAddress,brokerID,userID,password)
+    traderChannel = TraderChannel(frontAddress,brokerID,userID,password)
     sleep(1)
 
 
@@ -31,7 +31,7 @@ def test_QryTradingAccount():
     '''
     测试QryTradingAccount
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTradingAccount():开始'
@@ -39,7 +39,7 @@ def test_QryTradingAccount():
 
     data = CThostFtdcQryTradingAccountField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryTradingAccount(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryTradingAccount(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryTradingAccount():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -70,7 +70,7 @@ def test_QryCFMMCTradingAccountKey():
     '''
     测试QryCFMMCTradingAccountKey
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryCFMMCTradingAccountKey():开始'
@@ -78,7 +78,7 @@ def test_QryCFMMCTradingAccountKey():
 
     data = CThostFtdcQryCFMMCTradingAccountKeyField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryCFMMCTradingAccountKey(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryCFMMCTradingAccountKey(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryCFMMCTradingAccountKey():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -111,7 +111,7 @@ def test_QryTradingNotice():
     '''
     测试QryTradingNotice
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTradingNotice():开始'
@@ -119,7 +119,7 @@ def test_QryTradingNotice():
 
     data = CThostFtdcQryTradingNoticeField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryTradingNotice(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryTradingNotice(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryTradingNotice():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -150,7 +150,7 @@ def test_QryTrade():
     '''
     测试QryTrade
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTrade():开始'
@@ -158,7 +158,7 @@ def test_QryTrade():
 
     data = CThostFtdcQryTradeField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryTrade(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryTrade(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryTrade():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -189,7 +189,7 @@ def test_QueryMaxOrderVolume():
     '''
     测试QueryMaxOrderVolume
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QueryMaxOrderVolume():开始'
@@ -197,7 +197,7 @@ def test_QueryMaxOrderVolume():
 
     data = CThostFtdcQueryMaxOrderVolumeField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QueryMaxOrderVolume(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QueryMaxOrderVolume(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QueryMaxOrderVolume():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -230,7 +230,7 @@ def test_QryInvestorPosition():
     '''
     测试QryInvestorPosition
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInvestorPosition():开始'
@@ -238,7 +238,7 @@ def test_QryInvestorPosition():
 
     data = CThostFtdcQryInvestorPositionField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryInvestorPosition(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryInvestorPosition(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryInvestorPosition():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -269,7 +269,7 @@ def test_QryBrokerTradingAlgos():
     '''
     测试QryBrokerTradingAlgos
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryBrokerTradingAlgos():开始'
@@ -277,7 +277,7 @@ def test_QryBrokerTradingAlgos():
 
     data = CThostFtdcQryBrokerTradingAlgosField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryBrokerTradingAlgos(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryBrokerTradingAlgos(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryBrokerTradingAlgos():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -308,7 +308,7 @@ def test_QryOrder():
     '''
     测试QryOrder
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryOrder():开始'
@@ -316,7 +316,7 @@ def test_QryOrder():
 
     data = CThostFtdcQryOrderField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryOrder(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryOrder(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryOrder():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -347,7 +347,7 @@ def test_QryExchange():
     '''
     测试QryExchange
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryExchange():开始'
@@ -355,7 +355,7 @@ def test_QryExchange():
 
     data = CThostFtdcQryExchangeField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryExchange(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryExchange(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryExchange():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -390,7 +390,7 @@ def test_QryExchangeRate():
     '''
     测试QryExchangeRate
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryExchangeRate():开始'
@@ -398,7 +398,7 @@ def test_QryExchangeRate():
 
     data = CThostFtdcQryExchangeRateField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryExchangeRate(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryExchangeRate(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryExchangeRate():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -429,7 +429,7 @@ def test_QryInvestorPositionDetail():
     '''
     测试QryInvestorPositionDetail
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInvestorPositionDetail():开始'
@@ -437,7 +437,7 @@ def test_QryInvestorPositionDetail():
 
     data = CThostFtdcQryInvestorPositionDetailField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryInvestorPositionDetail(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryInvestorPositionDetail(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryInvestorPositionDetail():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -468,7 +468,7 @@ def test_QrySettlementInfoConfirm():
     '''
     测试QrySettlementInfoConfirm
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QrySettlementInfoConfirm():开始'
@@ -476,7 +476,7 @@ def test_QrySettlementInfoConfirm():
 
     data = CThostFtdcQrySettlementInfoConfirmField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QrySettlementInfoConfirm(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QrySettlementInfoConfirm(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QrySettlementInfoConfirm():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -507,7 +507,7 @@ def test_QryBrokerTradingParams():
     '''
     测试QryBrokerTradingParams
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryBrokerTradingParams():开始'
@@ -515,7 +515,7 @@ def test_QryBrokerTradingParams():
 
     data = CThostFtdcQryBrokerTradingParamsField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryBrokerTradingParams(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryBrokerTradingParams(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryBrokerTradingParams():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -546,7 +546,7 @@ def test_QueryCFMMCTradingAccountToken():
     '''
     测试QueryCFMMCTradingAccountToken
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QueryCFMMCTradingAccountToken():开始'
@@ -554,7 +554,7 @@ def test_QueryCFMMCTradingAccountToken():
 
     data = CThostFtdcQueryCFMMCTradingAccountTokenField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QueryCFMMCTradingAccountToken(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QueryCFMMCTradingAccountToken(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QueryCFMMCTradingAccountToken():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -585,7 +585,7 @@ def test_QryNotice():
     '''
     测试QryNotice
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryNotice():开始'
@@ -593,7 +593,7 @@ def test_QryNotice():
 
     data = CThostFtdcQryNoticeField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryNotice(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryNotice(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryNotice():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -628,7 +628,7 @@ def test_QryInvestorPositionCombineDetail():
     '''
     测试QryInvestorPositionCombineDetail
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInvestorPositionCombineDetail():开始'
@@ -636,7 +636,7 @@ def test_QryInvestorPositionCombineDetail():
 
     data = CThostFtdcQryInvestorPositionCombineDetailField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryInvestorPositionCombineDetail(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryInvestorPositionCombineDetail(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryInvestorPositionCombineDetail():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -669,7 +669,7 @@ def test_QrySecAgentACIDMap():
     '''
     测试QrySecAgentACIDMap
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QrySecAgentACIDMap():开始'
@@ -677,7 +677,7 @@ def test_QrySecAgentACIDMap():
 
     data = CThostFtdcQrySecAgentACIDMapField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QrySecAgentACIDMap(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QrySecAgentACIDMap(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QrySecAgentACIDMap():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -710,7 +710,7 @@ def test_QueryBankAccountMoneyByFuture():
     '''
     测试QueryBankAccountMoneyByFuture
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QueryBankAccountMoneyByFuture():开始'
@@ -718,7 +718,7 @@ def test_QueryBankAccountMoneyByFuture():
 
     data = CThostFtdcReqQueryAccountField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QueryBankAccountMoneyByFuture(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QueryBankAccountMoneyByFuture(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QueryBankAccountMoneyByFuture():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -749,7 +749,7 @@ def test_QryParkedOrderAction():
     '''
     测试QryParkedOrderAction
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryParkedOrderAction():开始'
@@ -757,7 +757,7 @@ def test_QryParkedOrderAction():
 
     data = CThostFtdcQryParkedOrderActionField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryParkedOrderAction(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryParkedOrderAction(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryParkedOrderAction():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -790,7 +790,7 @@ def test_QryExchangeMarginRate():
     '''
     测试QryExchangeMarginRate
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryExchangeMarginRate():开始'
@@ -798,7 +798,7 @@ def test_QryExchangeMarginRate():
 
     data = CThostFtdcQryExchangeMarginRateField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryExchangeMarginRate(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryExchangeMarginRate(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryExchangeMarginRate():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -833,7 +833,7 @@ def test_QryInstrument():
     '''
     测试QryInstrument
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInstrument():开始'
@@ -841,7 +841,7 @@ def test_QryInstrument():
 
     data = CThostFtdcQryInstrumentField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryInstrument(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryInstrument(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryInstrument():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -874,7 +874,7 @@ def test_QryInstrumentCommissionRate():
     '''
     测试QryInstrumentCommissionRate
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInstrumentCommissionRate():开始'
@@ -882,7 +882,7 @@ def test_QryInstrumentCommissionRate():
 
     data = CThostFtdcQryInstrumentCommissionRateField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryInstrumentCommissionRate(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryInstrumentCommissionRate(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryInstrumentCommissionRate():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -913,7 +913,7 @@ def test_QryInstrumentMarginRate():
     '''
     测试QryInstrumentMarginRate
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInstrumentMarginRate():开始'
@@ -921,7 +921,7 @@ def test_QryInstrumentMarginRate():
 
     data = CThostFtdcQryInstrumentMarginRateField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryInstrumentMarginRate(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryInstrumentMarginRate(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryInstrumentMarginRate():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -952,7 +952,7 @@ def test_QryInvestor():
     '''
     测试QryInvestor
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInvestor():开始'
@@ -960,7 +960,7 @@ def test_QryInvestor():
 
     data = CThostFtdcQryInvestorField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryInvestor(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryInvestor(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryInvestor():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -991,7 +991,7 @@ def test_QryExchangeMarginRateAdjust():
     '''
     测试QryExchangeMarginRateAdjust
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryExchangeMarginRateAdjust():开始'
@@ -999,7 +999,7 @@ def test_QryExchangeMarginRateAdjust():
 
     data = CThostFtdcQryExchangeMarginRateAdjustField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryExchangeMarginRateAdjust(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryExchangeMarginRateAdjust(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryExchangeMarginRateAdjust():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -1030,7 +1030,7 @@ def test_QryInvestorProductGroupMargin():
     '''
     测试QryInvestorProductGroupMargin
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInvestorProductGroupMargin():开始'
@@ -1038,7 +1038,7 @@ def test_QryInvestorProductGroupMargin():
 
     data = CThostFtdcQryInvestorProductGroupMarginField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryInvestorProductGroupMargin(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryInvestorProductGroupMargin(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryInvestorProductGroupMargin():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -1069,7 +1069,7 @@ def test_QryEWarrantOffset():
     '''
     测试QryEWarrantOffset
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryEWarrantOffset():开始'
@@ -1077,7 +1077,7 @@ def test_QryEWarrantOffset():
 
     data = CThostFtdcQryEWarrantOffsetField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryEWarrantOffset(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryEWarrantOffset(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryEWarrantOffset():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -1108,7 +1108,7 @@ def test_QryDepthMarketData():
     '''
     测试QryDepthMarketData
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryDepthMarketData():开始'
@@ -1116,7 +1116,7 @@ def test_QryDepthMarketData():
 
     data = CThostFtdcQryDepthMarketDataField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryDepthMarketData(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryDepthMarketData(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryDepthMarketData():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -1147,7 +1147,7 @@ def test_QryTransferBank():
     '''
     测试QryTransferBank
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTransferBank():开始'
@@ -1155,7 +1155,7 @@ def test_QryTransferBank():
 
     data = CThostFtdcQryTransferBankField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryTransferBank(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryTransferBank(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryTransferBank():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -1188,7 +1188,7 @@ def test_QryProduct():
     '''
     测试QryProduct
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryProduct():开始'
@@ -1196,7 +1196,7 @@ def test_QryProduct():
 
     data = CThostFtdcQryProductField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryProduct(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryProduct(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryProduct():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -1227,7 +1227,7 @@ def test_QryTradingCode():
     '''
     测试QryTradingCode
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTradingCode():开始'
@@ -1235,7 +1235,7 @@ def test_QryTradingCode():
 
     data = CThostFtdcQryTradingCodeField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryTradingCode(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryTradingCode(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryTradingCode():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -1266,7 +1266,7 @@ def test_QrySettlementInfo():
     '''
     测试QrySettlementInfo
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QrySettlementInfo():开始'
@@ -1274,7 +1274,7 @@ def test_QrySettlementInfo():
 
     data = CThostFtdcQrySettlementInfoField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QrySettlementInfo(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QrySettlementInfo(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QrySettlementInfo():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -1305,7 +1305,7 @@ def test_QryAccountregister():
     '''
     测试QryAccountregister
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryAccountregister():开始'
@@ -1313,7 +1313,7 @@ def test_QryAccountregister():
 
     data = CThostFtdcQryAccountregisterField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryAccountregister(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryAccountregister(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryAccountregister():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -1344,7 +1344,7 @@ def test_QryParkedOrder():
     '''
     测试QryParkedOrder
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryParkedOrder():开始'
@@ -1352,7 +1352,7 @@ def test_QryParkedOrder():
 
     data = CThostFtdcQryParkedOrderField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryParkedOrder(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryParkedOrder(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryParkedOrder():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -1383,7 +1383,7 @@ def test_QryTransferSerial():
     '''
     测试QryTransferSerial
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTransferSerial():开始'
@@ -1391,7 +1391,7 @@ def test_QryTransferSerial():
 
     data = CThostFtdcQryTransferSerialField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryTransferSerial(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryTransferSerial(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryTransferSerial():请求共耗时%f秒' % timeDelta.total_seconds()
@@ -1422,7 +1422,7 @@ def test_QryContractBank():
     '''
     测试QryContractBank
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryContractBank():开始'
@@ -1430,7 +1430,7 @@ def test_QryContractBank():
 
     data = CThostFtdcQryContractBankField()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.QryContractBank(data)
+    errorID,errorMsg,responeDataList =  traderChannel.QryContractBank(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_QryContractBank():请求共耗时%f秒' % timeDelta.total_seconds()

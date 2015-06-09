@@ -1,25 +1,25 @@
 # -*- coding: utf-8 -*-
 import os
-from CTPChannel import CTPChannel
+from CTPChannel import TraderChannel
 from CTPStruct import *
 from time import sleep
 from nose.plugins.attrib import attr
 from datetime import datetime
 
-ch = None
+traderChannel = None
 
 def setup():
     '''
     所有用例的公共初始化代码
     '''
-    global ch
+    global traderChannel
     # 读取环境变量中的信息
     frontAddress = os.environ.get('CTP_FRONT_ADDRESS')
     brokerID = os.environ.get('CTP_BROKER_ID')
     userID = os.environ.get('CTP_USER_ID')
     password = os.environ.get('CTP_PASSWORD')
     # 创建通道
-    ch = CTPChannel(frontAddress,brokerID,userID,password)
+    traderChannel = TraderChannel(frontAddress,brokerID,userID,password)
     sleep(1)
 
 {% for method in reqMethodDict.itervalues() %}
@@ -31,7 +31,7 @@ def test_{{ method['name'][3:]}}():
     '''
     测试{{ method['name'][3:]}}
     '''
-    global ch
+    global traderChannel
     print ''
     print '----------------------------------------------------------------------'
     print u'test_{{ method['name'][3:]}}():开始'
@@ -39,7 +39,7 @@ def test_{{ method['name'][3:]}}():
 
     data = {{parameter['raw_type']}}()
     startTime = datetime.now()
-    errorID,errorMsg,responeDataList =  ch.{{method['name'][3:]}}(data)
+    errorID,errorMsg,responeDataList =  traderChannel.{{method['name'][3:]}}(data)
     endTime = datetime.now()
     timeDelta = endTime - startTime
     print u'test_{{ method['name'][3:]}}():请求共耗时%f秒' % timeDelta.total_seconds()
