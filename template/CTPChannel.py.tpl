@@ -8,8 +8,7 @@ import subprocess
 from CTPStruct import *
 from message import *
 from time import sleep
-from multiprocessing import Process
-
+from datetime import datetime,timedelta
 
 
 def packageReqInfo(apiName,data):
@@ -189,7 +188,7 @@ class TraderChannel :
 		self.traderProcess.wait()
 
 
-	def __init__(self,frontAddress,brokerID,userID,password,fileOutput='/dev/null'):
+	def __init__(self,frontAddress,brokerID,userID,password,fileOutput='/dev/null',ctpQueryInterval=1):
 		'''
 		初始化过程:
 		1.创建ctp转换器进程
@@ -203,6 +202,10 @@ class TraderChannel :
 		password   密码
 		fileOutput   ctp trader通讯进程的日志信息的保存路径,默认抛弃('/dev/null')
 		'''
+		# 设置上次查询时间
+		self.lastQueryTime = datetime.now() - timedelta(seconds=1)
+		self.ctpQueryInterval = ctpQueryInterval
+
 		# 为ctp转换器分配通讯管道地址
 		self.requestPipe = mallocIpcAddress()
 		self.pushbackPipe = mallocIpcAddress()
@@ -249,6 +252,24 @@ class TraderChannel :
 
 
 
+	def getQueryWaitTime(self):
+		'''
+		获取查询需要等待的时间
+		'''
+		needWait = self.ctpQueryInterval - (datetime.now() - self.lastQueryTime).total_seconds()
+		if needWait > 0 :
+			return needWait
+		else:
+			return 0
+
+
+	def queryWait(self):
+		'''
+		查询前的等待,如果需要的话
+		'''
+		sleep(self.getQueryWaitTime())
+
+
 
 {% for method in reqMethodDict.itervalues() %}
 	{% set parameter = method['parameters'][0]  %}
@@ -261,6 +282,12 @@ class TraderChannel :
 		'''
 		if not isinstance(data,{{parameter['raw_type']}}):
 			return InvalidRequestFormat
+
+		{% if method['name'][3:6] == 'Qry' or method['name'][3:8] == 'Query' %}
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		{% endif %}
 
 		requestApiName = 'Req{{method['name'][3:]}}'
 		responseApiName = 'OnRsp{{method['name'][3:]}}'
@@ -343,6 +370,17 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
+
+
+
+
+
+
+
+
+
+
+
 
 
 

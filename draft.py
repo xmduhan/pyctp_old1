@@ -9,12 +9,13 @@
 1、增加MdChannel支持(ok)
 (1)修改CTPChannel为TraderChannel,channel.py为CTPChannel.py
 (2)增加初始化代码内容
+1、增加一个守护进程负责当主进程强行关闭的时候可以杀死通道进程(ok)
+1、思考是否删除example.py.tpl(ok,已删除)
 
 #%%
-1、增加一个守护进程负责当主进程强行关闭的时候可以杀死通道进程
 1、请求延时机制响应机制(查询请求流量控制)
+1、实现一个实验性的TraderChannelPool
 1、按照实际交易的需求编写一个测试用例集合
-1、思考是否删除example.py.tpl
 1、打开的文件没有关闭会不会有问题
 
 #%%
@@ -60,6 +61,7 @@ sp.kill()
 sp.wait()
 #%%
 import os
+from datetime import datetime
 os.chdir(u'/home/duhan/github/pyctp')
 from CTPChannel import TraderChannel
 from CTPStruct import *
@@ -73,12 +75,16 @@ assert userID
 password = os.environ.get('CTP_PASSWORD')
 assert password
 
-ch = TraderChannel(frontAddress,brokerID,userID,password,'/tmp/trader.log')
+ch = TraderChannel(frontAddress,brokerID,userID,password,'/tmp/trader.log',.5)
 data = CThostFtdcQryTradingAccountField()
+#ch.getQueryWaitTime()
 ch.QryTradingAccount(data)
-
+#(datetime.now() - ch.lastQueryTime).total_seconds()
 
 #%%
+
+
+
 
 #%%
 import uuid
@@ -143,3 +149,18 @@ def test():
     raise Exception(u'测试')
 test()
 
+#%%
+from datetime import datetime 
+from time import sleep
+from datetime import timedelta
+beginTime = datetime.now()
+sleep(.1)
+endTime = datetime.now()
+timeDelta = endTime-beginTime
+needWait = 1-timeDelta.total_seconds()
+sleep(needWait)
+
+#%%
+beginTime = datetime.now()
+endTime = beginTime - timedelta(seconds=1)
+(endTime-beginTime).total_seconds()

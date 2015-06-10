@@ -2,19 +2,19 @@
 all : generate
 
 
-generate: CTPChannel.py CTPStruct.py examples.py query_api_tests.py
-
-
-CTPChannel.py : template/CTPChannel.py.tpl
-	python generate.py CTPChannel.py.tpl
+generate: CTPStruct.py CTPChannel.py CTPChannelPool.py query_api_tests.py
 
 
 CTPStruct.py : template/CTPStruct.py.tpl
 	python generate.py CTPStruct.py.tpl
 
 
-examples.py : template/examples.py.tpl
-	python generate.py examples.py.tpl
+CTPChannel.py : template/CTPChannel.py.tpl
+	python generate.py CTPChannel.py.tpl
+
+
+CTPChannelPool.py : template/CTPChannelPool.py.tpl
+	python generate.py CTPChannelPool.py.tpl
 
 
 query_api_tests.py : template/query_api_tests.py.tpl
