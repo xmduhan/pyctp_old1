@@ -13,10 +13,9 @@
 1、请求延时机制响应机制(查询请求流量控制)(ok)
 1、实现一个实验性的TraderChannelPool(ok)
 1、延迟响应机制和TraderChannelPool的测试用例(ok)
+1、TraderChannel进程清理的测试用例(ok)
 
 #%% 待处理
-
-1、进程清理的测试用例清理
 1、行情api的测试用例
 1、按照实际交易的需求编写一个测试用例集合
 1、打开的文件没有关闭会不会有问题
@@ -76,7 +75,7 @@ assert userID
 password = os.environ.get('CTP_PASSWORD')
 assert password
 
-ch = TraderChannel(frontAddress,brokerID,userID,password,'/tmp/trader.log',5)
+ch = TraderChannel(frontAddress,brokerID,userID,password,'/tmp/trader.log',1.1)
 data = CThostFtdcQryTradingAccountField()
 print ch.getQueryWaitTime()
 print ch.QryTradingAccount(data)
@@ -183,3 +182,16 @@ sleep(needWait)
 beginTime = datetime.now()
 endTime = beginTime - timedelta(seconds=1)
 (endTime-beginTime).total_seconds()
+
+
+#%%
+import subprocess
+ps = subprocess.Popen(('ps', '-ef'), stdout=subprocess.PIPE)
+output = subprocess.check_output(('grep', 'm'), stdin=ps.stdout)
+ps.wait()
+
+#%%
+import psutil
+process = psutil.Process()
+childrenNameList = [child.name() for child in process.children() ]
+'trader' in childrenNameList

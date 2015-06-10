@@ -6,6 +6,7 @@ from CTPChannelPool import TraderChannelPool
 from CTPStruct import *
 from datetime import datetime
 from time import sleep
+import psutil
 
 def setup():
     '''
@@ -79,6 +80,22 @@ def test_QueryApiDelayMechanismCounterexample():
     # 由于没有延迟设置所以调用不成功
     assert result[0] == -3,u'调用api返回错误(result[0]=%d,result[1]=%s)' % (result[0],result[1])
 
+
+@attr('TraderChannel')
+@attr('test_TraderChannelCleanCTPProcess')
+def test_TraderChannelCleanCTPProcess():
+    '''
+    测试TraderChannel是否能正常清理进程
+    '''
+    process = psutil.Process()
+    # 没有创建TraderChannel对象前应该没有trader进程
+    assert 'trader' not in [child.name() for child in process.children() ]
+    # 创建后可以找到一个trader进程
+    traderChannel = TraderChannel(frontAddress,brokerID,userID,password)
+    assert 'trader' in [child.name() for child in process.children() ]
+    # 将变量指向None迫使垃圾回收,确认进程被清理了
+    traderChannel = None
+    assert 'trader' not in [child.name() for child in process.children() ]
 
 
 @attr('TraderChannelPool')
