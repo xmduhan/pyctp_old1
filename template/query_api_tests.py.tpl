@@ -6,18 +6,21 @@ from time import sleep
 from nose.plugins.attrib import attr
 from datetime import datetime
 
-traderChannel = None
 
 def setup():
     '''
     所有用例的公共初始化代码
     '''
-    global traderChannel
+    global traderChannel,frontAddress,brokerID,userID,password
     # 读取环境变量中的信息
     frontAddress = os.environ.get('CTP_FRONT_ADDRESS')
+    assert frontAddress,u'必须定义环境变量:CTP_FRONT_ADDRESS'
     brokerID = os.environ.get('CTP_BROKER_ID')
+    assert brokerID,u'必须定义环境变量:CTP_BROKER_ID'
     userID = os.environ.get('CTP_USER_ID')
+    assert userID,u'必须定义环境变量:CTP_USER_ID'
     password = os.environ.get('CTP_PASSWORD')
+    assert password,u'必须定义环境变量:CTP_PASSWORD'
     # 创建通道
     traderChannel = TraderChannel(frontAddress,brokerID,userID,password)
     sleep(1)
