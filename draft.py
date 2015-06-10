@@ -17,8 +17,9 @@
 1、实现一个实验性的TraderChannelPool
 1、按照实际交易的需求编写一个测试用例集合
 1、打开的文件没有关闭会不会有问题
+1、使用pep8修改代码
 
-#%%
+#%% 启动trader进程的测试代码
 import uuid
 import os
 import tempfile
@@ -52,19 +53,15 @@ option = [
 command = ['trader']
 command.extend(option)
 command
-#%%
-devnull = open('/dev/null', 'w')
-sp = subprocess.Popen(command,stdout=devnull)
 
-#%%
-sp.kill()
-sp.wait()
-#%%
+
+#%%  测试TraderChannel
 import os
 from datetime import datetime
 os.chdir(u'/home/duhan/github/pyctp')
 from CTPChannel import TraderChannel
 from CTPStruct import *
+from time import sleep
 
 frontAddress = os.environ.get('CTP_FRONT_ADDRESS')
 assert frontAddress
@@ -75,18 +72,46 @@ assert userID
 password = os.environ.get('CTP_PASSWORD')
 assert password
 
-ch = TraderChannel(frontAddress,brokerID,userID,password,'/tmp/trader.log',.5)
+ch = TraderChannel(frontAddress,brokerID,userID,password,'/tmp/trader.log',5)
 data = CThostFtdcQryTradingAccountField()
-#ch.getQueryWaitTime()
-ch.QryTradingAccount(data)
+print ch.getQueryWaitTime()
+print ch.QryTradingAccount(data)
+#sleep(1)
+#print ch.QryTradingAccount(data)
+#print ch.QryTradingAccount(data)
+#print ch.QryTradingAccount(data)
+#print ch.QryTradingAccount(data)
+#print ch.QryTradingAccount(data)
 #(datetime.now() - ch.lastQueryTime).total_seconds()
+#for i in range(10):
+#    print ch.QryTradingAccount(data)
+
+#%% 测试TraderChannelPool
+import os
+from datetime import datetime
+os.chdir(u'/home/duhan/github/pyctp')
+from CTPChannelPool import TraderChannelPool
+from CTPStruct import *
+from time import sleep
+
+frontAddress = os.environ.get('CTP_FRONT_ADDRESS')
+assert frontAddress
+brokerID = os.environ.get('CTP_BROKER_ID')
+assert brokerID
+userID = os.environ.get('CTP_USER_ID')
+assert userID
+password = os.environ.get('CTP_PASSWORD')
+assert password
+channelPool = \
+TraderChannelPool(frontAddress,brokerID,userID,password,nChannel=5,ctpQueryInterval=1.1)
 
 #%%
+data = CThostFtdcQryTradingAccountField()
+for i in range(10):
+    print channelPool.QryTradingAccount(data),channelPool.getMinWaitChannel()
 
 
-
-
-#%%
+#%%  启动md进程代码
 import uuid
 import os
 import tempfile
@@ -120,7 +145,7 @@ commandLine = ['md',
 traderStdout = open(fileOutput, 'w')
 mdProcess = subprocess.Popen(commandLine,stdout=traderStdout)
 
-#%%
+#%% 测试MdChannel
 import os
 os.chdir(u'/home/duhan/github/pyctp')
 from CTPChannel import MdChannel
@@ -139,17 +164,7 @@ ch = MdChannel(frontAddress,brokerID,userID,password,['IF1506','IF1507'],fileOut
 ch.readMarketData()
 
 
-#%%
-a = ['{\n   "ActionDay" : "20150609",\n   "AskPrice1" : 5250.8000000000002,\n   "AskPrice2" : 1.7976931348623157e+308,\n   "AskPrice3" : 1.7976931348623157e+308,\n   "AskPrice4" : 1.7976931348623157e+308,\n   "AskPrice5" : 1.7976931348623157e+308,\n   "AskVolume1" : 3,\n   "AskVolume2" : 0,\n   "AskVolume3" : 0,\n   "AskVolume4" : 0,\n   "AskVolume5" : 0,\n   "AveragePrice" : 1583048.7369148347,\n   "BidPrice1" : 5250.2000000000007,\n   "BidPrice2" : 1.7976931348623157e+308,\n   "BidPrice3" : 1.7976931348623157e+308,\n   "BidPrice4" : 1.7976931348623157e+308,\n   "BidPrice5" : 1.7976931348623157e+308,\n   "BidVolume1" : 4,\n   "BidVolume2" : 0,\n   "BidVolume3" : 0,\n   "BidVolume4" : 0,\n   "BidVolume5" : 0,\n   "ClosePrice" : 5250.3999999999996,\n   "CurrDelta" : 1.7976931348623157e+308,\n   "ExchangeID" : "",\n   "ExchangeInstID" : "",\n   "HighestPrice" : 5364.3999999999996,\n   "InstrumentID" : "IF1506",\n   "LastPrice" : 5250.4000000000005,\n   "LowerLimitPrice" : 4811.3999999999996,\n   "LowestPrice" : 5186.1999999999998,\n   "OpenInterest" : 59736,\n   "OpenPrice" : 5343,\n   "PreClosePrice" : 5336.3999999999996,\n   "PreDelta" : 1.7976931348623157e+308,\n   "PreOpenInterest" : 55534,\n   "PreSettlementPrice" : 5346,\n   "SettlementPrice" : 5272.6000000000004,\n   "TradingDay" : "20150609",\n   "Turnover" : 1610703015300,\n   "UpdateMillisec" : 800,\n   "UpdateTime" : "16:05:00",\n   "UpperLimitPrice" : 5880.6000000000004,\n   "Volume" : 1017469\n}\n']
-
-
-
-#%%
-def test():
-    raise Exception(u'测试')
-test()
-
-#%%
+#%% 测试计算时间间隔并等待
 from datetime import datetime 
 from time import sleep
 from datetime import timedelta
@@ -160,7 +175,7 @@ timeDelta = endTime-beginTime
 needWait = 1-timeDelta.total_seconds()
 sleep(needWait)
 
-#%%
+#%% 
 beginTime = datetime.now()
 endTime = beginTime - timedelta(seconds=1)
 (endTime-beginTime).total_seconds()

@@ -283,11 +283,6 @@ class TraderChannel :
 		if not isinstance(data,{{parameter['raw_type']}}):
 			return InvalidRequestFormat
 
-		{% if method['name'][3:6] == 'Qry' or method['name'][3:8] == 'Query' %}
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		{% endif %}
 
 		requestApiName = 'Req{{method['name'][3:]}}'
 		responseApiName = 'OnRsp{{method['name'][3:]}}'
@@ -301,9 +296,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		{% if method['name'][3:6] == 'Qry' or method['name'][3:8] == 'Query' %}
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		{% endif %}
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -370,17 +370,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
-
-
-
-
-
-
-
-
-
-
 
 
 

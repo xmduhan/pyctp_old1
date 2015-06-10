@@ -283,11 +283,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryTradingAccountField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryTradingAccount'
 		responseApiName = 'OnRspQryTradingAccount'
@@ -301,9 +296,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -374,17 +374,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryCFMMCTradingAccountKey(self,data):
 		'''
@@ -396,11 +385,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryCFMMCTradingAccountKeyField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryCFMMCTradingAccountKey'
 		responseApiName = 'OnRspQryCFMMCTradingAccountKey'
@@ -414,9 +398,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -487,17 +476,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def UserPasswordUpdate(self,data):
 		'''
@@ -509,7 +487,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcUserPasswordUpdateField):
 			return InvalidRequestFormat
 
-		
 
 		requestApiName = 'ReqUserPasswordUpdate'
 		responseApiName = 'OnRspUserPasswordUpdate'
@@ -523,9 +500,10 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -596,17 +574,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryTradingNotice(self,data):
 		'''
@@ -618,11 +585,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryTradingNoticeField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryTradingNotice'
 		responseApiName = 'OnRspQryTradingNotice'
@@ -636,9 +598,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -709,17 +676,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryTrade(self,data):
 		'''
@@ -731,11 +687,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryTradeField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryTrade'
 		responseApiName = 'OnRspQryTrade'
@@ -749,9 +700,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -822,17 +778,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QueryMaxOrderVolume(self,data):
 		'''
@@ -844,11 +789,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQueryMaxOrderVolumeField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQueryMaxOrderVolume'
 		responseApiName = 'OnRspQueryMaxOrderVolume'
@@ -862,9 +802,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -935,17 +880,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def SettlementInfoConfirm(self,data):
 		'''
@@ -957,7 +891,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcSettlementInfoConfirmField):
 			return InvalidRequestFormat
 
-		
 
 		requestApiName = 'ReqSettlementInfoConfirm'
 		responseApiName = 'OnRspSettlementInfoConfirm'
@@ -971,9 +904,10 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -1044,17 +978,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryInvestorPosition(self,data):
 		'''
@@ -1066,11 +989,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryInvestorPositionField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryInvestorPosition'
 		responseApiName = 'OnRspQryInvestorPosition'
@@ -1084,9 +1002,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -1157,17 +1080,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryBrokerTradingAlgos(self,data):
 		'''
@@ -1179,11 +1091,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryBrokerTradingAlgosField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryBrokerTradingAlgos'
 		responseApiName = 'OnRspQryBrokerTradingAlgos'
@@ -1197,9 +1104,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -1270,17 +1182,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryOrder(self,data):
 		'''
@@ -1292,11 +1193,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryOrderField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryOrder'
 		responseApiName = 'OnRspQryOrder'
@@ -1310,9 +1206,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -1383,17 +1284,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryExchange(self,data):
 		'''
@@ -1405,11 +1295,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryExchangeField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryExchange'
 		responseApiName = 'OnRspQryExchange'
@@ -1423,9 +1308,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -1496,17 +1386,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def UserLogin(self,data):
 		'''
@@ -1518,7 +1397,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcReqUserLoginField):
 			return InvalidRequestFormat
 
-		
 
 		requestApiName = 'ReqUserLogin'
 		responseApiName = 'OnRspUserLogin'
@@ -1532,9 +1410,10 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -1605,17 +1484,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def FromFutureToBankByFuture(self,data):
 		'''
@@ -1627,7 +1495,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcReqTransferField):
 			return InvalidRequestFormat
 
-		
 
 		requestApiName = 'ReqFromFutureToBankByFuture'
 		responseApiName = 'OnRspFromFutureToBankByFuture'
@@ -1641,9 +1508,10 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -1714,17 +1582,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryExchangeRate(self,data):
 		'''
@@ -1736,11 +1593,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryExchangeRateField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryExchangeRate'
 		responseApiName = 'OnRspQryExchangeRate'
@@ -1754,9 +1606,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -1827,17 +1684,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryInvestorPositionDetail(self,data):
 		'''
@@ -1849,11 +1695,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryInvestorPositionDetailField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryInvestorPositionDetail'
 		responseApiName = 'OnRspQryInvestorPositionDetail'
@@ -1867,9 +1708,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -1940,17 +1786,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QrySettlementInfoConfirm(self,data):
 		'''
@@ -1962,11 +1797,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQrySettlementInfoConfirmField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQrySettlementInfoConfirm'
 		responseApiName = 'OnRspQrySettlementInfoConfirm'
@@ -1980,9 +1810,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -2053,17 +1888,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryBrokerTradingParams(self,data):
 		'''
@@ -2075,11 +1899,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryBrokerTradingParamsField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryBrokerTradingParams'
 		responseApiName = 'OnRspQryBrokerTradingParams'
@@ -2093,9 +1912,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -2166,17 +1990,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QueryCFMMCTradingAccountToken(self,data):
 		'''
@@ -2188,11 +2001,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQueryCFMMCTradingAccountTokenField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQueryCFMMCTradingAccountToken'
 		responseApiName = 'OnRspQueryCFMMCTradingAccountToken'
@@ -2206,9 +2014,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -2279,17 +2092,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryNotice(self,data):
 		'''
@@ -2301,11 +2103,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryNoticeField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryNotice'
 		responseApiName = 'OnRspQryNotice'
@@ -2319,9 +2116,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -2392,17 +2194,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def FromBankToFutureByFuture(self,data):
 		'''
@@ -2414,7 +2205,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcReqTransferField):
 			return InvalidRequestFormat
 
-		
 
 		requestApiName = 'ReqFromBankToFutureByFuture'
 		responseApiName = 'OnRspFromBankToFutureByFuture'
@@ -2428,9 +2218,10 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -2501,17 +2292,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def ParkedOrderInsert(self,data):
 		'''
@@ -2523,7 +2303,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcParkedOrderField):
 			return InvalidRequestFormat
 
-		
 
 		requestApiName = 'ReqParkedOrderInsert'
 		responseApiName = 'OnRspParkedOrderInsert'
@@ -2537,9 +2316,10 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -2610,17 +2390,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryInvestorPositionCombineDetail(self,data):
 		'''
@@ -2632,11 +2401,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryInvestorPositionCombineDetailField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryInvestorPositionCombineDetail'
 		responseApiName = 'OnRspQryInvestorPositionCombineDetail'
@@ -2650,9 +2414,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -2723,17 +2492,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def OrderInsert(self,data):
 		'''
@@ -2745,7 +2503,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcInputOrderField):
 			return InvalidRequestFormat
 
-		
 
 		requestApiName = 'ReqOrderInsert'
 		responseApiName = 'OnRspOrderInsert'
@@ -2759,9 +2516,10 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -2832,17 +2590,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QrySecAgentACIDMap(self,data):
 		'''
@@ -2854,11 +2601,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQrySecAgentACIDMapField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQrySecAgentACIDMap'
 		responseApiName = 'OnRspQrySecAgentACIDMap'
@@ -2872,9 +2614,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -2945,17 +2692,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def ParkedOrderAction(self,data):
 		'''
@@ -2967,7 +2703,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcParkedOrderActionField):
 			return InvalidRequestFormat
 
-		
 
 		requestApiName = 'ReqParkedOrderAction'
 		responseApiName = 'OnRspParkedOrderAction'
@@ -2981,9 +2716,10 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -3054,17 +2790,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QueryBankAccountMoneyByFuture(self,data):
 		'''
@@ -3076,11 +2801,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcReqQueryAccountField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQueryBankAccountMoneyByFuture'
 		responseApiName = 'OnRspQueryBankAccountMoneyByFuture'
@@ -3094,9 +2814,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -3167,17 +2892,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryParkedOrderAction(self,data):
 		'''
@@ -3189,11 +2903,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryParkedOrderActionField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryParkedOrderAction'
 		responseApiName = 'OnRspQryParkedOrderAction'
@@ -3207,9 +2916,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -3280,17 +2994,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def Authenticate(self,data):
 		'''
@@ -3302,7 +3005,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcReqAuthenticateField):
 			return InvalidRequestFormat
 
-		
 
 		requestApiName = 'ReqAuthenticate'
 		responseApiName = 'OnRspAuthenticate'
@@ -3316,9 +3018,10 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -3389,17 +3092,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryExchangeMarginRate(self,data):
 		'''
@@ -3411,11 +3103,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryExchangeMarginRateField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryExchangeMarginRate'
 		responseApiName = 'OnRspQryExchangeMarginRate'
@@ -3429,9 +3116,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -3502,17 +3194,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def TradingAccountPasswordUpdate(self,data):
 		'''
@@ -3524,7 +3205,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcTradingAccountPasswordUpdateField):
 			return InvalidRequestFormat
 
-		
 
 		requestApiName = 'ReqTradingAccountPasswordUpdate'
 		responseApiName = 'OnRspTradingAccountPasswordUpdate'
@@ -3538,9 +3218,10 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -3611,17 +3292,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def UserLogout(self,data):
 		'''
@@ -3633,7 +3303,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcUserLogoutField):
 			return InvalidRequestFormat
 
-		
 
 		requestApiName = 'ReqUserLogout'
 		responseApiName = 'OnRspUserLogout'
@@ -3647,9 +3316,10 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -3720,17 +3390,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryInstrument(self,data):
 		'''
@@ -3742,11 +3401,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryInstrumentField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryInstrument'
 		responseApiName = 'OnRspQryInstrument'
@@ -3760,9 +3414,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -3833,17 +3492,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def OrderAction(self,data):
 		'''
@@ -3855,7 +3503,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcInputOrderActionField):
 			return InvalidRequestFormat
 
-		
 
 		requestApiName = 'ReqOrderAction'
 		responseApiName = 'OnRspOrderAction'
@@ -3869,9 +3516,10 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -3942,17 +3590,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryInstrumentCommissionRate(self,data):
 		'''
@@ -3964,11 +3601,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryInstrumentCommissionRateField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryInstrumentCommissionRate'
 		responseApiName = 'OnRspQryInstrumentCommissionRate'
@@ -3982,9 +3614,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -4055,17 +3692,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryInstrumentMarginRate(self,data):
 		'''
@@ -4077,11 +3703,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryInstrumentMarginRateField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryInstrumentMarginRate'
 		responseApiName = 'OnRspQryInstrumentMarginRate'
@@ -4095,9 +3716,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -4168,17 +3794,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryInvestor(self,data):
 		'''
@@ -4190,11 +3805,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryInvestorField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryInvestor'
 		responseApiName = 'OnRspQryInvestor'
@@ -4208,9 +3818,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -4281,17 +3896,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryExchangeMarginRateAdjust(self,data):
 		'''
@@ -4303,11 +3907,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryExchangeMarginRateAdjustField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryExchangeMarginRateAdjust'
 		responseApiName = 'OnRspQryExchangeMarginRateAdjust'
@@ -4321,9 +3920,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -4394,17 +3998,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryInvestorProductGroupMargin(self,data):
 		'''
@@ -4416,11 +4009,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryInvestorProductGroupMarginField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryInvestorProductGroupMargin'
 		responseApiName = 'OnRspQryInvestorProductGroupMargin'
@@ -4434,9 +4022,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -4507,17 +4100,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryEWarrantOffset(self,data):
 		'''
@@ -4529,11 +4111,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryEWarrantOffsetField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryEWarrantOffset'
 		responseApiName = 'OnRspQryEWarrantOffset'
@@ -4547,9 +4124,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -4620,17 +4202,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryDepthMarketData(self,data):
 		'''
@@ -4642,11 +4213,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryDepthMarketDataField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryDepthMarketData'
 		responseApiName = 'OnRspQryDepthMarketData'
@@ -4660,9 +4226,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -4733,17 +4304,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryTransferBank(self,data):
 		'''
@@ -4755,11 +4315,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryTransferBankField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryTransferBank'
 		responseApiName = 'OnRspQryTransferBank'
@@ -4773,9 +4328,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -4846,17 +4406,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def RemoveParkedOrderAction(self,data):
 		'''
@@ -4868,7 +4417,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcRemoveParkedOrderActionField):
 			return InvalidRequestFormat
 
-		
 
 		requestApiName = 'ReqRemoveParkedOrderAction'
 		responseApiName = 'OnRspRemoveParkedOrderAction'
@@ -4882,9 +4430,10 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -4955,17 +4504,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryProduct(self,data):
 		'''
@@ -4977,11 +4515,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryProductField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryProduct'
 		responseApiName = 'OnRspQryProduct'
@@ -4995,9 +4528,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -5068,17 +4606,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryTradingCode(self,data):
 		'''
@@ -5090,11 +4617,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryTradingCodeField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryTradingCode'
 		responseApiName = 'OnRspQryTradingCode'
@@ -5108,9 +4630,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -5181,17 +4708,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QrySettlementInfo(self,data):
 		'''
@@ -5203,11 +4719,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQrySettlementInfoField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQrySettlementInfo'
 		responseApiName = 'OnRspQrySettlementInfo'
@@ -5221,9 +4732,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -5294,17 +4810,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryAccountregister(self,data):
 		'''
@@ -5316,11 +4821,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryAccountregisterField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryAccountregister'
 		responseApiName = 'OnRspQryAccountregister'
@@ -5334,9 +4834,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -5407,17 +4912,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryParkedOrder(self,data):
 		'''
@@ -5429,11 +4923,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryParkedOrderField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryParkedOrder'
 		responseApiName = 'OnRspQryParkedOrder'
@@ -5447,9 +4936,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -5520,17 +5014,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryTransferSerial(self,data):
 		'''
@@ -5542,11 +5025,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryTransferSerialField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryTransferSerial'
 		responseApiName = 'OnRspQryTransferSerial'
@@ -5560,9 +5038,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -5633,17 +5116,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def QryContractBank(self,data):
 		'''
@@ -5655,11 +5127,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcQryContractBankField):
 			return InvalidRequestFormat
 
-		
-		# 查询前的等待,避免超过ctp查询api的流量控制
-		self.queryWait()
-		self.lastQueryTime = datetime.now()
-		
 
 		requestApiName = 'ReqQryContractBank'
 		responseApiName = 'OnRspQryContractBank'
@@ -5673,9 +5140,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+		# 查询前的等待,避免超过ctp查询api的流量控制
+		self.queryWait()
+		self.lastQueryTime = datetime.now()
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -5746,17 +5218,6 @@ class TraderChannel :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	
 	def RemoveParkedOrder(self,data):
 		'''
@@ -5768,7 +5229,6 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcRemoveParkedOrderField):
 			return InvalidRequestFormat
 
-		
 
 		requestApiName = 'ReqRemoveParkedOrder'
 		responseApiName = 'OnRspRemoveParkedOrder'
@@ -5782,9 +5242,10 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		
+
 		# 发送到服务器
 		requestMessage.send(self.request)
-
 		################### 等待服务器的REQUESTID响应 ###################
 		# 读取服务
 		poller = zmq.Poller()
@@ -5851,17 +5312,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
-
-
-
-
-
-
-
-
-
-
 
 
 
