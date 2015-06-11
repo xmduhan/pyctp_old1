@@ -195,3 +195,10 @@ import psutil
 process = psutil.Process()
 childrenNameList = [child.name() for child in process.children() ]
 'trader' in childrenNameList
+
+#%%
+import psutil
+process = psutil.Process()
+childrenNameList = [child.name() for child in process.children() ]
+'trader' in childrenNameList
+

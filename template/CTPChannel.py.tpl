@@ -203,8 +203,14 @@ class TraderChannel :
 		fileOutput   ctp trader通讯进程的日志信息的保存路径,默认抛弃('/dev/null')
 		'''
 		# 设置上次查询时间
-		self.lastQueryTime = datetime.now() - timedelta(seconds=1)
 		self.ctpQueryInterval = ctpQueryInterval
+		# NOTE:虽然这里之前没有ctp query请求,仍然要预留等待时间,是由于启动转化器进程是需要时
+		# 间的,转化器此时还无法响应请求,而初始化过程马上就发出一个查询请,以测试通道是否通畅,
+		# 该请求会在zmq队列中排队,排队时间也是计时的.而ctp流量控制计算的是发向服务器的时间,
+		# 是不是送到zmq消息队列的时间.所以这里要考虑ctp trader转换器的时间这里暂定为1秒
+		traderProcessStartupTime = 1
+		self.lastQueryTime = datetime.now() - timedelta(seconds=ctpQueryInterval)
+		self.lastQueryTime +=  timedelta(seconds=traderProcessStartupTime)
 
 		# 为ctp转换器分配通讯管道地址
 		self.requestPipe = mallocIpcAddress()
@@ -299,6 +305,8 @@ class TraderChannel :
 		{% if method['name'][3:6] == 'Qry' or method['name'][3:8] == 'Query' %}
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
+		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
+		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
 		{% endif %}
 

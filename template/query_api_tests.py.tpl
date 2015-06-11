@@ -2,7 +2,6 @@
 import os
 from CTPChannel import TraderChannel
 from CTPStruct import *
-from time import sleep
 from nose.plugins.attrib import attr
 from datetime import datetime
 
@@ -21,9 +20,9 @@ def setup():
     assert userID,u'必须定义环境变量:CTP_USER_ID'
     password = os.environ.get('CTP_PASSWORD')
     assert password,u'必须定义环境变量:CTP_PASSWORD'
-    # 创建通道
+
     traderChannel = TraderChannel(frontAddress,brokerID,userID,password)
-    sleep(1)
+
 
 {% for method in reqMethodDict.itervalues() %}
 {% if method['name'][3:6] == 'Qry' or method['name'][3:8] == 'Query' %}
@@ -34,11 +33,10 @@ def test_{{ method['name'][3:]}}():
     '''
     测试{{ method['name'][3:]}}
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_{{ method['name'][3:]}}():开始'
-    sleep(1)
 
     data = {{parameter['raw_type']}}()
     startTime = datetime.now()

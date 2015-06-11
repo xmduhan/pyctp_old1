@@ -2,7 +2,6 @@
 import os
 from CTPChannel import TraderChannel
 from CTPStruct import *
-from time import sleep
 from nose.plugins.attrib import attr
 from datetime import datetime
 
@@ -21,9 +20,9 @@ def setup():
     assert userID,u'必须定义环境变量:CTP_USER_ID'
     password = os.environ.get('CTP_PASSWORD')
     assert password,u'必须定义环境变量:CTP_PASSWORD'
-    # 创建通道
+
     traderChannel = TraderChannel(frontAddress,brokerID,userID,password)
-    sleep(1)
+
 
 
 
@@ -34,11 +33,10 @@ def test_QryTradingAccount():
     '''
     测试QryTradingAccount
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTradingAccount():开始'
-    sleep(1)
 
     data = CThostFtdcQryTradingAccountField()
     startTime = datetime.now()
@@ -73,11 +71,10 @@ def test_QryCFMMCTradingAccountKey():
     '''
     测试QryCFMMCTradingAccountKey
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryCFMMCTradingAccountKey():开始'
-    sleep(1)
 
     data = CThostFtdcQryCFMMCTradingAccountKeyField()
     startTime = datetime.now()
@@ -114,11 +111,10 @@ def test_QryTradingNotice():
     '''
     测试QryTradingNotice
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTradingNotice():开始'
-    sleep(1)
 
     data = CThostFtdcQryTradingNoticeField()
     startTime = datetime.now()
@@ -153,11 +149,10 @@ def test_QryTrade():
     '''
     测试QryTrade
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTrade():开始'
-    sleep(1)
 
     data = CThostFtdcQryTradeField()
     startTime = datetime.now()
@@ -192,11 +187,10 @@ def test_QueryMaxOrderVolume():
     '''
     测试QueryMaxOrderVolume
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QueryMaxOrderVolume():开始'
-    sleep(1)
 
     data = CThostFtdcQueryMaxOrderVolumeField()
     startTime = datetime.now()
@@ -233,11 +227,10 @@ def test_QryInvestorPosition():
     '''
     测试QryInvestorPosition
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInvestorPosition():开始'
-    sleep(1)
 
     data = CThostFtdcQryInvestorPositionField()
     startTime = datetime.now()
@@ -272,11 +265,10 @@ def test_QryBrokerTradingAlgos():
     '''
     测试QryBrokerTradingAlgos
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryBrokerTradingAlgos():开始'
-    sleep(1)
 
     data = CThostFtdcQryBrokerTradingAlgosField()
     startTime = datetime.now()
@@ -311,11 +303,10 @@ def test_QryOrder():
     '''
     测试QryOrder
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryOrder():开始'
-    sleep(1)
 
     data = CThostFtdcQryOrderField()
     startTime = datetime.now()
@@ -350,11 +341,10 @@ def test_QryExchange():
     '''
     测试QryExchange
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryExchange():开始'
-    sleep(1)
 
     data = CThostFtdcQryExchangeField()
     startTime = datetime.now()
@@ -393,11 +383,10 @@ def test_QryExchangeRate():
     '''
     测试QryExchangeRate
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryExchangeRate():开始'
-    sleep(1)
 
     data = CThostFtdcQryExchangeRateField()
     startTime = datetime.now()
@@ -432,11 +421,10 @@ def test_QryInvestorPositionDetail():
     '''
     测试QryInvestorPositionDetail
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInvestorPositionDetail():开始'
-    sleep(1)
 
     data = CThostFtdcQryInvestorPositionDetailField()
     startTime = datetime.now()
@@ -471,11 +459,10 @@ def test_QrySettlementInfoConfirm():
     '''
     测试QrySettlementInfoConfirm
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QrySettlementInfoConfirm():开始'
-    sleep(1)
 
     data = CThostFtdcQrySettlementInfoConfirmField()
     startTime = datetime.now()
@@ -510,11 +497,10 @@ def test_QryBrokerTradingParams():
     '''
     测试QryBrokerTradingParams
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryBrokerTradingParams():开始'
-    sleep(1)
 
     data = CThostFtdcQryBrokerTradingParamsField()
     startTime = datetime.now()
@@ -549,11 +535,10 @@ def test_QueryCFMMCTradingAccountToken():
     '''
     测试QueryCFMMCTradingAccountToken
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QueryCFMMCTradingAccountToken():开始'
-    sleep(1)
 
     data = CThostFtdcQueryCFMMCTradingAccountTokenField()
     startTime = datetime.now()
@@ -588,11 +573,10 @@ def test_QryNotice():
     '''
     测试QryNotice
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryNotice():开始'
-    sleep(1)
 
     data = CThostFtdcQryNoticeField()
     startTime = datetime.now()
@@ -631,11 +615,10 @@ def test_QryInvestorPositionCombineDetail():
     '''
     测试QryInvestorPositionCombineDetail
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInvestorPositionCombineDetail():开始'
-    sleep(1)
 
     data = CThostFtdcQryInvestorPositionCombineDetailField()
     startTime = datetime.now()
@@ -672,11 +655,10 @@ def test_QrySecAgentACIDMap():
     '''
     测试QrySecAgentACIDMap
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QrySecAgentACIDMap():开始'
-    sleep(1)
 
     data = CThostFtdcQrySecAgentACIDMapField()
     startTime = datetime.now()
@@ -713,11 +695,10 @@ def test_QueryBankAccountMoneyByFuture():
     '''
     测试QueryBankAccountMoneyByFuture
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QueryBankAccountMoneyByFuture():开始'
-    sleep(1)
 
     data = CThostFtdcReqQueryAccountField()
     startTime = datetime.now()
@@ -752,11 +733,10 @@ def test_QryParkedOrderAction():
     '''
     测试QryParkedOrderAction
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryParkedOrderAction():开始'
-    sleep(1)
 
     data = CThostFtdcQryParkedOrderActionField()
     startTime = datetime.now()
@@ -793,11 +773,10 @@ def test_QryExchangeMarginRate():
     '''
     测试QryExchangeMarginRate
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryExchangeMarginRate():开始'
-    sleep(1)
 
     data = CThostFtdcQryExchangeMarginRateField()
     startTime = datetime.now()
@@ -836,11 +815,10 @@ def test_QryInstrument():
     '''
     测试QryInstrument
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInstrument():开始'
-    sleep(1)
 
     data = CThostFtdcQryInstrumentField()
     startTime = datetime.now()
@@ -877,11 +855,10 @@ def test_QryInstrumentCommissionRate():
     '''
     测试QryInstrumentCommissionRate
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInstrumentCommissionRate():开始'
-    sleep(1)
 
     data = CThostFtdcQryInstrumentCommissionRateField()
     startTime = datetime.now()
@@ -916,11 +893,10 @@ def test_QryInstrumentMarginRate():
     '''
     测试QryInstrumentMarginRate
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInstrumentMarginRate():开始'
-    sleep(1)
 
     data = CThostFtdcQryInstrumentMarginRateField()
     startTime = datetime.now()
@@ -955,11 +931,10 @@ def test_QryInvestor():
     '''
     测试QryInvestor
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInvestor():开始'
-    sleep(1)
 
     data = CThostFtdcQryInvestorField()
     startTime = datetime.now()
@@ -994,11 +969,10 @@ def test_QryExchangeMarginRateAdjust():
     '''
     测试QryExchangeMarginRateAdjust
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryExchangeMarginRateAdjust():开始'
-    sleep(1)
 
     data = CThostFtdcQryExchangeMarginRateAdjustField()
     startTime = datetime.now()
@@ -1033,11 +1007,10 @@ def test_QryInvestorProductGroupMargin():
     '''
     测试QryInvestorProductGroupMargin
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryInvestorProductGroupMargin():开始'
-    sleep(1)
 
     data = CThostFtdcQryInvestorProductGroupMarginField()
     startTime = datetime.now()
@@ -1072,11 +1045,10 @@ def test_QryEWarrantOffset():
     '''
     测试QryEWarrantOffset
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryEWarrantOffset():开始'
-    sleep(1)
 
     data = CThostFtdcQryEWarrantOffsetField()
     startTime = datetime.now()
@@ -1111,11 +1083,10 @@ def test_QryDepthMarketData():
     '''
     测试QryDepthMarketData
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryDepthMarketData():开始'
-    sleep(1)
 
     data = CThostFtdcQryDepthMarketDataField()
     startTime = datetime.now()
@@ -1150,11 +1121,10 @@ def test_QryTransferBank():
     '''
     测试QryTransferBank
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTransferBank():开始'
-    sleep(1)
 
     data = CThostFtdcQryTransferBankField()
     startTime = datetime.now()
@@ -1191,11 +1161,10 @@ def test_QryProduct():
     '''
     测试QryProduct
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryProduct():开始'
-    sleep(1)
 
     data = CThostFtdcQryProductField()
     startTime = datetime.now()
@@ -1230,11 +1199,10 @@ def test_QryTradingCode():
     '''
     测试QryTradingCode
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTradingCode():开始'
-    sleep(1)
 
     data = CThostFtdcQryTradingCodeField()
     startTime = datetime.now()
@@ -1269,11 +1237,10 @@ def test_QrySettlementInfo():
     '''
     测试QrySettlementInfo
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QrySettlementInfo():开始'
-    sleep(1)
 
     data = CThostFtdcQrySettlementInfoField()
     startTime = datetime.now()
@@ -1308,11 +1275,10 @@ def test_QryAccountregister():
     '''
     测试QryAccountregister
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryAccountregister():开始'
-    sleep(1)
 
     data = CThostFtdcQryAccountregisterField()
     startTime = datetime.now()
@@ -1347,11 +1313,10 @@ def test_QryParkedOrder():
     '''
     测试QryParkedOrder
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryParkedOrder():开始'
-    sleep(1)
 
     data = CThostFtdcQryParkedOrderField()
     startTime = datetime.now()
@@ -1386,11 +1351,10 @@ def test_QryTransferSerial():
     '''
     测试QryTransferSerial
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryTransferSerial():开始'
-    sleep(1)
 
     data = CThostFtdcQryTransferSerialField()
     startTime = datetime.now()
@@ -1425,11 +1389,10 @@ def test_QryContractBank():
     '''
     测试QryContractBank
     '''
-    global traderChannel
+
     print ''
     print '----------------------------------------------------------------------'
     print u'test_QryContractBank():开始'
-    sleep(1)
 
     data = CThostFtdcQryContractBankField()
     startTime = datetime.now()

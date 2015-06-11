@@ -89,13 +89,49 @@ def test_TraderChannelCleanCTPProcess():
     '''
     process = psutil.Process()
     # 没有创建TraderChannel对象前应该没有trader进程
-    assert 'trader' not in [child.name() for child in process.children() ]
+    #assert 'trader' not in [child.name() for child in process.children() ]
+
     # 创建后可以找到一个trader进程
     traderChannel = TraderChannel(frontAddress,brokerID,userID,password)
-    assert 'trader' in [child.name() for child in process.children() ]
+    pid = traderChannel.traderProcess.pid
+    assert pid and pid != 0
+    assert pid in [child.pid for child in process.children()]
+
     # 将变量指向None迫使垃圾回收,确认进程被清理了
     traderChannel = None
-    assert 'trader' not in [child.name() for child in process.children() ]
+    sleep(1)
+    assert pid not in [child.pid for child in process.children() ]
+
+
+@attr('TraderChannel')
+@attr('test_TraderChannelStartupStressTest')
+def test_TraderChannelStartupStressTest():
+    '''
+    TraderChannel的启动压力测试
+    1.测试反复重新创建TraderChannel对象是否能正常运行
+    2.反复创建TraderChannel对象是否能够正常回收进程
+    '''
+
+    pidList = []
+
+    # 启动调用测试
+    for i in range(10):
+        traderChannel = TraderChannel(frontAddress,brokerID,userID,password)
+        data = CThostFtdcQryTradingAccountField()
+        result = traderChannel.QryTradingAccount(data)
+        assert result[0] == 0
+        pid = traderChannel.traderProcess.pid
+        assert pid and pid != 0
+        pidList.append(pid)
+
+    # 进程清理测试
+    traderChannel = None
+    process = psutil.Process()
+    sleep(1)
+    for pid in pidList:
+        assert pid not in [child.pid for child in process.children()]
+
+
 
 
 @attr('TraderChannelPool')
