@@ -182,4 +182,5 @@ def test_MdChannelCreate():
     mdChannel = MdChannel(mdFrontAddress,brokerID,userID,password,[instrumentID])
     result = mdChannel.readMarketData(1000)
     assert isinstance(result,CThostFtdcDepthMarketDataField)
-    print result.toDict()
+    data = result.toDict()
+    assert data['InstrumentID'] == instrumentID

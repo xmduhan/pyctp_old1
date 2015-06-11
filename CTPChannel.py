@@ -208,7 +208,7 @@ class TraderChannel :
 		# 间的,转化器此时还无法响应请求,而初始化过程马上就发出一个查询请,以测试通道是否通畅,
 		# 该请求会在zmq队列中排队,排队时间也是计时的.而ctp流量控制计算的是发向服务器的时间,
 		# 是不是送到zmq消息队列的时间.所以这里要考虑ctp trader转换器的时间这里暂定为1秒
-		traderProcessStartupTime = 1
+		traderProcessStartupTime = 1.5
 		self.lastQueryTime = datetime.now() - timedelta(seconds=ctpQueryInterval)
 		self.lastQueryTime +=  timedelta(seconds=traderProcessStartupTime)
 
