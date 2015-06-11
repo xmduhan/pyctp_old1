@@ -202,3 +202,7 @@ process = psutil.Process()
 childrenNameList = [child.name() for child in process.children() ]
 'trader' in childrenNameList
 
+#%%
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+datetime.strftime(datetime.now() + relativedelta(months=1),"%y%m")  

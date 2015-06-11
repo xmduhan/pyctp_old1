@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
 from nose.plugins.attrib import attr
-from CTPChannel import TraderChannel
+from CTPChannel import TraderChannel,MdChannel
 from CTPChannelPool import TraderChannelPool
 from CTPStruct import *
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from time import sleep
 import psutil
 
@@ -135,6 +136,7 @@ def test_TraderChannelStartupStressTest():
 
 
 @attr('TraderChannelPool')
+@attr('test_TraderChannelPoolForFaster')
 def test_TraderChannelPoolForFaster():
     '''
     测试使用TraderChannelPool为查询api加速
@@ -168,3 +170,16 @@ def test_TraderChannelPoolForFaster():
     executeTime = (endTime - beginTime).total_seconds()
     print 'TraderChannelPool:executeTime=',executeTime
     assert executeTime < 1.5
+
+
+@attr('MdChannelPool')
+@attr('test_MdChannelCreate')
+def test_MdChannelCreate():
+    '''
+    测试MdChannel的创建和使用
+    '''
+    instrumentID = datetime.strftime(datetime.now() + relativedelta(months=1),"IF%y%m")
+    mdChannel = MdChannel(mdFrontAddress,brokerID,userID,password,[instrumentID])
+    result = mdChannel.readMarketData(1000)
+    assert isinstance(result,CThostFtdcDepthMarketDataField)
+    print result.toDict()
