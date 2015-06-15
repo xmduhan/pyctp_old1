@@ -206,3 +206,6 @@ childrenNameList = [child.name() for child in process.children() ]
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 datetime.strftime(datetime.now() + relativedelta(months=1),"%y%m")  
+
+#%%
+print u'\u672a\u5904\u7406\u8bf7\u6c42\u8d85\u8fc7\u8bb8\u53ef\u6570'

@@ -25,7 +25,7 @@ def packageReqInfo(apiName,data):
 # 定义通用的出错返回数据
 InvalidRequestFormat = [-2000,u'参数表单类型不正确',[]]
 ResponseTimeOut = [-2001,u'请求超时未响应',[]]
-InvalidRequestFormat = [-2002,u'接收到异常消息格式',[]]
+InvalidMessageFormat = [-2002,u'接收到异常消息格式',[]]
 
 
 #def mallocIpcAddress():
@@ -328,7 +328,7 @@ class TraderChannel :
 		c1 = requestIDMessage.header == 'REQUESTID'
 		c2 = requestIDMessage.apiName == requestApiName
 		if not ( c1 and c2 ):
-			return InvalidRequestFormat
+			return InvalidMessageFormat
 
 		# 如果没有收到RequestID,返回转换器的出错信息
 		if not (int(requestIDMessage.requestID) > 0):
@@ -354,9 +354,9 @@ class TraderChannel :
 			# 返回数据信息格式符合要求
 			c1 = responseMessage.header == 'RESPONSE'
 			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName == responseApiName
+			c3 = responseMessage.apiName in (responseApiName,requestApiName)
 			if not (c1 and c2 and c3) :
-				return InvalidRequestFormat
+				return InvalidMessageFormat
 
 			# 提取消息中的出错信息
 			respInfo = json.loads(responseMessage.respInfo)
