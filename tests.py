@@ -62,8 +62,8 @@ def test_QueryApiDelayMechanism():
 
 @attr('TraderChannel')
 @attr('test_QueryApiDelayMechanism')
-@attr('test_QueryApiDelayMechanismCounterexample')
-def test_QueryApiDelayMechanismCounterexample():
+@attr('test_QueryApiDelayMechanismCounterExample')
+def test_QueryApiDelayMechanismCounterExample():
     '''
     延迟机制的反向测试用例
     '''

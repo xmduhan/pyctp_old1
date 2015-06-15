@@ -211,6 +211,8 @@ class TraderChannel :
 		traderProcessStartupTime = 1.5
 		self.lastQueryTime = datetime.now() - timedelta(seconds=ctpQueryInterval)
 		self.lastQueryTime +=  timedelta(seconds=traderProcessStartupTime)
+		queryIntervalMillisecond = ctpQueryInterval * 1000
+
 
 		# 为ctp转换器分配通讯管道地址
 		self.requestPipe = mallocIpcAddress()
@@ -226,7 +228,8 @@ class TraderChannel :
 		'--RequestPipe', self.requestPipe,
 		'--PushbackPipe', self.pushbackPipe,
 		'--PublishPipe', self.publishPipe,
-		'--loyalty'
+		'--loyalty',
+		'--queryInterval',str(queryIntervalMillisecond)
 		]
 
 		# 创建转换器子进程
@@ -363,7 +366,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -468,7 +470,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -567,7 +568,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -672,7 +672,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -777,7 +776,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -882,7 +880,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -981,7 +978,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -1086,7 +1082,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -1191,7 +1186,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -1296,7 +1290,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -1401,7 +1394,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -1500,7 +1492,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -1599,7 +1590,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -1704,7 +1694,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -1809,7 +1798,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -1914,7 +1902,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -2019,7 +2006,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -2124,7 +2110,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -2229,7 +2214,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -2328,7 +2312,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -2427,7 +2410,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -2532,7 +2514,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -2631,7 +2612,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -2736,7 +2716,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -2835,7 +2814,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -2940,7 +2918,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -3045,7 +3022,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -3144,7 +3120,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -3249,7 +3224,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -3348,7 +3322,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -3447,7 +3420,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -3552,7 +3524,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -3651,7 +3622,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -3756,7 +3726,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -3861,7 +3830,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -3966,7 +3934,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -4071,7 +4038,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -4176,7 +4142,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -4281,7 +4246,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -4386,7 +4350,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -4491,7 +4454,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -4590,7 +4552,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -4695,7 +4656,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -4800,7 +4760,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -4905,7 +4864,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -5010,7 +4968,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -5115,7 +5072,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -5220,7 +5176,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -5325,7 +5280,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
@@ -5424,7 +5378,6 @@ class TraderChannel :
 			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
 			if errorID != 0 :
-				print errorID,errorMsg,[]
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
