@@ -188,7 +188,8 @@ class TraderChannel :
 		self.traderProcess.wait()
 
 
-	def __init__(self,frontAddress,brokerID,userID,password,fileOutput='/dev/null',ctpQueryInterval=1):
+	def __init__(self,frontAddress,brokerID,userID,password,fileOutput='/dev/null'
+		,ctpQueryInterval=1,timeout=1,useTraderQueryIntervalOption=True):
 		'''
 		初始化过程:
 		1.创建ctp转换器进程
@@ -201,6 +202,9 @@ class TraderChannel :
 		userID   用户编号
 		password   密码
 		fileOutput   ctp trader通讯进程的日志信息的保存路径,默认抛弃('/dev/null')
+		ctpQueryInterval  查询间隔时间(单位:秒)
+		timeout 等待响应时间(单位:秒)
+		useTraderQueryIntervalOption 是否使用转换器级的流量控制,实际使用应该开启,增加此选项主要是方便测试
 		'''
 		# 设置上次查询时间
 		self.ctpQueryInterval = ctpQueryInterval
@@ -211,7 +215,7 @@ class TraderChannel :
 		traderProcessStartupTime = 1.5
 		self.lastQueryTime = datetime.now() - timedelta(seconds=ctpQueryInterval)
 		self.lastQueryTime +=  timedelta(seconds=traderProcessStartupTime)
-		queryIntervalMillisecond = ctpQueryInterval * 1000
+		self.queryInterval = ctpQueryInterval * 1000
 
 
 		# 为ctp转换器分配通讯管道地址
@@ -229,8 +233,11 @@ class TraderChannel :
 		'--PushbackPipe', self.pushbackPipe,
 		'--PublishPipe', self.publishPipe,
 		'--loyalty',
-		'--queryInterval',str(queryIntervalMillisecond)
+		#'--queryInterval',str(queryIntervalMillisecond)
 		]
+		if useTraderQueryIntervalOption:
+			commandLine.append('--queryInterval')
+			commandLine.append(str(self.queryInterval))
 
 		# 创建转换器子进程
 		traderStdout = open(fileOutput, 'w')
@@ -243,7 +250,7 @@ class TraderChannel :
 		socket.connect(self.requestPipe)
 		socket.setsockopt(zmq.LINGER,0)
 		self.request = socket
-		self.timeout = 1000 * 1
+		self.timeout = 1000 * timeout
 
 		# 检查ctp通道是否建立，如果失败抛出异常
 		if not self.__testChannel():

@@ -124,32 +124,6 @@ class CThostFtdcInvestorAccountField:
 
 
 
-class CThostFtdcQryErrOrderActionField:
-    '''
-    查询错误报单操作
-        
-        BrokerID 经纪公司代码 char[11] 
-        
-        InvestorID 投资者代码 char[13] 
-    '''
-
-    def __init__(self,**fields):
-        ''' '''
-    
-        '''经纪公司代码'''
-        self.BrokerID = None
-    
-        '''投资者代码'''
-        self.InvestorID = None
-    
-        self.__dict__.update(fields)
-
-    def toDict(self):
-        ''' '''
-        return {k:v for k,v in self.__dict__.iteritems() if v != None}
-
-
-
 class CThostFtdcNoticeField:
     '''
     客户通知
@@ -181,38 +155,23 @@ class CThostFtdcNoticeField:
 
 
 
-class CThostFtdcQryExchangeOrderField:
+class CThostFtdcQryCommRateModelField:
     '''
-    查询交易所报单
+    请求查询投资者手续费率模板
         
-        ParticipantID 会员代码 char[11] 
+        BrokerID 经纪公司代码 char[11] 
         
-        ClientID 客户代码 char[11] 
-        
-        ExchangeInstID 合约在交易所的代码 char[31] 
-        
-        ExchangeID 交易所代码 char[9] 
-        
-        TraderID 交易所交易员代码 char[21] 
+        CommModelID 手续费率模板代码 char[13] 
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''会员代码'''
-        self.ParticipantID = None
+        '''经纪公司代码'''
+        self.BrokerID = None
     
-        '''客户代码'''
-        self.ClientID = None
-    
-        '''合约在交易所的代码'''
-        self.ExchangeInstID = None
-    
-        '''交易所代码'''
-        self.ExchangeID = None
-    
-        '''交易所交易员代码'''
-        self.TraderID = None
+        '''手续费率模板代码'''
+        self.CommModelID = None
     
         self.__dict__.update(fields)
 
@@ -489,102 +448,6 @@ class CThostFtdcBrokerSyncField:
 
 
 
-class CThostFtdcExchangeOrderActionField:
-    '''
-    交易所报单操作
-        
-        ExchangeID 交易所代码 char[9] 
-        
-        OrderSysID 报单编号 char[21] 
-        
-        ActionFlag 操作标志 char
-        
-        LimitPrice 价格 double
-        
-        VolumeChange 数量变化 int
-        
-        ActionDate 操作日期 char[9] 
-        
-        ActionTime 操作时间 char[9] 
-        
-        TraderID 交易所交易员代码 char[21] 
-        
-        InstallID 安装编号 int
-        
-        OrderLocalID 本地报单编号 char[13] 
-        
-        ActionLocalID 操作本地编号 char[13] 
-        
-        ParticipantID 会员代码 char[11] 
-        
-        ClientID 客户代码 char[11] 
-        
-        BusinessUnit 业务单元 char[21] 
-        
-        OrderActionStatus 报单操作状态 char
-        
-        UserID 用户代码 char[16] 
-    '''
-
-    def __init__(self,**fields):
-        ''' '''
-    
-        '''交易所代码'''
-        self.ExchangeID = None
-    
-        '''报单编号'''
-        self.OrderSysID = None
-    
-        '''操作标志'''
-        self.ActionFlag = None
-    
-        '''价格'''
-        self.LimitPrice = None
-    
-        '''数量变化'''
-        self.VolumeChange = None
-    
-        '''操作日期'''
-        self.ActionDate = None
-    
-        '''操作时间'''
-        self.ActionTime = None
-    
-        '''交易所交易员代码'''
-        self.TraderID = None
-    
-        '''安装编号'''
-        self.InstallID = None
-    
-        '''本地报单编号'''
-        self.OrderLocalID = None
-    
-        '''操作本地编号'''
-        self.ActionLocalID = None
-    
-        '''会员代码'''
-        self.ParticipantID = None
-    
-        '''客户代码'''
-        self.ClientID = None
-    
-        '''业务单元'''
-        self.BusinessUnit = None
-    
-        '''报单操作状态'''
-        self.OrderActionStatus = None
-    
-        '''用户代码'''
-        self.UserID = None
-    
-        self.__dict__.update(fields)
-
-    def toDict(self):
-        ''' '''
-        return {k:v for k,v in self.__dict__.iteritems() if v != None}
-
-
-
 class CThostFtdcQryInvestorPositionField:
     '''
     查询投资者持仓
@@ -678,48 +541,143 @@ class CThostFtdcRspAuthenticateField:
 
 
 
-class CThostFtdcDepositResultInformField:
+class CThostFtdcInstrumentField:
     '''
-    验证期货资金密码和客户信息
+    合约
         
-        DepositSeqNo 出入金流水号，该流水号为银期报盘返回的流水号 char[15] 
+        InstrumentID 合约代码 char[31] 
         
-        BrokerID 经纪公司代码 char[11] 
+        ExchangeID 交易所代码 char[9] 
         
-        InvestorID 投资者代码 char[13] 
+        InstrumentName 合约名称 char[21] 
         
-        Deposit 入金金额 double
+        ExchangeInstID 合约在交易所的代码 char[31] 
         
-        RequestID 请求编号 int
+        ProductID 产品代码 char[31] 
         
-        ReturnCode 返回代码 char[7] 
+        ProductClass 产品类型 char
         
-        DescrInfoForReturnCode 返回码描述 char[129] 
+        DeliveryYear 交割年份 int
+        
+        DeliveryMonth 交割月 int
+        
+        MaxMarketOrderVolume 市价单最大下单量 int
+        
+        MinMarketOrderVolume 市价单最小下单量 int
+        
+        MaxLimitOrderVolume 限价单最大下单量 int
+        
+        MinLimitOrderVolume 限价单最小下单量 int
+        
+        VolumeMultiple 合约数量乘数 int
+        
+        PriceTick 最小变动价位 double
+        
+        CreateDate 创建日 char[9] 
+        
+        OpenDate 上市日 char[9] 
+        
+        ExpireDate 到期日 char[9] 
+        
+        StartDelivDate 开始交割日 char[9] 
+        
+        EndDelivDate 结束交割日 char[9] 
+        
+        InstLifePhase 合约生命周期状态 char
+        
+        IsTrading 当前是否交易 int
+        
+        PositionType 持仓类型 char
+        
+        PositionDateType 持仓日期类型 char
+        
+        LongMarginRatio 多头保证金率 double
+        
+        ShortMarginRatio 空头保证金率 double
+        
+        MaxMarginSideAlgorithm 是否使用大额单边保证金算法 char
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''出入金流水号，该流水号为银期报盘返回的流水号'''
-        self.DepositSeqNo = None
+        '''合约代码'''
+        self.InstrumentID = None
     
-        '''经纪公司代码'''
-        self.BrokerID = None
+        '''交易所代码'''
+        self.ExchangeID = None
     
-        '''投资者代码'''
-        self.InvestorID = None
+        '''合约名称'''
+        self.InstrumentName = None
     
-        '''入金金额'''
-        self.Deposit = None
+        '''合约在交易所的代码'''
+        self.ExchangeInstID = None
     
-        '''请求编号'''
-        self.RequestID = None
+        '''产品代码'''
+        self.ProductID = None
     
-        '''返回代码'''
-        self.ReturnCode = None
+        '''产品类型'''
+        self.ProductClass = None
     
-        '''返回码描述'''
-        self.DescrInfoForReturnCode = None
+        '''交割年份'''
+        self.DeliveryYear = None
+    
+        '''交割月'''
+        self.DeliveryMonth = None
+    
+        '''市价单最大下单量'''
+        self.MaxMarketOrderVolume = None
+    
+        '''市价单最小下单量'''
+        self.MinMarketOrderVolume = None
+    
+        '''限价单最大下单量'''
+        self.MaxLimitOrderVolume = None
+    
+        '''限价单最小下单量'''
+        self.MinLimitOrderVolume = None
+    
+        '''合约数量乘数'''
+        self.VolumeMultiple = None
+    
+        '''最小变动价位'''
+        self.PriceTick = None
+    
+        '''创建日'''
+        self.CreateDate = None
+    
+        '''上市日'''
+        self.OpenDate = None
+    
+        '''到期日'''
+        self.ExpireDate = None
+    
+        '''开始交割日'''
+        self.StartDelivDate = None
+    
+        '''结束交割日'''
+        self.EndDelivDate = None
+    
+        '''合约生命周期状态'''
+        self.InstLifePhase = None
+    
+        '''当前是否交易'''
+        self.IsTrading = None
+    
+        '''持仓类型'''
+        self.PositionType = None
+    
+        '''持仓日期类型'''
+        self.PositionDateType = None
+    
+        '''多头保证金率'''
+        self.LongMarginRatio = None
+    
+        '''空头保证金率'''
+        self.ShortMarginRatio = None
+    
+        '''是否使用大额单边保证金算法'''
+        self.MaxMarginSideAlgorithm = None
     
         self.__dict__.update(fields)
 
@@ -729,68 +687,64 @@ class CThostFtdcDepositResultInformField:
 
 
 
-class CThostFtdcUserSessionField:
+class CThostFtdcTradingAccountReserveField:
     '''
-    用户会话
-        
-        FrontID 前置编号 int
-        
-        SessionID 会话编号 int
+    资金账户基本准备金
         
         BrokerID 经纪公司代码 char[11] 
         
-        UserID 用户代码 char[16] 
+        AccountID 投资者帐号 char[13] 
         
-        LoginDate 登录日期 char[9] 
+        Reserve 基本准备金 double
         
-        LoginTime 登录时间 char[9] 
-        
-        IPAddress IP地址 char[16] 
-        
-        UserProductInfo 用户端产品信息 char[11] 
-        
-        InterfaceProductInfo 接口端产品信息 char[11] 
-        
-        ProtocolInfo 协议信息 char[11] 
-        
-        MacAddress Mac地址 char[21] 
+        CurrencyID 币种代码 char[4] 
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''前置编号'''
-        self.FrontID = None
+        '''经纪公司代码'''
+        self.BrokerID = None
     
-        '''会话编号'''
-        self.SessionID = None
+        '''投资者帐号'''
+        self.AccountID = None
+    
+        '''基本准备金'''
+        self.Reserve = None
+    
+        '''币种代码'''
+        self.CurrencyID = None
+    
+        self.__dict__.update(fields)
+
+    def toDict(self):
+        ''' '''
+        return {k:v for k,v in self.__dict__.iteritems() if v != None}
+
+
+
+class CThostFtdcInvestorGroupField:
+    '''
+    投资者组
+        
+        BrokerID 经纪公司代码 char[11] 
+        
+        InvestorGroupID 投资者分组代码 char[13] 
+        
+        InvestorGroupName 投资者分组名称 char[41] 
+    '''
+
+    def __init__(self,**fields):
+        ''' '''
     
         '''经纪公司代码'''
         self.BrokerID = None
     
-        '''用户代码'''
-        self.UserID = None
+        '''投资者分组代码'''
+        self.InvestorGroupID = None
     
-        '''登录日期'''
-        self.LoginDate = None
-    
-        '''登录时间'''
-        self.LoginTime = None
-    
-        '''IP地址'''
-        self.IPAddress = None
-    
-        '''用户端产品信息'''
-        self.UserProductInfo = None
-    
-        '''接口端产品信息'''
-        self.InterfaceProductInfo = None
-    
-        '''协议信息'''
-        self.ProtocolInfo = None
-    
-        '''Mac地址'''
-        self.MacAddress = None
+        '''投资者分组名称'''
+        self.InvestorGroupName = None
     
         self.__dict__.update(fields)
 
@@ -827,6 +781,37 @@ class CThostFtdcDiscountField:
     
         '''资金折扣比例'''
         self.Discount = None
+    
+        self.__dict__.update(fields)
+
+    def toDict(self):
+        ''' '''
+        return {k:v for k,v in self.__dict__.iteritems() if v != None}
+
+
+
+class CThostFtdcFensUserInfoField:
+    '''
+    Fens用户信息
+        
+        BrokerID 经纪公司代码 char[11] 
+        
+        UserID 用户代码 char[16] 
+        
+        LoginMode 登录模式 char
+    '''
+
+    def __init__(self,**fields):
+        ''' '''
+    
+        '''经纪公司代码'''
+        self.BrokerID = None
+    
+        '''用户代码'''
+        self.UserID = None
+    
+        '''登录模式'''
+        self.LoginMode = None
     
         self.__dict__.update(fields)
 
@@ -933,127 +918,6 @@ class CThostFtdcQryOrderField:
 
 
 
-class CThostFtdcReqFutureSignOutField:
-    '''
-    期商签退请求
-        
-        TradeCode 业务功能码 char[7] 
-        
-        BankID 银行代码 char[4] 
-        
-        BankBranchID 银行分支机构代码 char[5] 
-        
-        BrokerID 期商代码 char[11] 
-        
-        BrokerBranchID 期商分支机构代码 char[31] 
-        
-        TradeDate 交易日期 char[9] 
-        
-        TradeTime 交易时间 char[9] 
-        
-        BankSerial 银行流水号 char[13] 
-        
-        TradingDay 交易系统日期 char[9] 
-        
-        PlateSerial 银期平台消息流水号 int
-        
-        LastFragment 最后分片标志 char
-        
-        SessionID 会话号 int
-        
-        InstallID 安装编号 int
-        
-        UserID 用户标识 char[16] 
-        
-        Digest 摘要 char[36] 
-        
-        CurrencyID 币种代码 char[4] 
-        
-        DeviceID 渠道标志 char[3] 
-        
-        BrokerIDByBank 期货公司银行编码 char[33] 
-        
-        OperNo 交易柜员 char[17] 
-        
-        RequestID 请求编号 int
-        
-        TID 交易ID int
-    '''
-
-    def __init__(self,**fields):
-        ''' '''
-    
-        '''业务功能码'''
-        self.TradeCode = None
-    
-        '''银行代码'''
-        self.BankID = None
-    
-        '''银行分支机构代码'''
-        self.BankBranchID = None
-    
-        '''期商代码'''
-        self.BrokerID = None
-    
-        '''期商分支机构代码'''
-        self.BrokerBranchID = None
-    
-        '''交易日期'''
-        self.TradeDate = None
-    
-        '''交易时间'''
-        self.TradeTime = None
-    
-        '''银行流水号'''
-        self.BankSerial = None
-    
-        '''交易系统日期'''
-        self.TradingDay = None
-    
-        '''银期平台消息流水号'''
-        self.PlateSerial = None
-    
-        '''最后分片标志'''
-        self.LastFragment = None
-    
-        '''会话号'''
-        self.SessionID = None
-    
-        '''安装编号'''
-        self.InstallID = None
-    
-        '''用户标识'''
-        self.UserID = None
-    
-        '''摘要'''
-        self.Digest = None
-    
-        '''币种代码'''
-        self.CurrencyID = None
-    
-        '''渠道标志'''
-        self.DeviceID = None
-    
-        '''期货公司银行编码'''
-        self.BrokerIDByBank = None
-    
-        '''交易柜员'''
-        self.OperNo = None
-    
-        '''请求编号'''
-        self.RequestID = None
-    
-        '''交易ID'''
-        self.TID = None
-    
-        self.__dict__.update(fields)
-
-    def toDict(self):
-        ''' '''
-        return {k:v for k,v in self.__dict__.iteritems() if v != None}
-
-
-
 class CThostFtdcExchangeField:
     '''
     交易所
@@ -1111,18 +975,243 @@ class CThostFtdcLoginForbiddenUserField:
 
 
 
-class CThostFtdcQryExchangeField:
+class CThostFtdcCancelAccountField:
     '''
-    查询交易所
+    银期销户信息
         
-        ExchangeID 交易所代码 char[9] 
+        TradeCode 业务功能码 char[7] 
+        
+        BankID 银行代码 char[4] 
+        
+        BankBranchID 银行分支机构代码 char[5] 
+        
+        BrokerID 期商代码 char[11] 
+        
+        BrokerBranchID 期商分支机构代码 char[31] 
+        
+        TradeDate 交易日期 char[9] 
+        
+        TradeTime 交易时间 char[9] 
+        
+        BankSerial 银行流水号 char[13] 
+        
+        TradingDay 交易系统日期 char[9] 
+        
+        PlateSerial 银期平台消息流水号 int
+        
+        LastFragment 最后分片标志 char
+        
+        SessionID 会话号 int
+        
+        CustomerName 客户姓名 char[51] 
+        
+        IdCardType 证件类型 char
+        
+        IdentifiedCardNo 证件号码 char[51] 
+        
+        Gender 性别 char
+        
+        CountryCode 国家代码 char[21] 
+        
+        CustType 客户类型 char
+        
+        Address 地址 char[101] 
+        
+        ZipCode 邮编 char[7] 
+        
+        Telephone 电话号码 char[41] 
+        
+        MobilePhone 手机 char[21] 
+        
+        Fax 传真 char[41] 
+        
+        EMail 电子邮件 char[41] 
+        
+        MoneyAccountStatus 资金账户状态 char
+        
+        BankAccount 银行帐号 char[41] 
+        
+        BankPassWord 银行密码 char[41] 
+        
+        AccountID 投资者帐号 char[13] 
+        
+        Password 期货密码 char[41] 
+        
+        InstallID 安装编号 int
+        
+        VerifyCertNoFlag 验证客户证件号码标志 char
+        
+        CurrencyID 币种代码 char[4] 
+        
+        CashExchangeCode 汇钞标志 char
+        
+        Digest 摘要 char[36] 
+        
+        BankAccType 银行帐号类型 char
+        
+        DeviceID 渠道标志 char[3] 
+        
+        BankSecuAccType 期货单位帐号类型 char
+        
+        BrokerIDByBank 期货公司银行编码 char[33] 
+        
+        BankSecuAcc 期货单位帐号 char[41] 
+        
+        BankPwdFlag 银行密码标志 char
+        
+        SecuPwdFlag 期货资金密码核对标志 char
+        
+        OperNo 交易柜员 char[17] 
+        
+        TID 交易ID int
+        
+        UserID 用户标识 char[16] 
+        
+        ErrorID 错误代码 int
+        
+        ErrorMsg 错误信息 char[81] 
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''交易所代码'''
-        self.ExchangeID = None
+        '''业务功能码'''
+        self.TradeCode = None
+    
+        '''银行代码'''
+        self.BankID = None
+    
+        '''银行分支机构代码'''
+        self.BankBranchID = None
+    
+        '''期商代码'''
+        self.BrokerID = None
+    
+        '''期商分支机构代码'''
+        self.BrokerBranchID = None
+    
+        '''交易日期'''
+        self.TradeDate = None
+    
+        '''交易时间'''
+        self.TradeTime = None
+    
+        '''银行流水号'''
+        self.BankSerial = None
+    
+        '''交易系统日期'''
+        self.TradingDay = None
+    
+        '''银期平台消息流水号'''
+        self.PlateSerial = None
+    
+        '''最后分片标志'''
+        self.LastFragment = None
+    
+        '''会话号'''
+        self.SessionID = None
+    
+        '''客户姓名'''
+        self.CustomerName = None
+    
+        '''证件类型'''
+        self.IdCardType = None
+    
+        '''证件号码'''
+        self.IdentifiedCardNo = None
+    
+        '''性别'''
+        self.Gender = None
+    
+        '''国家代码'''
+        self.CountryCode = None
+    
+        '''客户类型'''
+        self.CustType = None
+    
+        '''地址'''
+        self.Address = None
+    
+        '''邮编'''
+        self.ZipCode = None
+    
+        '''电话号码'''
+        self.Telephone = None
+    
+        '''手机'''
+        self.MobilePhone = None
+    
+        '''传真'''
+        self.Fax = None
+    
+        '''电子邮件'''
+        self.EMail = None
+    
+        '''资金账户状态'''
+        self.MoneyAccountStatus = None
+    
+        '''银行帐号'''
+        self.BankAccount = None
+    
+        '''银行密码'''
+        self.BankPassWord = None
+    
+        '''投资者帐号'''
+        self.AccountID = None
+    
+        '''期货密码'''
+        self.Password = None
+    
+        '''安装编号'''
+        self.InstallID = None
+    
+        '''验证客户证件号码标志'''
+        self.VerifyCertNoFlag = None
+    
+        '''币种代码'''
+        self.CurrencyID = None
+    
+        '''汇钞标志'''
+        self.CashExchangeCode = None
+    
+        '''摘要'''
+        self.Digest = None
+    
+        '''银行帐号类型'''
+        self.BankAccType = None
+    
+        '''渠道标志'''
+        self.DeviceID = None
+    
+        '''期货单位帐号类型'''
+        self.BankSecuAccType = None
+    
+        '''期货公司银行编码'''
+        self.BrokerIDByBank = None
+    
+        '''期货单位帐号'''
+        self.BankSecuAcc = None
+    
+        '''银行密码标志'''
+        self.BankPwdFlag = None
+    
+        '''期货资金密码核对标志'''
+        self.SecuPwdFlag = None
+    
+        '''交易柜员'''
+        self.OperNo = None
+    
+        '''交易ID'''
+        self.TID = None
+    
+        '''用户标识'''
+        self.UserID = None
+    
+        '''错误代码'''
+        self.ErrorID = None
+    
+        '''错误信息'''
+        self.ErrorMsg = None
     
         self.__dict__.update(fields)
 
@@ -2037,13 +2126,17 @@ class CThostFtdcLoginInfoField:
 
 
 
-class CThostFtdcQueryBrokerDepositField:
+class CThostFtdcQrySecAgentACIDMapField:
     '''
-    查询经纪公司资金
+    二级代理操作员银期权限查询
         
         BrokerID 经纪公司代码 char[11] 
         
-        ExchangeID 交易所代码 char[9] 
+        UserID 用户代码 char[16] 
+        
+        AccountID 资金账户 char[13] 
+        
+        CurrencyID 币种 char[4] 
     '''
 
     def __init__(self,**fields):
@@ -2052,8 +2145,14 @@ class CThostFtdcQueryBrokerDepositField:
         '''经纪公司代码'''
         self.BrokerID = None
     
-        '''交易所代码'''
-        self.ExchangeID = None
+        '''用户代码'''
+        self.UserID = None
+    
+        '''资金账户'''
+        self.AccountID = None
+    
+        '''币种'''
+        self.CurrencyID = None
     
         self.__dict__.update(fields)
 
@@ -2849,42 +2948,6 @@ class CThostFtdcInvestorProductGroupMarginField:
 
 
 
-class CThostFtdcBrokerField:
-    '''
-    经纪公司
-        
-        BrokerID 经纪公司代码 char[11] 
-        
-        BrokerAbbr 经纪公司简称 char[9] 
-        
-        BrokerName 经纪公司名称 char[81] 
-        
-        IsActive 是否活跃 int
-    '''
-
-    def __init__(self,**fields):
-        ''' '''
-    
-        '''经纪公司代码'''
-        self.BrokerID = None
-    
-        '''经纪公司简称'''
-        self.BrokerAbbr = None
-    
-        '''经纪公司名称'''
-        self.BrokerName = None
-    
-        '''是否活跃'''
-        self.IsActive = None
-    
-        self.__dict__.update(fields)
-
-    def toDict(self):
-        ''' '''
-        return {k:v for k,v in self.__dict__.iteritems() if v != None}
-
-
-
 class CThostFtdcQryTradingNoticeField:
     '''
     查询交易事件通知
@@ -3376,43 +3439,18 @@ class CThostFtdcCFMMCBrokerKeyField:
 
 
 
-class CThostFtdcSettlementInfoField:
+class CThostFtdcQryDepthMarketDataField:
     '''
-    投资者结算结果
+    查询行情
         
-        TradingDay 交易日 char[9] 
-        
-        SettlementID 结算编号 int
-        
-        BrokerID 经纪公司代码 char[11] 
-        
-        InvestorID 投资者代码 char[13] 
-        
-        SequenceNo 序号 int
-        
-        Content 消息正文 char[501] 
+        InstrumentID 合约代码 char[31] 
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''交易日'''
-        self.TradingDay = None
-    
-        '''结算编号'''
-        self.SettlementID = None
-    
-        '''经纪公司代码'''
-        self.BrokerID = None
-    
-        '''投资者代码'''
-        self.InvestorID = None
-    
-        '''序号'''
-        self.SequenceNo = None
-    
-        '''消息正文'''
-        self.Content = None
+        '''合约代码'''
+        self.InstrumentID = None
     
         self.__dict__.update(fields)
 
@@ -3567,6 +3605,202 @@ class CThostFtdcExchangeOrderInsertErrorField:
     
         '''错误信息'''
         self.ErrorMsg = None
+    
+        self.__dict__.update(fields)
+
+    def toDict(self):
+        ''' '''
+        return {k:v for k,v in self.__dict__.iteritems() if v != None}
+
+
+
+class CThostFtdcReqQueryAccountField:
+    '''
+    查询账户信息请求
+        
+        TradeCode 业务功能码 char[7] 
+        
+        BankID 银行代码 char[4] 
+        
+        BankBranchID 银行分支机构代码 char[5] 
+        
+        BrokerID 期商代码 char[11] 
+        
+        BrokerBranchID 期商分支机构代码 char[31] 
+        
+        TradeDate 交易日期 char[9] 
+        
+        TradeTime 交易时间 char[9] 
+        
+        BankSerial 银行流水号 char[13] 
+        
+        TradingDay 交易系统日期 char[9] 
+        
+        PlateSerial 银期平台消息流水号 int
+        
+        LastFragment 最后分片标志 char
+        
+        SessionID 会话号 int
+        
+        CustomerName 客户姓名 char[51] 
+        
+        IdCardType 证件类型 char
+        
+        IdentifiedCardNo 证件号码 char[51] 
+        
+        CustType 客户类型 char
+        
+        BankAccount 银行帐号 char[41] 
+        
+        BankPassWord 银行密码 char[41] 
+        
+        AccountID 投资者帐号 char[13] 
+        
+        Password 期货密码 char[41] 
+        
+        FutureSerial 期货公司流水号 int
+        
+        InstallID 安装编号 int
+        
+        UserID 用户标识 char[16] 
+        
+        VerifyCertNoFlag 验证客户证件号码标志 char
+        
+        CurrencyID 币种代码 char[4] 
+        
+        Digest 摘要 char[36] 
+        
+        BankAccType 银行帐号类型 char
+        
+        DeviceID 渠道标志 char[3] 
+        
+        BankSecuAccType 期货单位帐号类型 char
+        
+        BrokerIDByBank 期货公司银行编码 char[33] 
+        
+        BankSecuAcc 期货单位帐号 char[41] 
+        
+        BankPwdFlag 银行密码标志 char
+        
+        SecuPwdFlag 期货资金密码核对标志 char
+        
+        OperNo 交易柜员 char[17] 
+        
+        RequestID 请求编号 int
+        
+        TID 交易ID int
+    '''
+
+    def __init__(self,**fields):
+        ''' '''
+    
+        '''业务功能码'''
+        self.TradeCode = None
+    
+        '''银行代码'''
+        self.BankID = None
+    
+        '''银行分支机构代码'''
+        self.BankBranchID = None
+    
+        '''期商代码'''
+        self.BrokerID = None
+    
+        '''期商分支机构代码'''
+        self.BrokerBranchID = None
+    
+        '''交易日期'''
+        self.TradeDate = None
+    
+        '''交易时间'''
+        self.TradeTime = None
+    
+        '''银行流水号'''
+        self.BankSerial = None
+    
+        '''交易系统日期'''
+        self.TradingDay = None
+    
+        '''银期平台消息流水号'''
+        self.PlateSerial = None
+    
+        '''最后分片标志'''
+        self.LastFragment = None
+    
+        '''会话号'''
+        self.SessionID = None
+    
+        '''客户姓名'''
+        self.CustomerName = None
+    
+        '''证件类型'''
+        self.IdCardType = None
+    
+        '''证件号码'''
+        self.IdentifiedCardNo = None
+    
+        '''客户类型'''
+        self.CustType = None
+    
+        '''银行帐号'''
+        self.BankAccount = None
+    
+        '''银行密码'''
+        self.BankPassWord = None
+    
+        '''投资者帐号'''
+        self.AccountID = None
+    
+        '''期货密码'''
+        self.Password = None
+    
+        '''期货公司流水号'''
+        self.FutureSerial = None
+    
+        '''安装编号'''
+        self.InstallID = None
+    
+        '''用户标识'''
+        self.UserID = None
+    
+        '''验证客户证件号码标志'''
+        self.VerifyCertNoFlag = None
+    
+        '''币种代码'''
+        self.CurrencyID = None
+    
+        '''摘要'''
+        self.Digest = None
+    
+        '''银行帐号类型'''
+        self.BankAccType = None
+    
+        '''渠道标志'''
+        self.DeviceID = None
+    
+        '''期货单位帐号类型'''
+        self.BankSecuAccType = None
+    
+        '''期货公司银行编码'''
+        self.BrokerIDByBank = None
+    
+        '''期货单位帐号'''
+        self.BankSecuAcc = None
+    
+        '''银行密码标志'''
+        self.BankPwdFlag = None
+    
+        '''期货资金密码核对标志'''
+        self.SecuPwdFlag = None
+    
+        '''交易柜员'''
+        self.OperNo = None
+    
+        '''请求编号'''
+        self.RequestID = None
+    
+        '''交易ID'''
+        self.TID = None
     
         self.__dict__.update(fields)
 
@@ -4377,33 +4611,213 @@ class CThostFtdcTransferQryBankReqField:
 
 
 
-class CThostFtdcMarketDataAsk23Field:
+class CThostFtdcReqChangeAccountField:
     '''
-    行情申卖二、三属性
+    变更银行账户请求
         
-        AskPrice2 申卖价二 double
+        TradeCode 业务功能码 char[7] 
         
-        AskVolume2 申卖量二 int
+        BankID 银行代码 char[4] 
         
-        AskPrice3 申卖价三 double
+        BankBranchID 银行分支机构代码 char[5] 
         
-        AskVolume3 申卖量三 int
+        BrokerID 期商代码 char[11] 
+        
+        BrokerBranchID 期商分支机构代码 char[31] 
+        
+        TradeDate 交易日期 char[9] 
+        
+        TradeTime 交易时间 char[9] 
+        
+        BankSerial 银行流水号 char[13] 
+        
+        TradingDay 交易系统日期 char[9] 
+        
+        PlateSerial 银期平台消息流水号 int
+        
+        LastFragment 最后分片标志 char
+        
+        SessionID 会话号 int
+        
+        CustomerName 客户姓名 char[51] 
+        
+        IdCardType 证件类型 char
+        
+        IdentifiedCardNo 证件号码 char[51] 
+        
+        Gender 性别 char
+        
+        CountryCode 国家代码 char[21] 
+        
+        CustType 客户类型 char
+        
+        Address 地址 char[101] 
+        
+        ZipCode 邮编 char[7] 
+        
+        Telephone 电话号码 char[41] 
+        
+        MobilePhone 手机 char[21] 
+        
+        Fax 传真 char[41] 
+        
+        EMail 电子邮件 char[41] 
+        
+        MoneyAccountStatus 资金账户状态 char
+        
+        BankAccount 银行帐号 char[41] 
+        
+        BankPassWord 银行密码 char[41] 
+        
+        NewBankAccount 新银行帐号 char[41] 
+        
+        NewBankPassWord 新银行密码 char[41] 
+        
+        AccountID 投资者帐号 char[13] 
+        
+        Password 期货密码 char[41] 
+        
+        BankAccType 银行帐号类型 char
+        
+        InstallID 安装编号 int
+        
+        VerifyCertNoFlag 验证客户证件号码标志 char
+        
+        CurrencyID 币种代码 char[4] 
+        
+        BrokerIDByBank 期货公司银行编码 char[33] 
+        
+        BankPwdFlag 银行密码标志 char
+        
+        SecuPwdFlag 期货资金密码核对标志 char
+        
+        TID 交易ID int
+        
+        Digest 摘要 char[36] 
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''申卖价二'''
-        self.AskPrice2 = None
+        '''业务功能码'''
+        self.TradeCode = None
     
-        '''申卖量二'''
-        self.AskVolume2 = None
+        '''银行代码'''
+        self.BankID = None
     
-        '''申卖价三'''
-        self.AskPrice3 = None
+        '''银行分支机构代码'''
+        self.BankBranchID = None
     
-        '''申卖量三'''
-        self.AskVolume3 = None
+        '''期商代码'''
+        self.BrokerID = None
+    
+        '''期商分支机构代码'''
+        self.BrokerBranchID = None
+    
+        '''交易日期'''
+        self.TradeDate = None
+    
+        '''交易时间'''
+        self.TradeTime = None
+    
+        '''银行流水号'''
+        self.BankSerial = None
+    
+        '''交易系统日期'''
+        self.TradingDay = None
+    
+        '''银期平台消息流水号'''
+        self.PlateSerial = None
+    
+        '''最后分片标志'''
+        self.LastFragment = None
+    
+        '''会话号'''
+        self.SessionID = None
+    
+        '''客户姓名'''
+        self.CustomerName = None
+    
+        '''证件类型'''
+        self.IdCardType = None
+    
+        '''证件号码'''
+        self.IdentifiedCardNo = None
+    
+        '''性别'''
+        self.Gender = None
+    
+        '''国家代码'''
+        self.CountryCode = None
+    
+        '''客户类型'''
+        self.CustType = None
+    
+        '''地址'''
+        self.Address = None
+    
+        '''邮编'''
+        self.ZipCode = None
+    
+        '''电话号码'''
+        self.Telephone = None
+    
+        '''手机'''
+        self.MobilePhone = None
+    
+        '''传真'''
+        self.Fax = None
+    
+        '''电子邮件'''
+        self.EMail = None
+    
+        '''资金账户状态'''
+        self.MoneyAccountStatus = None
+    
+        '''银行帐号'''
+        self.BankAccount = None
+    
+        '''银行密码'''
+        self.BankPassWord = None
+    
+        '''新银行帐号'''
+        self.NewBankAccount = None
+    
+        '''新银行密码'''
+        self.NewBankPassWord = None
+    
+        '''投资者帐号'''
+        self.AccountID = None
+    
+        '''期货密码'''
+        self.Password = None
+    
+        '''银行帐号类型'''
+        self.BankAccType = None
+    
+        '''安装编号'''
+        self.InstallID = None
+    
+        '''验证客户证件号码标志'''
+        self.VerifyCertNoFlag = None
+    
+        '''币种代码'''
+        self.CurrencyID = None
+    
+        '''期货公司银行编码'''
+        self.BrokerIDByBank = None
+    
+        '''银行密码标志'''
+        self.BankPwdFlag = None
+    
+        '''期货资金密码核对标志'''
+        self.SecuPwdFlag = None
+    
+        '''交易ID'''
+        self.TID = None
+    
+        '''摘要'''
+        self.Digest = None
     
         self.__dict__.update(fields)
 
@@ -4829,28 +5243,51 @@ class CThostFtdcSuperUserFunctionField:
 
 
 
-class CThostFtdcSyncDepositField:
+class CThostFtdcParkedOrderActionField:
     '''
-    出入金同步
-        
-        DepositSeqNo 出入金流水号 char[15] 
+    输入预埋单操作
         
         BrokerID 经纪公司代码 char[11] 
         
         InvestorID 投资者代码 char[13] 
         
-        Deposit 入金金额 double
+        OrderActionRef 报单操作引用 int
         
-        IsForce 是否强制进行 int
+        OrderRef 报单引用 char[13] 
         
-        CurrencyID 币种代码 char[4] 
+        RequestID 请求编号 int
+        
+        FrontID 前置编号 int
+        
+        SessionID 会话编号 int
+        
+        ExchangeID 交易所代码 char[9] 
+        
+        OrderSysID 报单编号 char[21] 
+        
+        ActionFlag 操作标志 char
+        
+        LimitPrice 价格 double
+        
+        VolumeChange 数量变化 int
+        
+        UserID 用户代码 char[16] 
+        
+        InstrumentID 合约代码 char[31] 
+        
+        ParkedOrderActionID 预埋撤单单编号 char[13] 
+        
+        UserType 用户类型 char
+        
+        Status 预埋撤单状态 char
+        
+        ErrorID 错误代码 int
+        
+        ErrorMsg 错误信息 char[81] 
     '''
 
     def __init__(self,**fields):
         ''' '''
-    
-        '''出入金流水号'''
-        self.DepositSeqNo = None
     
         '''经纪公司代码'''
         self.BrokerID = None
@@ -4858,14 +5295,56 @@ class CThostFtdcSyncDepositField:
         '''投资者代码'''
         self.InvestorID = None
     
-        '''入金金额'''
-        self.Deposit = None
+        '''报单操作引用'''
+        self.OrderActionRef = None
     
-        '''是否强制进行'''
-        self.IsForce = None
+        '''报单引用'''
+        self.OrderRef = None
     
-        '''币种代码'''
-        self.CurrencyID = None
+        '''请求编号'''
+        self.RequestID = None
+    
+        '''前置编号'''
+        self.FrontID = None
+    
+        '''会话编号'''
+        self.SessionID = None
+    
+        '''交易所代码'''
+        self.ExchangeID = None
+    
+        '''报单编号'''
+        self.OrderSysID = None
+    
+        '''操作标志'''
+        self.ActionFlag = None
+    
+        '''价格'''
+        self.LimitPrice = None
+    
+        '''数量变化'''
+        self.VolumeChange = None
+    
+        '''用户代码'''
+        self.UserID = None
+    
+        '''合约代码'''
+        self.InstrumentID = None
+    
+        '''预埋撤单单编号'''
+        self.ParkedOrderActionID = None
+    
+        '''用户类型'''
+        self.UserType = None
+    
+        '''预埋撤单状态'''
+        self.Status = None
+    
+        '''错误代码'''
+        self.ErrorID = None
+    
+        '''错误信息'''
+        self.ErrorMsg = None
     
         self.__dict__.update(fields)
 
@@ -4875,28 +5354,68 @@ class CThostFtdcSyncDepositField:
 
 
 
-class CThostFtdcInvestorGroupField:
+class CThostFtdcUserSessionField:
     '''
-    投资者组
+    用户会话
+        
+        FrontID 前置编号 int
+        
+        SessionID 会话编号 int
         
         BrokerID 经纪公司代码 char[11] 
         
-        InvestorGroupID 投资者分组代码 char[13] 
+        UserID 用户代码 char[16] 
         
-        InvestorGroupName 投资者分组名称 char[41] 
+        LoginDate 登录日期 char[9] 
+        
+        LoginTime 登录时间 char[9] 
+        
+        IPAddress IP地址 char[16] 
+        
+        UserProductInfo 用户端产品信息 char[11] 
+        
+        InterfaceProductInfo 接口端产品信息 char[11] 
+        
+        ProtocolInfo 协议信息 char[11] 
+        
+        MacAddress Mac地址 char[21] 
     '''
 
     def __init__(self,**fields):
         ''' '''
     
+        '''前置编号'''
+        self.FrontID = None
+    
+        '''会话编号'''
+        self.SessionID = None
+    
         '''经纪公司代码'''
         self.BrokerID = None
     
-        '''投资者分组代码'''
-        self.InvestorGroupID = None
+        '''用户代码'''
+        self.UserID = None
     
-        '''投资者分组名称'''
-        self.InvestorGroupName = None
+        '''登录日期'''
+        self.LoginDate = None
+    
+        '''登录时间'''
+        self.LoginTime = None
+    
+        '''IP地址'''
+        self.IPAddress = None
+    
+        '''用户端产品信息'''
+        self.UserProductInfo = None
+    
+        '''接口端产品信息'''
+        self.InterfaceProductInfo = None
+    
+        '''协议信息'''
+        self.ProtocolInfo = None
+    
+        '''Mac地址'''
+        self.MacAddress = None
     
         self.__dict__.update(fields)
 
@@ -5136,6 +5655,147 @@ class CThostFtdcQryContractBankField:
 
 
 
+class CThostFtdcNotifyFutureSignInField:
+    '''
+    期商签到通知
+        
+        TradeCode 业务功能码 char[7] 
+        
+        BankID 银行代码 char[4] 
+        
+        BankBranchID 银行分支机构代码 char[5] 
+        
+        BrokerID 期商代码 char[11] 
+        
+        BrokerBranchID 期商分支机构代码 char[31] 
+        
+        TradeDate 交易日期 char[9] 
+        
+        TradeTime 交易时间 char[9] 
+        
+        BankSerial 银行流水号 char[13] 
+        
+        TradingDay 交易系统日期 char[9] 
+        
+        PlateSerial 银期平台消息流水号 int
+        
+        LastFragment 最后分片标志 char
+        
+        SessionID 会话号 int
+        
+        InstallID 安装编号 int
+        
+        UserID 用户标识 char[16] 
+        
+        Digest 摘要 char[36] 
+        
+        CurrencyID 币种代码 char[4] 
+        
+        DeviceID 渠道标志 char[3] 
+        
+        BrokerIDByBank 期货公司银行编码 char[33] 
+        
+        OperNo 交易柜员 char[17] 
+        
+        RequestID 请求编号 int
+        
+        TID 交易ID int
+        
+        ErrorID 错误代码 int
+        
+        ErrorMsg 错误信息 char[81] 
+        
+        PinKey PIN密钥 char[129] 
+        
+        MacKey MAC密钥 char[129] 
+    '''
+
+    def __init__(self,**fields):
+        ''' '''
+    
+        '''业务功能码'''
+        self.TradeCode = None
+    
+        '''银行代码'''
+        self.BankID = None
+    
+        '''银行分支机构代码'''
+        self.BankBranchID = None
+    
+        '''期商代码'''
+        self.BrokerID = None
+    
+        '''期商分支机构代码'''
+        self.BrokerBranchID = None
+    
+        '''交易日期'''
+        self.TradeDate = None
+    
+        '''交易时间'''
+        self.TradeTime = None
+    
+        '''银行流水号'''
+        self.BankSerial = None
+    
+        '''交易系统日期'''
+        self.TradingDay = None
+    
+        '''银期平台消息流水号'''
+        self.PlateSerial = None
+    
+        '''最后分片标志'''
+        self.LastFragment = None
+    
+        '''会话号'''
+        self.SessionID = None
+    
+        '''安装编号'''
+        self.InstallID = None
+    
+        '''用户标识'''
+        self.UserID = None
+    
+        '''摘要'''
+        self.Digest = None
+    
+        '''币种代码'''
+        self.CurrencyID = None
+    
+        '''渠道标志'''
+        self.DeviceID = None
+    
+        '''期货公司银行编码'''
+        self.BrokerIDByBank = None
+    
+        '''交易柜员'''
+        self.OperNo = None
+    
+        '''请求编号'''
+        self.RequestID = None
+    
+        '''交易ID'''
+        self.TID = None
+    
+        '''错误代码'''
+        self.ErrorID = None
+    
+        '''错误信息'''
+        self.ErrorMsg = None
+    
+        '''PIN密钥'''
+        self.PinKey = None
+    
+        '''MAC密钥'''
+        self.MacKey = None
+    
+        self.__dict__.update(fields)
+
+    def toDict(self):
+        ''' '''
+        return {k:v for k,v in self.__dict__.iteritems() if v != None}
+
+
+
 class CThostFtdcSyncingTradingCodeField:
     '''
     正在同步中的交易代码
@@ -5182,31 +5842,33 @@ class CThostFtdcSyncingTradingCodeField:
 
 
 
-class CThostFtdcDisseminationField:
+class CThostFtdcQryEWarrantOffsetField:
     '''
-    //////////////////////////////////////////////////////////////////////
-///@system 新一代交易所系统
-///@company 上海期货信息技术有限公司
-///@file ThostFtdcUserApiStruct.h
-///@brief 定义了客户端接口使用的业务数据结构
-///@history
-///20060106	赵鸿昊		创建该文件
-/////////////////////////////////////////////////////////////////////////
-///信息分发
+    查询仓单折抵信息
         
-        SequenceSeries 序列系列号 short
+        BrokerID 经纪公司代码 char[11] 
         
-        SequenceNo 序列号 int
+        InvestorID 投资者代码 char[13] 
+        
+        ExchangeID 交易所代码 char[9] 
+        
+        InstrumentID 合约代码 char[31] 
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''序列系列号'''
-        self.SequenceSeries = None
+        '''经纪公司代码'''
+        self.BrokerID = None
     
-        '''序列号'''
-        self.SequenceNo = None
+        '''投资者代码'''
+        self.InvestorID = None
+    
+        '''交易所代码'''
+        self.ExchangeID = None
+    
+        '''合约代码'''
+        self.InstrumentID = None
     
         self.__dict__.update(fields)
 
@@ -5519,23 +6181,38 @@ class CThostFtdcSyncingTradingAccountField:
 
 
 
-class CThostFtdcQryCommRateModelField:
+class CThostFtdcQryExchangeOrderField:
     '''
-    请求查询投资者手续费率模板
+    查询交易所报单
         
-        BrokerID 经纪公司代码 char[11] 
+        ParticipantID 会员代码 char[11] 
         
-        CommModelID 手续费率模板代码 char[13] 
+        ClientID 客户代码 char[11] 
+        
+        ExchangeInstID 合约在交易所的代码 char[31] 
+        
+        ExchangeID 交易所代码 char[9] 
+        
+        TraderID 交易所交易员代码 char[21] 
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''经纪公司代码'''
-        self.BrokerID = None
+        '''会员代码'''
+        self.ParticipantID = None
     
-        '''手续费率模板代码'''
-        self.CommModelID = None
+        '''客户代码'''
+        self.ClientID = None
+    
+        '''合约在交易所的代码'''
+        self.ExchangeInstID = None
+    
+        '''交易所代码'''
+        self.ExchangeID = None
+    
+        '''交易所交易员代码'''
+        self.TraderID = None
     
         self.__dict__.update(fields)
 
@@ -5771,143 +6448,48 @@ class CThostFtdcChangeAccountField:
 
 
 
-class CThostFtdcInstrumentField:
+class CThostFtdcDepositResultInformField:
     '''
-    合约
+    验证期货资金密码和客户信息
         
-        InstrumentID 合约代码 char[31] 
+        DepositSeqNo 出入金流水号，该流水号为银期报盘返回的流水号 char[15] 
         
-        ExchangeID 交易所代码 char[9] 
+        BrokerID 经纪公司代码 char[11] 
         
-        InstrumentName 合约名称 char[21] 
+        InvestorID 投资者代码 char[13] 
         
-        ExchangeInstID 合约在交易所的代码 char[31] 
+        Deposit 入金金额 double
         
-        ProductID 产品代码 char[31] 
+        RequestID 请求编号 int
         
-        ProductClass 产品类型 char
+        ReturnCode 返回代码 char[7] 
         
-        DeliveryYear 交割年份 int
-        
-        DeliveryMonth 交割月 int
-        
-        MaxMarketOrderVolume 市价单最大下单量 int
-        
-        MinMarketOrderVolume 市价单最小下单量 int
-        
-        MaxLimitOrderVolume 限价单最大下单量 int
-        
-        MinLimitOrderVolume 限价单最小下单量 int
-        
-        VolumeMultiple 合约数量乘数 int
-        
-        PriceTick 最小变动价位 double
-        
-        CreateDate 创建日 char[9] 
-        
-        OpenDate 上市日 char[9] 
-        
-        ExpireDate 到期日 char[9] 
-        
-        StartDelivDate 开始交割日 char[9] 
-        
-        EndDelivDate 结束交割日 char[9] 
-        
-        InstLifePhase 合约生命周期状态 char
-        
-        IsTrading 当前是否交易 int
-        
-        PositionType 持仓类型 char
-        
-        PositionDateType 持仓日期类型 char
-        
-        LongMarginRatio 多头保证金率 double
-        
-        ShortMarginRatio 空头保证金率 double
-        
-        MaxMarginSideAlgorithm 是否使用大额单边保证金算法 char
+        DescrInfoForReturnCode 返回码描述 char[129] 
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''合约代码'''
-        self.InstrumentID = None
+        '''出入金流水号，该流水号为银期报盘返回的流水号'''
+        self.DepositSeqNo = None
     
-        '''交易所代码'''
-        self.ExchangeID = None
+        '''经纪公司代码'''
+        self.BrokerID = None
     
-        '''合约名称'''
-        self.InstrumentName = None
+        '''投资者代码'''
+        self.InvestorID = None
     
-        '''合约在交易所的代码'''
-        self.ExchangeInstID = None
+        '''入金金额'''
+        self.Deposit = None
     
-        '''产品代码'''
-        self.ProductID = None
+        '''请求编号'''
+        self.RequestID = None
     
-        '''产品类型'''
-        self.ProductClass = None
+        '''返回代码'''
+        self.ReturnCode = None
     
-        '''交割年份'''
-        self.DeliveryYear = None
-    
-        '''交割月'''
-        self.DeliveryMonth = None
-    
-        '''市价单最大下单量'''
-        self.MaxMarketOrderVolume = None
-    
-        '''市价单最小下单量'''
-        self.MinMarketOrderVolume = None
-    
-        '''限价单最大下单量'''
-        self.MaxLimitOrderVolume = None
-    
-        '''限价单最小下单量'''
-        self.MinLimitOrderVolume = None
-    
-        '''合约数量乘数'''
-        self.VolumeMultiple = None
-    
-        '''最小变动价位'''
-        self.PriceTick = None
-    
-        '''创建日'''
-        self.CreateDate = None
-    
-        '''上市日'''
-        self.OpenDate = None
-    
-        '''到期日'''
-        self.ExpireDate = None
-    
-        '''开始交割日'''
-        self.StartDelivDate = None
-    
-        '''结束交割日'''
-        self.EndDelivDate = None
-    
-        '''合约生命周期状态'''
-        self.InstLifePhase = None
-    
-        '''当前是否交易'''
-        self.IsTrading = None
-    
-        '''持仓类型'''
-        self.PositionType = None
-    
-        '''持仓日期类型'''
-        self.PositionDateType = None
-    
-        '''多头保证金率'''
-        self.LongMarginRatio = None
-    
-        '''空头保证金率'''
-        self.ShortMarginRatio = None
-    
-        '''是否使用大额单边保证金算法'''
-        self.MaxMarginSideAlgorithm = None
+        '''返回码描述'''
+        self.DescrInfoForReturnCode = None
     
         self.__dict__.update(fields)
 
@@ -6170,6 +6752,57 @@ class CThostFtdcReqTransferField:
     
         '''转账交易状态'''
         self.TransferStatus = None
+    
+        self.__dict__.update(fields)
+
+    def toDict(self):
+        ''' '''
+        return {k:v for k,v in self.__dict__.iteritems() if v != None}
+
+
+
+class CThostFtdcVerifyFuturePasswordAndCustInfoField:
+    '''
+    验证期货资金密码和客户信息
+        
+        CustomerName 客户姓名 char[51] 
+        
+        IdCardType 证件类型 char
+        
+        IdentifiedCardNo 证件号码 char[51] 
+        
+        CustType 客户类型 char
+        
+        AccountID 投资者帐号 char[13] 
+        
+        Password 期货密码 char[41] 
+        
+        CurrencyID 币种代码 char[4] 
+    '''
+
+    def __init__(self,**fields):
+        ''' '''
+    
+        '''客户姓名'''
+        self.CustomerName = None
+    
+        '''证件类型'''
+        self.IdCardType = None
+    
+        '''证件号码'''
+        self.IdentifiedCardNo = None
+    
+        '''客户类型'''
+        self.CustType = None
+    
+        '''投资者帐号'''
+        self.AccountID = None
+    
+        '''期货密码'''
+        self.Password = None
+    
+        '''币种代码'''
+        self.CurrencyID = None
     
         self.__dict__.update(fields)
 
@@ -6488,43 +7121,263 @@ class CThostFtdcQryInvestorGroupField:
 
 
 
-class CThostFtdcInvestorWithdrawAlgorithmField:
+class CThostFtdcReqRepealField:
     '''
-    经纪公司可提资金算法表
+    冲正请求
         
-        BrokerID 经纪公司代码 char[11] 
+        RepealTimeInterval 冲正时间间隔 int
         
-        InvestorRange 投资者范围 char
+        RepealedTimes 已经冲正次数 int
         
-        InvestorID 投资者代码 char[13] 
+        BankRepealFlag 银行冲正标志 char
         
-        UsingRatio 可提资金比例 double
+        BrokerRepealFlag 期商冲正标志 char
+        
+        PlateRepealSerial 被冲正平台流水号 int
+        
+        BankRepealSerial 被冲正银行流水号 char[13] 
+        
+        FutureRepealSerial 被冲正期货流水号 int
+        
+        TradeCode 业务功能码 char[7] 
+        
+        BankID 银行代码 char[4] 
+        
+        BankBranchID 银行分支机构代码 char[5] 
+        
+        BrokerID 期商代码 char[11] 
+        
+        BrokerBranchID 期商分支机构代码 char[31] 
+        
+        TradeDate 交易日期 char[9] 
+        
+        TradeTime 交易时间 char[9] 
+        
+        BankSerial 银行流水号 char[13] 
+        
+        TradingDay 交易系统日期 char[9] 
+        
+        PlateSerial 银期平台消息流水号 int
+        
+        LastFragment 最后分片标志 char
+        
+        SessionID 会话号 int
+        
+        CustomerName 客户姓名 char[51] 
+        
+        IdCardType 证件类型 char
+        
+        IdentifiedCardNo 证件号码 char[51] 
+        
+        CustType 客户类型 char
+        
+        BankAccount 银行帐号 char[41] 
+        
+        BankPassWord 银行密码 char[41] 
+        
+        AccountID 投资者帐号 char[13] 
+        
+        Password 期货密码 char[41] 
+        
+        InstallID 安装编号 int
+        
+        FutureSerial 期货公司流水号 int
+        
+        UserID 用户标识 char[16] 
+        
+        VerifyCertNoFlag 验证客户证件号码标志 char
         
         CurrencyID 币种代码 char[4] 
         
-        FundMortgageRatio 货币质押比率 double
+        TradeAmount 转帐金额 double
+        
+        FutureFetchAmount 期货可取金额 double
+        
+        FeePayFlag 费用支付标志 char
+        
+        CustFee 应收客户费用 double
+        
+        BrokerFee 应收期货公司费用 double
+        
+        Message 发送方给接收方的消息 char[129] 
+        
+        Digest 摘要 char[36] 
+        
+        BankAccType 银行帐号类型 char
+        
+        DeviceID 渠道标志 char[3] 
+        
+        BankSecuAccType 期货单位帐号类型 char
+        
+        BrokerIDByBank 期货公司银行编码 char[33] 
+        
+        BankSecuAcc 期货单位帐号 char[41] 
+        
+        BankPwdFlag 银行密码标志 char
+        
+        SecuPwdFlag 期货资金密码核对标志 char
+        
+        OperNo 交易柜员 char[17] 
+        
+        RequestID 请求编号 int
+        
+        TID 交易ID int
+        
+        TransferStatus 转账交易状态 char
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''经纪公司代码'''
+        '''冲正时间间隔'''
+        self.RepealTimeInterval = None
+    
+        '''已经冲正次数'''
+        self.RepealedTimes = None
+    
+        '''银行冲正标志'''
+        self.BankRepealFlag = None
+    
+        '''期商冲正标志'''
+        self.BrokerRepealFlag = None
+    
+        '''被冲正平台流水号'''
+        self.PlateRepealSerial = None
+    
+        '''被冲正银行流水号'''
+        self.BankRepealSerial = None
+    
+        '''被冲正期货流水号'''
+        self.FutureRepealSerial = None
+    
+        '''业务功能码'''
+        self.TradeCode = None
+    
+        '''银行代码'''
+        self.BankID = None
+    
+        '''银行分支机构代码'''
+        self.BankBranchID = None
+    
+        '''期商代码'''
         self.BrokerID = None
     
-        '''投资者范围'''
-        self.InvestorRange = None
+        '''期商分支机构代码'''
+        self.BrokerBranchID = None
     
-        '''投资者代码'''
-        self.InvestorID = None
+        '''交易日期'''
+        self.TradeDate = None
     
-        '''可提资金比例'''
-        self.UsingRatio = None
+        '''交易时间'''
+        self.TradeTime = None
+    
+        '''银行流水号'''
+        self.BankSerial = None
+    
+        '''交易系统日期'''
+        self.TradingDay = None
+    
+        '''银期平台消息流水号'''
+        self.PlateSerial = None
+    
+        '''最后分片标志'''
+        self.LastFragment = None
+    
+        '''会话号'''
+        self.SessionID = None
+    
+        '''客户姓名'''
+        self.CustomerName = None
+    
+        '''证件类型'''
+        self.IdCardType = None
+    
+        '''证件号码'''
+        self.IdentifiedCardNo = None
+    
+        '''客户类型'''
+        self.CustType = None
+    
+        '''银行帐号'''
+        self.BankAccount = None
+    
+        '''银行密码'''
+        self.BankPassWord = None
+    
+        '''投资者帐号'''
+        self.AccountID = None
+    
+        '''期货密码'''
+        self.Password = None
+    
+        '''安装编号'''
+        self.InstallID = None
+    
+        '''期货公司流水号'''
+        self.FutureSerial = None
+    
+        '''用户标识'''
+        self.UserID = None
+    
+        '''验证客户证件号码标志'''
+        self.VerifyCertNoFlag = None
     
         '''币种代码'''
         self.CurrencyID = None
     
-        '''货币质押比率'''
-        self.FundMortgageRatio = None
+        '''转帐金额'''
+        self.TradeAmount = None
+    
+        '''期货可取金额'''
+        self.FutureFetchAmount = None
+    
+        '''费用支付标志'''
+        self.FeePayFlag = None
+    
+        '''应收客户费用'''
+        self.CustFee = None
+    
+        '''应收期货公司费用'''
+        self.BrokerFee = None
+    
+        '''发送方给接收方的消息'''
+        self.Message = None
+    
+        '''摘要'''
+        self.Digest = None
+    
+        '''银行帐号类型'''
+        self.BankAccType = None
+    
+        '''渠道标志'''
+        self.DeviceID = None
+    
+        '''期货单位帐号类型'''
+        self.BankSecuAccType = None
+    
+        '''期货公司银行编码'''
+        self.BrokerIDByBank = None
+    
+        '''期货单位帐号'''
+        self.BankSecuAcc = None
+    
+        '''银行密码标志'''
+        self.BankPwdFlag = None
+    
+        '''期货资金密码核对标志'''
+        self.SecuPwdFlag = None
+    
+        '''交易柜员'''
+        self.OperNo = None
+    
+        '''请求编号'''
+        self.RequestID = None
+    
+        '''交易ID'''
+        self.TID = None
+    
+        '''转账交易状态'''
+        self.TransferStatus = None
     
         self.__dict__.update(fields)
 
@@ -7048,6 +7901,252 @@ class CThostFtdcSyncingInstrumentCommissionRateField:
 
 
 
+class CThostFtdcTradingAccountField:
+    '''
+    资金账户
+        
+        BrokerID 经纪公司代码 char[11] 
+        
+        AccountID 投资者帐号 char[13] 
+        
+        PreMortgage 上次质押金额 double
+        
+        PreCredit 上次信用额度 double
+        
+        PreDeposit 上次存款额 double
+        
+        PreBalance 上次结算准备金 double
+        
+        PreMargin 上次占用的保证金 double
+        
+        InterestBase 利息基数 double
+        
+        Interest 利息收入 double
+        
+        Deposit 入金金额 double
+        
+        Withdraw 出金金额 double
+        
+        FrozenMargin 冻结的保证金 double
+        
+        FrozenCash 冻结的资金 double
+        
+        FrozenCommission 冻结的手续费 double
+        
+        CurrMargin 当前保证金总额 double
+        
+        CashIn 资金差额 double
+        
+        Commission 手续费 double
+        
+        CloseProfit 平仓盈亏 double
+        
+        PositionProfit 持仓盈亏 double
+        
+        Balance 期货结算准备金 double
+        
+        Available 可用资金 double
+        
+        WithdrawQuota 可取资金 double
+        
+        Reserve 基本准备金 double
+        
+        TradingDay 交易日 char[9] 
+        
+        SettlementID 结算编号 int
+        
+        Credit 信用额度 double
+        
+        Mortgage 质押金额 double
+        
+        ExchangeMargin 交易所保证金 double
+        
+        DeliveryMargin 投资者交割保证金 double
+        
+        ExchangeDeliveryMargin 交易所交割保证金 double
+        
+        ReserveBalance 保底期货结算准备金 double
+        
+        CurrencyID 币种代码 char[4] 
+        
+        PreFundMortgageIn 上次货币质入金额 double
+        
+        PreFundMortgageOut 上次货币质出金额 double
+        
+        FundMortgageIn 货币质入金额 double
+        
+        FundMortgageOut 货币质出金额 double
+        
+        FundMortgageAvailable 货币质押余额 double
+        
+        MortgageableFund 可质押货币金额 double
+        
+        SpecProductMargin 特殊产品占用保证金 double
+        
+        SpecProductFrozenMargin 特殊产品冻结保证金 double
+        
+        SpecProductCommission 特殊产品手续费 double
+        
+        SpecProductFrozenCommission 特殊产品冻结手续费 double
+        
+        SpecProductPositionProfit 特殊产品持仓盈亏 double
+        
+        SpecProductCloseProfit 特殊产品平仓盈亏 double
+        
+        SpecProductPositionProfitByAlg 根据持仓盈亏算法计算的特殊产品持仓盈亏 double
+        
+        SpecProductExchangeMargin 特殊产品交易所保证金 double
+    '''
+
+    def __init__(self,**fields):
+        ''' '''
+    
+        '''经纪公司代码'''
+        self.BrokerID = None
+    
+        '''投资者帐号'''
+        self.AccountID = None
+    
+        '''上次质押金额'''
+        self.PreMortgage = None
+    
+        '''上次信用额度'''
+        self.PreCredit = None
+    
+        '''上次存款额'''
+        self.PreDeposit = None
+    
+        '''上次结算准备金'''
+        self.PreBalance = None
+    
+        '''上次占用的保证金'''
+        self.PreMargin = None
+    
+        '''利息基数'''
+        self.InterestBase = None
+    
+        '''利息收入'''
+        self.Interest = None
+    
+        '''入金金额'''
+        self.Deposit = None
+    
+        '''出金金额'''
+        self.Withdraw = None
+    
+        '''冻结的保证金'''
+        self.FrozenMargin = None
+    
+        '''冻结的资金'''
+        self.FrozenCash = None
+    
+        '''冻结的手续费'''
+        self.FrozenCommission = None
+    
+        '''当前保证金总额'''
+        self.CurrMargin = None
+    
+        '''资金差额'''
+        self.CashIn = None
+    
+        '''手续费'''
+        self.Commission = None
+    
+        '''平仓盈亏'''
+        self.CloseProfit = None
+    
+        '''持仓盈亏'''
+        self.PositionProfit = None
+    
+        '''期货结算准备金'''
+        self.Balance = None
+    
+        '''可用资金'''
+        self.Available = None
+    
+        '''可取资金'''
+        self.WithdrawQuota = None
+    
+        '''基本准备金'''
+        self.Reserve = None
+    
+        '''交易日'''
+        self.TradingDay = None
+    
+        '''结算编号'''
+        self.SettlementID = None
+    
+        '''信用额度'''
+        self.Credit = None
+    
+        '''质押金额'''
+        self.Mortgage = None
+    
+        '''交易所保证金'''
+        self.ExchangeMargin = None
+    
+        '''投资者交割保证金'''
+        self.DeliveryMargin = None
+    
+        '''交易所交割保证金'''
+        self.ExchangeDeliveryMargin = None
+    
+        '''保底期货结算准备金'''
+        self.ReserveBalance = None
+    
+        '''币种代码'''
+        self.CurrencyID = None
+    
+        '''上次货币质入金额'''
+        self.PreFundMortgageIn = None
+    
+        '''上次货币质出金额'''
+        self.PreFundMortgageOut = None
+    
+        '''货币质入金额'''
+        self.FundMortgageIn = None
+    
+        '''货币质出金额'''
+        self.FundMortgageOut = None
+    
+        '''货币质押余额'''
+        self.FundMortgageAvailable = None
+    
+        '''可质押货币金额'''
+        self.MortgageableFund = None
+    
+        '''特殊产品占用保证金'''
+        self.SpecProductMargin = None
+    
+        '''特殊产品冻结保证金'''
+        self.SpecProductFrozenMargin = None
+    
+        '''特殊产品手续费'''
+        self.SpecProductCommission = None
+    
+        '''特殊产品冻结手续费'''
+        self.SpecProductFrozenCommission = None
+    
+        '''特殊产品持仓盈亏'''
+        self.SpecProductPositionProfit = None
+    
+        '''特殊产品平仓盈亏'''
+        self.SpecProductCloseProfit = None
+    
+        '''根据持仓盈亏算法计算的特殊产品持仓盈亏'''
+        self.SpecProductPositionProfitByAlg = None
+    
+        '''特殊产品交易所保证金'''
+        self.SpecProductExchangeMargin = None
+    
+        self.__dict__.update(fields)
+
+    def toDict(self):
+        ''' '''
+        return {k:v for k,v in self.__dict__.iteritems() if v != None}
+
+
+
 class CThostFtdcSyncingInstrumentMarginRateField:
     '''
     正在同步中的合约保证金率
@@ -7105,27 +8204,6 @@ class CThostFtdcSyncingInstrumentMarginRateField:
     
         '''是否相对交易所收取'''
         self.IsRelative = None
-    
-        self.__dict__.update(fields)
-
-    def toDict(self):
-        ''' '''
-        return {k:v for k,v in self.__dict__.iteritems() if v != None}
-
-
-
-class CThostFtdcQryBrokerField:
-    '''
-    查询经纪公司
-        
-        BrokerID 经纪公司代码 char[11] 
-    '''
-
-    def __init__(self,**fields):
-        ''' '''
-    
-        '''经纪公司代码'''
-        self.BrokerID = None
     
         self.__dict__.update(fields)
 
@@ -7461,243 +8539,18 @@ class CThostFtdcCommRateModelField:
 
 
 
-class CThostFtdcCancelAccountField:
+class CThostFtdcQryExchangeField:
     '''
-    银期销户信息
+    查询交易所
         
-        TradeCode 业务功能码 char[7] 
-        
-        BankID 银行代码 char[4] 
-        
-        BankBranchID 银行分支机构代码 char[5] 
-        
-        BrokerID 期商代码 char[11] 
-        
-        BrokerBranchID 期商分支机构代码 char[31] 
-        
-        TradeDate 交易日期 char[9] 
-        
-        TradeTime 交易时间 char[9] 
-        
-        BankSerial 银行流水号 char[13] 
-        
-        TradingDay 交易系统日期 char[9] 
-        
-        PlateSerial 银期平台消息流水号 int
-        
-        LastFragment 最后分片标志 char
-        
-        SessionID 会话号 int
-        
-        CustomerName 客户姓名 char[51] 
-        
-        IdCardType 证件类型 char
-        
-        IdentifiedCardNo 证件号码 char[51] 
-        
-        Gender 性别 char
-        
-        CountryCode 国家代码 char[21] 
-        
-        CustType 客户类型 char
-        
-        Address 地址 char[101] 
-        
-        ZipCode 邮编 char[7] 
-        
-        Telephone 电话号码 char[41] 
-        
-        MobilePhone 手机 char[21] 
-        
-        Fax 传真 char[41] 
-        
-        EMail 电子邮件 char[41] 
-        
-        MoneyAccountStatus 资金账户状态 char
-        
-        BankAccount 银行帐号 char[41] 
-        
-        BankPassWord 银行密码 char[41] 
-        
-        AccountID 投资者帐号 char[13] 
-        
-        Password 期货密码 char[41] 
-        
-        InstallID 安装编号 int
-        
-        VerifyCertNoFlag 验证客户证件号码标志 char
-        
-        CurrencyID 币种代码 char[4] 
-        
-        CashExchangeCode 汇钞标志 char
-        
-        Digest 摘要 char[36] 
-        
-        BankAccType 银行帐号类型 char
-        
-        DeviceID 渠道标志 char[3] 
-        
-        BankSecuAccType 期货单位帐号类型 char
-        
-        BrokerIDByBank 期货公司银行编码 char[33] 
-        
-        BankSecuAcc 期货单位帐号 char[41] 
-        
-        BankPwdFlag 银行密码标志 char
-        
-        SecuPwdFlag 期货资金密码核对标志 char
-        
-        OperNo 交易柜员 char[17] 
-        
-        TID 交易ID int
-        
-        UserID 用户标识 char[16] 
-        
-        ErrorID 错误代码 int
-        
-        ErrorMsg 错误信息 char[81] 
+        ExchangeID 交易所代码 char[9] 
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''业务功能码'''
-        self.TradeCode = None
-    
-        '''银行代码'''
-        self.BankID = None
-    
-        '''银行分支机构代码'''
-        self.BankBranchID = None
-    
-        '''期商代码'''
-        self.BrokerID = None
-    
-        '''期商分支机构代码'''
-        self.BrokerBranchID = None
-    
-        '''交易日期'''
-        self.TradeDate = None
-    
-        '''交易时间'''
-        self.TradeTime = None
-    
-        '''银行流水号'''
-        self.BankSerial = None
-    
-        '''交易系统日期'''
-        self.TradingDay = None
-    
-        '''银期平台消息流水号'''
-        self.PlateSerial = None
-    
-        '''最后分片标志'''
-        self.LastFragment = None
-    
-        '''会话号'''
-        self.SessionID = None
-    
-        '''客户姓名'''
-        self.CustomerName = None
-    
-        '''证件类型'''
-        self.IdCardType = None
-    
-        '''证件号码'''
-        self.IdentifiedCardNo = None
-    
-        '''性别'''
-        self.Gender = None
-    
-        '''国家代码'''
-        self.CountryCode = None
-    
-        '''客户类型'''
-        self.CustType = None
-    
-        '''地址'''
-        self.Address = None
-    
-        '''邮编'''
-        self.ZipCode = None
-    
-        '''电话号码'''
-        self.Telephone = None
-    
-        '''手机'''
-        self.MobilePhone = None
-    
-        '''传真'''
-        self.Fax = None
-    
-        '''电子邮件'''
-        self.EMail = None
-    
-        '''资金账户状态'''
-        self.MoneyAccountStatus = None
-    
-        '''银行帐号'''
-        self.BankAccount = None
-    
-        '''银行密码'''
-        self.BankPassWord = None
-    
-        '''投资者帐号'''
-        self.AccountID = None
-    
-        '''期货密码'''
-        self.Password = None
-    
-        '''安装编号'''
-        self.InstallID = None
-    
-        '''验证客户证件号码标志'''
-        self.VerifyCertNoFlag = None
-    
-        '''币种代码'''
-        self.CurrencyID = None
-    
-        '''汇钞标志'''
-        self.CashExchangeCode = None
-    
-        '''摘要'''
-        self.Digest = None
-    
-        '''银行帐号类型'''
-        self.BankAccType = None
-    
-        '''渠道标志'''
-        self.DeviceID = None
-    
-        '''期货单位帐号类型'''
-        self.BankSecuAccType = None
-    
-        '''期货公司银行编码'''
-        self.BrokerIDByBank = None
-    
-        '''期货单位帐号'''
-        self.BankSecuAcc = None
-    
-        '''银行密码标志'''
-        self.BankPwdFlag = None
-    
-        '''期货资金密码核对标志'''
-        self.SecuPwdFlag = None
-    
-        '''交易柜员'''
-        self.OperNo = None
-    
-        '''交易ID'''
-        self.TID = None
-    
-        '''用户标识'''
-        self.UserID = None
-    
-        '''错误代码'''
-        self.ErrorID = None
-    
-        '''错误信息'''
-        self.ErrorMsg = None
+        '''交易所代码'''
+        self.ExchangeID = None
     
         self.__dict__.update(fields)
 
@@ -7871,18 +8724,43 @@ class CThostFtdcExchangeSequenceField:
 
 
 
-class CThostFtdcQryDepthMarketDataField:
+class CThostFtdcSettlementInfoField:
     '''
-    查询行情
+    投资者结算结果
         
-        InstrumentID 合约代码 char[31] 
+        TradingDay 交易日 char[9] 
+        
+        SettlementID 结算编号 int
+        
+        BrokerID 经纪公司代码 char[11] 
+        
+        InvestorID 投资者代码 char[13] 
+        
+        SequenceNo 序号 int
+        
+        Content 消息正文 char[501] 
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''合约代码'''
-        self.InstrumentID = None
+        '''交易日'''
+        self.TradingDay = None
+    
+        '''结算编号'''
+        self.SettlementID = None
+    
+        '''经纪公司代码'''
+        self.BrokerID = None
+    
+        '''投资者代码'''
+        self.InvestorID = None
+    
+        '''序号'''
+        self.SequenceNo = None
+    
+        '''消息正文'''
+        self.Content = None
     
         self.__dict__.update(fields)
 
@@ -8029,213 +8907,33 @@ class CThostFtdcQryInstrumentStatusField:
 
 
 
-class CThostFtdcReqChangeAccountField:
+class CThostFtdcMarketDataAsk23Field:
     '''
-    变更银行账户请求
+    行情申卖二、三属性
         
-        TradeCode 业务功能码 char[7] 
+        AskPrice2 申卖价二 double
         
-        BankID 银行代码 char[4] 
+        AskVolume2 申卖量二 int
         
-        BankBranchID 银行分支机构代码 char[5] 
+        AskPrice3 申卖价三 double
         
-        BrokerID 期商代码 char[11] 
-        
-        BrokerBranchID 期商分支机构代码 char[31] 
-        
-        TradeDate 交易日期 char[9] 
-        
-        TradeTime 交易时间 char[9] 
-        
-        BankSerial 银行流水号 char[13] 
-        
-        TradingDay 交易系统日期 char[9] 
-        
-        PlateSerial 银期平台消息流水号 int
-        
-        LastFragment 最后分片标志 char
-        
-        SessionID 会话号 int
-        
-        CustomerName 客户姓名 char[51] 
-        
-        IdCardType 证件类型 char
-        
-        IdentifiedCardNo 证件号码 char[51] 
-        
-        Gender 性别 char
-        
-        CountryCode 国家代码 char[21] 
-        
-        CustType 客户类型 char
-        
-        Address 地址 char[101] 
-        
-        ZipCode 邮编 char[7] 
-        
-        Telephone 电话号码 char[41] 
-        
-        MobilePhone 手机 char[21] 
-        
-        Fax 传真 char[41] 
-        
-        EMail 电子邮件 char[41] 
-        
-        MoneyAccountStatus 资金账户状态 char
-        
-        BankAccount 银行帐号 char[41] 
-        
-        BankPassWord 银行密码 char[41] 
-        
-        NewBankAccount 新银行帐号 char[41] 
-        
-        NewBankPassWord 新银行密码 char[41] 
-        
-        AccountID 投资者帐号 char[13] 
-        
-        Password 期货密码 char[41] 
-        
-        BankAccType 银行帐号类型 char
-        
-        InstallID 安装编号 int
-        
-        VerifyCertNoFlag 验证客户证件号码标志 char
-        
-        CurrencyID 币种代码 char[4] 
-        
-        BrokerIDByBank 期货公司银行编码 char[33] 
-        
-        BankPwdFlag 银行密码标志 char
-        
-        SecuPwdFlag 期货资金密码核对标志 char
-        
-        TID 交易ID int
-        
-        Digest 摘要 char[36] 
+        AskVolume3 申卖量三 int
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''业务功能码'''
-        self.TradeCode = None
+        '''申卖价二'''
+        self.AskPrice2 = None
     
-        '''银行代码'''
-        self.BankID = None
+        '''申卖量二'''
+        self.AskVolume2 = None
     
-        '''银行分支机构代码'''
-        self.BankBranchID = None
+        '''申卖价三'''
+        self.AskPrice3 = None
     
-        '''期商代码'''
-        self.BrokerID = None
-    
-        '''期商分支机构代码'''
-        self.BrokerBranchID = None
-    
-        '''交易日期'''
-        self.TradeDate = None
-    
-        '''交易时间'''
-        self.TradeTime = None
-    
-        '''银行流水号'''
-        self.BankSerial = None
-    
-        '''交易系统日期'''
-        self.TradingDay = None
-    
-        '''银期平台消息流水号'''
-        self.PlateSerial = None
-    
-        '''最后分片标志'''
-        self.LastFragment = None
-    
-        '''会话号'''
-        self.SessionID = None
-    
-        '''客户姓名'''
-        self.CustomerName = None
-    
-        '''证件类型'''
-        self.IdCardType = None
-    
-        '''证件号码'''
-        self.IdentifiedCardNo = None
-    
-        '''性别'''
-        self.Gender = None
-    
-        '''国家代码'''
-        self.CountryCode = None
-    
-        '''客户类型'''
-        self.CustType = None
-    
-        '''地址'''
-        self.Address = None
-    
-        '''邮编'''
-        self.ZipCode = None
-    
-        '''电话号码'''
-        self.Telephone = None
-    
-        '''手机'''
-        self.MobilePhone = None
-    
-        '''传真'''
-        self.Fax = None
-    
-        '''电子邮件'''
-        self.EMail = None
-    
-        '''资金账户状态'''
-        self.MoneyAccountStatus = None
-    
-        '''银行帐号'''
-        self.BankAccount = None
-    
-        '''银行密码'''
-        self.BankPassWord = None
-    
-        '''新银行帐号'''
-        self.NewBankAccount = None
-    
-        '''新银行密码'''
-        self.NewBankPassWord = None
-    
-        '''投资者帐号'''
-        self.AccountID = None
-    
-        '''期货密码'''
-        self.Password = None
-    
-        '''银行帐号类型'''
-        self.BankAccType = None
-    
-        '''安装编号'''
-        self.InstallID = None
-    
-        '''验证客户证件号码标志'''
-        self.VerifyCertNoFlag = None
-    
-        '''币种代码'''
-        self.CurrencyID = None
-    
-        '''期货公司银行编码'''
-        self.BrokerIDByBank = None
-    
-        '''银行密码标志'''
-        self.BankPwdFlag = None
-    
-        '''期货资金密码核对标志'''
-        self.SecuPwdFlag = None
-    
-        '''交易ID'''
-        self.TID = None
-    
-        '''摘要'''
-        self.Digest = None
+        '''申卖量三'''
+        self.AskVolume3 = None
     
         self.__dict__.update(fields)
 
@@ -8307,33 +9005,31 @@ class CThostFtdcUserRightsAssignField:
 
 
 
-class CThostFtdcQryEWarrantOffsetField:
+class CThostFtdcDisseminationField:
     '''
-    查询仓单折抵信息
+    //////////////////////////////////////////////////////////////////////
+///@system 新一代交易所系统
+///@company 上海期货信息技术有限公司
+///@file ThostFtdcUserApiStruct.h
+///@brief 定义了客户端接口使用的业务数据结构
+///@history
+///20060106	赵鸿昊		创建该文件
+/////////////////////////////////////////////////////////////////////////
+///信息分发
         
-        BrokerID 经纪公司代码 char[11] 
+        SequenceSeries 序列系列号 short
         
-        InvestorID 投资者代码 char[13] 
-        
-        ExchangeID 交易所代码 char[9] 
-        
-        InstrumentID 合约代码 char[31] 
+        SequenceNo 序列号 int
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''经纪公司代码'''
-        self.BrokerID = None
+        '''序列系列号'''
+        self.SequenceSeries = None
     
-        '''投资者代码'''
-        self.InvestorID = None
-    
-        '''交易所代码'''
-        self.ExchangeID = None
-    
-        '''合约代码'''
-        self.InstrumentID = None
+        '''序列号'''
+        self.SequenceNo = None
     
         self.__dict__.update(fields)
 
@@ -8396,27 +9092,6 @@ class CThostFtdcCurrentTimeField:
     
         '''业务日期'''
         self.ActionDay = None
-    
-        self.__dict__.update(fields)
-
-    def toDict(self):
-        ''' '''
-        return {k:v for k,v in self.__dict__.iteritems() if v != None}
-
-
-
-class CThostFtdcMarketDataAveragePriceField:
-    '''
-    成交均价
-        
-        AveragePrice 当日均价 double
-    '''
-
-    def __init__(self,**fields):
-        ''' '''
-    
-        '''当日均价'''
-        self.AveragePrice = None
     
         self.__dict__.update(fields)
 
@@ -8702,272 +9377,6 @@ class CThostFtdcMarketDataBaseField:
     
         '''昨虚实度'''
         self.PreDelta = None
-    
-        self.__dict__.update(fields)
-
-    def toDict(self):
-        ''' '''
-        return {k:v for k,v in self.__dict__.iteritems() if v != None}
-
-
-
-class CThostFtdcReqRepealField:
-    '''
-    冲正请求
-        
-        RepealTimeInterval 冲正时间间隔 int
-        
-        RepealedTimes 已经冲正次数 int
-        
-        BankRepealFlag 银行冲正标志 char
-        
-        BrokerRepealFlag 期商冲正标志 char
-        
-        PlateRepealSerial 被冲正平台流水号 int
-        
-        BankRepealSerial 被冲正银行流水号 char[13] 
-        
-        FutureRepealSerial 被冲正期货流水号 int
-        
-        TradeCode 业务功能码 char[7] 
-        
-        BankID 银行代码 char[4] 
-        
-        BankBranchID 银行分支机构代码 char[5] 
-        
-        BrokerID 期商代码 char[11] 
-        
-        BrokerBranchID 期商分支机构代码 char[31] 
-        
-        TradeDate 交易日期 char[9] 
-        
-        TradeTime 交易时间 char[9] 
-        
-        BankSerial 银行流水号 char[13] 
-        
-        TradingDay 交易系统日期 char[9] 
-        
-        PlateSerial 银期平台消息流水号 int
-        
-        LastFragment 最后分片标志 char
-        
-        SessionID 会话号 int
-        
-        CustomerName 客户姓名 char[51] 
-        
-        IdCardType 证件类型 char
-        
-        IdentifiedCardNo 证件号码 char[51] 
-        
-        CustType 客户类型 char
-        
-        BankAccount 银行帐号 char[41] 
-        
-        BankPassWord 银行密码 char[41] 
-        
-        AccountID 投资者帐号 char[13] 
-        
-        Password 期货密码 char[41] 
-        
-        InstallID 安装编号 int
-        
-        FutureSerial 期货公司流水号 int
-        
-        UserID 用户标识 char[16] 
-        
-        VerifyCertNoFlag 验证客户证件号码标志 char
-        
-        CurrencyID 币种代码 char[4] 
-        
-        TradeAmount 转帐金额 double
-        
-        FutureFetchAmount 期货可取金额 double
-        
-        FeePayFlag 费用支付标志 char
-        
-        CustFee 应收客户费用 double
-        
-        BrokerFee 应收期货公司费用 double
-        
-        Message 发送方给接收方的消息 char[129] 
-        
-        Digest 摘要 char[36] 
-        
-        BankAccType 银行帐号类型 char
-        
-        DeviceID 渠道标志 char[3] 
-        
-        BankSecuAccType 期货单位帐号类型 char
-        
-        BrokerIDByBank 期货公司银行编码 char[33] 
-        
-        BankSecuAcc 期货单位帐号 char[41] 
-        
-        BankPwdFlag 银行密码标志 char
-        
-        SecuPwdFlag 期货资金密码核对标志 char
-        
-        OperNo 交易柜员 char[17] 
-        
-        RequestID 请求编号 int
-        
-        TID 交易ID int
-        
-        TransferStatus 转账交易状态 char
-    '''
-
-    def __init__(self,**fields):
-        ''' '''
-    
-        '''冲正时间间隔'''
-        self.RepealTimeInterval = None
-    
-        '''已经冲正次数'''
-        self.RepealedTimes = None
-    
-        '''银行冲正标志'''
-        self.BankRepealFlag = None
-    
-        '''期商冲正标志'''
-        self.BrokerRepealFlag = None
-    
-        '''被冲正平台流水号'''
-        self.PlateRepealSerial = None
-    
-        '''被冲正银行流水号'''
-        self.BankRepealSerial = None
-    
-        '''被冲正期货流水号'''
-        self.FutureRepealSerial = None
-    
-        '''业务功能码'''
-        self.TradeCode = None
-    
-        '''银行代码'''
-        self.BankID = None
-    
-        '''银行分支机构代码'''
-        self.BankBranchID = None
-    
-        '''期商代码'''
-        self.BrokerID = None
-    
-        '''期商分支机构代码'''
-        self.BrokerBranchID = None
-    
-        '''交易日期'''
-        self.TradeDate = None
-    
-        '''交易时间'''
-        self.TradeTime = None
-    
-        '''银行流水号'''
-        self.BankSerial = None
-    
-        '''交易系统日期'''
-        self.TradingDay = None
-    
-        '''银期平台消息流水号'''
-        self.PlateSerial = None
-    
-        '''最后分片标志'''
-        self.LastFragment = None
-    
-        '''会话号'''
-        self.SessionID = None
-    
-        '''客户姓名'''
-        self.CustomerName = None
-    
-        '''证件类型'''
-        self.IdCardType = None
-    
-        '''证件号码'''
-        self.IdentifiedCardNo = None
-    
-        '''客户类型'''
-        self.CustType = None
-    
-        '''银行帐号'''
-        self.BankAccount = None
-    
-        '''银行密码'''
-        self.BankPassWord = None
-    
-        '''投资者帐号'''
-        self.AccountID = None
-    
-        '''期货密码'''
-        self.Password = None
-    
-        '''安装编号'''
-        self.InstallID = None
-    
-        '''期货公司流水号'''
-        self.FutureSerial = None
-    
-        '''用户标识'''
-        self.UserID = None
-    
-        '''验证客户证件号码标志'''
-        self.VerifyCertNoFlag = None
-    
-        '''币种代码'''
-        self.CurrencyID = None
-    
-        '''转帐金额'''
-        self.TradeAmount = None
-    
-        '''期货可取金额'''
-        self.FutureFetchAmount = None
-    
-        '''费用支付标志'''
-        self.FeePayFlag = None
-    
-        '''应收客户费用'''
-        self.CustFee = None
-    
-        '''应收期货公司费用'''
-        self.BrokerFee = None
-    
-        '''发送方给接收方的消息'''
-        self.Message = None
-    
-        '''摘要'''
-        self.Digest = None
-    
-        '''银行帐号类型'''
-        self.BankAccType = None
-    
-        '''渠道标志'''
-        self.DeviceID = None
-    
-        '''期货单位帐号类型'''
-        self.BankSecuAccType = None
-    
-        '''期货公司银行编码'''
-        self.BrokerIDByBank = None
-    
-        '''期货单位帐号'''
-        self.BankSecuAcc = None
-    
-        '''银行密码标志'''
-        self.BankPwdFlag = None
-    
-        '''期货资金密码核对标志'''
-        self.SecuPwdFlag = None
-    
-        '''交易柜员'''
-        self.OperNo = None
-    
-        '''请求编号'''
-        self.RequestID = None
-    
-        '''交易ID'''
-        self.TID = None
-    
-        '''转账交易状态'''
-        self.TransferStatus = None
     
         self.__dict__.update(fields)
 
@@ -9969,128 +10378,28 @@ class CThostFtdcParkedOrderField:
 
 
 
-class CThostFtdcNotifyFutureSignOutField:
+class CThostFtdcBrokerUserRightAssignField:
     '''
-    期商签退通知
+    经济公司是否有在本标示的交易权限
         
-        TradeCode 业务功能码 char[7] 
+        BrokerID 应用单元代码 char[11] 
         
-        BankID 银行代码 char[4] 
+        DRIdentityID 交易中心代码 int
         
-        BankBranchID 银行分支机构代码 char[5] 
-        
-        BrokerID 期商代码 char[11] 
-        
-        BrokerBranchID 期商分支机构代码 char[31] 
-        
-        TradeDate 交易日期 char[9] 
-        
-        TradeTime 交易时间 char[9] 
-        
-        BankSerial 银行流水号 char[13] 
-        
-        TradingDay 交易系统日期 char[9] 
-        
-        PlateSerial 银期平台消息流水号 int
-        
-        LastFragment 最后分片标志 char
-        
-        SessionID 会话号 int
-        
-        InstallID 安装编号 int
-        
-        UserID 用户标识 char[16] 
-        
-        Digest 摘要 char[36] 
-        
-        CurrencyID 币种代码 char[4] 
-        
-        DeviceID 渠道标志 char[3] 
-        
-        BrokerIDByBank 期货公司银行编码 char[33] 
-        
-        OperNo 交易柜员 char[17] 
-        
-        RequestID 请求编号 int
-        
-        TID 交易ID int
-        
-        ErrorID 错误代码 int
-        
-        ErrorMsg 错误信息 char[81] 
+        Tradeable 能否交易 int
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''业务功能码'''
-        self.TradeCode = None
-    
-        '''银行代码'''
-        self.BankID = None
-    
-        '''银行分支机构代码'''
-        self.BankBranchID = None
-    
-        '''期商代码'''
+        '''应用单元代码'''
         self.BrokerID = None
     
-        '''期商分支机构代码'''
-        self.BrokerBranchID = None
+        '''交易中心代码'''
+        self.DRIdentityID = None
     
-        '''交易日期'''
-        self.TradeDate = None
-    
-        '''交易时间'''
-        self.TradeTime = None
-    
-        '''银行流水号'''
-        self.BankSerial = None
-    
-        '''交易系统日期'''
-        self.TradingDay = None
-    
-        '''银期平台消息流水号'''
-        self.PlateSerial = None
-    
-        '''最后分片标志'''
-        self.LastFragment = None
-    
-        '''会话号'''
-        self.SessionID = None
-    
-        '''安装编号'''
-        self.InstallID = None
-    
-        '''用户标识'''
-        self.UserID = None
-    
-        '''摘要'''
-        self.Digest = None
-    
-        '''币种代码'''
-        self.CurrencyID = None
-    
-        '''渠道标志'''
-        self.DeviceID = None
-    
-        '''期货公司银行编码'''
-        self.BrokerIDByBank = None
-    
-        '''交易柜员'''
-        self.OperNo = None
-    
-        '''请求编号'''
-        self.RequestID = None
-    
-        '''交易ID'''
-        self.TID = None
-    
-        '''错误代码'''
-        self.ErrorID = None
-    
-        '''错误信息'''
-        self.ErrorMsg = None
+        '''能否交易'''
+        self.Tradeable = None
     
         self.__dict__.update(fields)
 
@@ -10513,32 +10822,21 @@ class CThostFtdcReqOpenAccountField:
 
 
 
-class CThostFtdcEWarrantOffsetField:
+class CThostFtdcQryInvestorProductGroupMarginField:
     '''
-    仓单折抵信息
-        
-        TradingDay 交易日期 char[9] 
+    查询投资者品种/跨品种保证金
         
         BrokerID 经纪公司代码 char[11] 
         
         InvestorID 投资者代码 char[13] 
         
-        ExchangeID 交易所代码 char[9] 
-        
-        InstrumentID 合约代码 char[31] 
-        
-        Direction 买卖方向 char
+        ProductGroupID 品种/跨品种标示 char[31] 
         
         HedgeFlag 投机套保标志 char
-        
-        Volume 数量 int
     '''
 
     def __init__(self,**fields):
         ''' '''
-    
-        '''交易日期'''
-        self.TradingDay = None
     
         '''经纪公司代码'''
         self.BrokerID = None
@@ -10546,20 +10844,11 @@ class CThostFtdcEWarrantOffsetField:
         '''投资者代码'''
         self.InvestorID = None
     
-        '''交易所代码'''
-        self.ExchangeID = None
-    
-        '''合约代码'''
-        self.InstrumentID = None
-    
-        '''买卖方向'''
-        self.Direction = None
+        '''品种/跨品种标示'''
+        self.ProductGroupID = None
     
         '''投机套保标志'''
         self.HedgeFlag = None
-    
-        '''数量'''
-        self.Volume = None
     
         self.__dict__.update(fields)
 
@@ -10600,17 +10889,13 @@ class CThostFtdcVerifyInvestorPasswordField:
 
 
 
-class CThostFtdcQrySecAgentACIDMapField:
+class CThostFtdcQueryBrokerDepositField:
     '''
-    二级代理操作员银期权限查询
+    查询经纪公司资金
         
         BrokerID 经纪公司代码 char[11] 
         
-        UserID 用户代码 char[16] 
-        
-        AccountID 资金账户 char[13] 
-        
-        CurrencyID 币种 char[4] 
+        ExchangeID 交易所代码 char[9] 
     '''
 
     def __init__(self,**fields):
@@ -10619,14 +10904,8 @@ class CThostFtdcQrySecAgentACIDMapField:
         '''经纪公司代码'''
         self.BrokerID = None
     
-        '''用户代码'''
-        self.UserID = None
-    
-        '''资金账户'''
-        self.AccountID = None
-    
-        '''币种'''
-        self.CurrencyID = None
+        '''交易所代码'''
+        self.ExchangeID = None
     
         self.__dict__.update(fields)
 
@@ -10800,13 +11079,21 @@ class CThostFtdcSyncStatusField:
 
 
 
-class CThostFtdcQryCFMMCTradingAccountKeyField:
+class CThostFtdcInvestorWithdrawAlgorithmField:
     '''
-    请求查询保证金监管系统经纪公司资金账户密钥
+    经纪公司可提资金算法表
         
         BrokerID 经纪公司代码 char[11] 
         
+        InvestorRange 投资者范围 char
+        
         InvestorID 投资者代码 char[13] 
+        
+        UsingRatio 可提资金比例 double
+        
+        CurrencyID 币种代码 char[4] 
+        
+        FundMortgageRatio 货币质押比率 double
     '''
 
     def __init__(self,**fields):
@@ -10815,8 +11102,20 @@ class CThostFtdcQryCFMMCTradingAccountKeyField:
         '''经纪公司代码'''
         self.BrokerID = None
     
+        '''投资者范围'''
+        self.InvestorRange = None
+    
         '''投资者代码'''
         self.InvestorID = None
+    
+        '''可提资金比例'''
+        self.UsingRatio = None
+    
+        '''币种代码'''
+        self.CurrencyID = None
+    
+        '''货币质押比率'''
+        self.FundMortgageRatio = None
     
         self.__dict__.update(fields)
 
@@ -11882,28 +12181,23 @@ class CThostFtdcQrySyncStatusField:
 
 
 
-class CThostFtdcBrokerUserRightAssignField:
+class CThostFtdcQryErrOrderActionField:
     '''
-    经济公司是否有在本标示的交易权限
+    查询错误报单操作
         
-        BrokerID 应用单元代码 char[11] 
+        BrokerID 经纪公司代码 char[11] 
         
-        DRIdentityID 交易中心代码 int
-        
-        Tradeable 能否交易 int
+        InvestorID 投资者代码 char[13] 
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''应用单元代码'''
+        '''经纪公司代码'''
         self.BrokerID = None
     
-        '''交易中心代码'''
-        self.DRIdentityID = None
-    
-        '''能否交易'''
-        self.Tradeable = None
+        '''投资者代码'''
+        self.InvestorID = None
     
         self.__dict__.update(fields)
 
@@ -12061,23 +12355,18 @@ class CThostFtdcQryInvestorField:
 
 
 
-class CThostFtdcSettlementRefField:
+class CThostFtdcSpecificInstrumentField:
     '''
-    结算引用
+    指定的合约
         
-        TradingDay 交易日 char[9] 
-        
-        SettlementID 结算编号 int
+        InstrumentID 合约代码 char[31] 
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''交易日'''
-        self.TradingDay = None
-    
-        '''结算编号'''
-        self.SettlementID = None
+        '''合约代码'''
+        self.InstrumentID = None
     
         self.__dict__.update(fields)
 
@@ -12393,42 +12682,6 @@ class CThostFtdcQueryCFMMCTradingAccountTokenField:
     
         '''投资者代码'''
         self.InvestorID = None
-    
-        self.__dict__.update(fields)
-
-    def toDict(self):
-        ''' '''
-        return {k:v for k,v in self.__dict__.iteritems() if v != None}
-
-
-
-class CThostFtdcSettlementInfoConfirmField:
-    '''
-    投资者结算结果确认信息
-        
-        BrokerID 经纪公司代码 char[11] 
-        
-        InvestorID 投资者代码 char[13] 
-        
-        ConfirmDate 确认日期 char[9] 
-        
-        ConfirmTime 确认时间 char[9] 
-    '''
-
-    def __init__(self,**fields):
-        ''' '''
-    
-        '''经纪公司代码'''
-        self.BrokerID = None
-    
-        '''投资者代码'''
-        self.InvestorID = None
-    
-        '''确认日期'''
-        self.ConfirmDate = None
-    
-        '''确认时间'''
-        self.ConfirmTime = None
     
         self.__dict__.update(fields)
 
@@ -12861,28 +13114,224 @@ class CThostFtdcTraderField:
 
 
 
-class CThostFtdcFensUserInfoField:
+class CThostFtdcNotifyFutureSignOutField:
     '''
-    Fens用户信息
+    期商签退通知
         
-        BrokerID 经纪公司代码 char[11] 
+        TradeCode 业务功能码 char[7] 
         
-        UserID 用户代码 char[16] 
+        BankID 银行代码 char[4] 
         
-        LoginMode 登录模式 char
+        BankBranchID 银行分支机构代码 char[5] 
+        
+        BrokerID 期商代码 char[11] 
+        
+        BrokerBranchID 期商分支机构代码 char[31] 
+        
+        TradeDate 交易日期 char[9] 
+        
+        TradeTime 交易时间 char[9] 
+        
+        BankSerial 银行流水号 char[13] 
+        
+        TradingDay 交易系统日期 char[9] 
+        
+        PlateSerial 银期平台消息流水号 int
+        
+        LastFragment 最后分片标志 char
+        
+        SessionID 会话号 int
+        
+        InstallID 安装编号 int
+        
+        UserID 用户标识 char[16] 
+        
+        Digest 摘要 char[36] 
+        
+        CurrencyID 币种代码 char[4] 
+        
+        DeviceID 渠道标志 char[3] 
+        
+        BrokerIDByBank 期货公司银行编码 char[33] 
+        
+        OperNo 交易柜员 char[17] 
+        
+        RequestID 请求编号 int
+        
+        TID 交易ID int
+        
+        ErrorID 错误代码 int
+        
+        ErrorMsg 错误信息 char[81] 
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''经纪公司代码'''
+        '''业务功能码'''
+        self.TradeCode = None
+    
+        '''银行代码'''
+        self.BankID = None
+    
+        '''银行分支机构代码'''
+        self.BankBranchID = None
+    
+        '''期商代码'''
         self.BrokerID = None
+    
+        '''期商分支机构代码'''
+        self.BrokerBranchID = None
+    
+        '''交易日期'''
+        self.TradeDate = None
+    
+        '''交易时间'''
+        self.TradeTime = None
+    
+        '''银行流水号'''
+        self.BankSerial = None
+    
+        '''交易系统日期'''
+        self.TradingDay = None
+    
+        '''银期平台消息流水号'''
+        self.PlateSerial = None
+    
+        '''最后分片标志'''
+        self.LastFragment = None
+    
+        '''会话号'''
+        self.SessionID = None
+    
+        '''安装编号'''
+        self.InstallID = None
+    
+        '''用户标识'''
+        self.UserID = None
+    
+        '''摘要'''
+        self.Digest = None
+    
+        '''币种代码'''
+        self.CurrencyID = None
+    
+        '''渠道标志'''
+        self.DeviceID = None
+    
+        '''期货公司银行编码'''
+        self.BrokerIDByBank = None
+    
+        '''交易柜员'''
+        self.OperNo = None
+    
+        '''请求编号'''
+        self.RequestID = None
+    
+        '''交易ID'''
+        self.TID = None
+    
+        '''错误代码'''
+        self.ErrorID = None
+    
+        '''错误信息'''
+        self.ErrorMsg = None
+    
+        self.__dict__.update(fields)
+
+    def toDict(self):
+        ''' '''
+        return {k:v for k,v in self.__dict__.iteritems() if v != None}
+
+
+
+class CThostFtdcExchangeOrderActionField:
+    '''
+    交易所报单操作
+        
+        ExchangeID 交易所代码 char[9] 
+        
+        OrderSysID 报单编号 char[21] 
+        
+        ActionFlag 操作标志 char
+        
+        LimitPrice 价格 double
+        
+        VolumeChange 数量变化 int
+        
+        ActionDate 操作日期 char[9] 
+        
+        ActionTime 操作时间 char[9] 
+        
+        TraderID 交易所交易员代码 char[21] 
+        
+        InstallID 安装编号 int
+        
+        OrderLocalID 本地报单编号 char[13] 
+        
+        ActionLocalID 操作本地编号 char[13] 
+        
+        ParticipantID 会员代码 char[11] 
+        
+        ClientID 客户代码 char[11] 
+        
+        BusinessUnit 业务单元 char[21] 
+        
+        OrderActionStatus 报单操作状态 char
+        
+        UserID 用户代码 char[16] 
+    '''
+
+    def __init__(self,**fields):
+        ''' '''
+    
+        '''交易所代码'''
+        self.ExchangeID = None
+    
+        '''报单编号'''
+        self.OrderSysID = None
+    
+        '''操作标志'''
+        self.ActionFlag = None
+    
+        '''价格'''
+        self.LimitPrice = None
+    
+        '''数量变化'''
+        self.VolumeChange = None
+    
+        '''操作日期'''
+        self.ActionDate = None
+    
+        '''操作时间'''
+        self.ActionTime = None
+    
+        '''交易所交易员代码'''
+        self.TraderID = None
+    
+        '''安装编号'''
+        self.InstallID = None
+    
+        '''本地报单编号'''
+        self.OrderLocalID = None
+    
+        '''操作本地编号'''
+        self.ActionLocalID = None
+    
+        '''会员代码'''
+        self.ParticipantID = None
+    
+        '''客户代码'''
+        self.ClientID = None
+    
+        '''业务单元'''
+        self.BusinessUnit = None
+    
+        '''报单操作状态'''
+        self.OrderActionStatus = None
     
         '''用户代码'''
         self.UserID = None
-    
-        '''登录模式'''
-        self.LoginMode = None
     
         self.__dict__.update(fields)
 
@@ -12973,15 +13422,11 @@ class CThostFtdcSyncingInvestorField:
 
 
 
-class CThostFtdcQryTradingAccountField:
+class CThostFtdcLoadSettlementInfoField:
     '''
-    查询资金账户
+    装载结算信息
         
         BrokerID 经纪公司代码 char[11] 
-        
-        InvestorID 投资者代码 char[13] 
-        
-        CurrencyID 币种代码 char[4] 
     '''
 
     def __init__(self,**fields):
@@ -12989,12 +13434,6 @@ class CThostFtdcQryTradingAccountField:
     
         '''经纪公司代码'''
         self.BrokerID = None
-    
-        '''投资者代码'''
-        self.InvestorID = None
-    
-        '''币种代码'''
-        self.CurrencyID = None
     
         self.__dict__.update(fields)
 
@@ -13040,138 +13479,33 @@ class CThostFtdcTradingAccountPasswordField:
 
 
 
-class CThostFtdcNotifyFutureSignInField:
+class CThostFtdcSettlementInfoConfirmField:
     '''
-    期商签到通知
+    投资者结算结果确认信息
         
-        TradeCode 业务功能码 char[7] 
+        BrokerID 经纪公司代码 char[11] 
         
-        BankID 银行代码 char[4] 
+        InvestorID 投资者代码 char[13] 
         
-        BankBranchID 银行分支机构代码 char[5] 
+        ConfirmDate 确认日期 char[9] 
         
-        BrokerID 期商代码 char[11] 
-        
-        BrokerBranchID 期商分支机构代码 char[31] 
-        
-        TradeDate 交易日期 char[9] 
-        
-        TradeTime 交易时间 char[9] 
-        
-        BankSerial 银行流水号 char[13] 
-        
-        TradingDay 交易系统日期 char[9] 
-        
-        PlateSerial 银期平台消息流水号 int
-        
-        LastFragment 最后分片标志 char
-        
-        SessionID 会话号 int
-        
-        InstallID 安装编号 int
-        
-        UserID 用户标识 char[16] 
-        
-        Digest 摘要 char[36] 
-        
-        CurrencyID 币种代码 char[4] 
-        
-        DeviceID 渠道标志 char[3] 
-        
-        BrokerIDByBank 期货公司银行编码 char[33] 
-        
-        OperNo 交易柜员 char[17] 
-        
-        RequestID 请求编号 int
-        
-        TID 交易ID int
-        
-        ErrorID 错误代码 int
-        
-        ErrorMsg 错误信息 char[81] 
-        
-        PinKey PIN密钥 char[129] 
-        
-        MacKey MAC密钥 char[129] 
+        ConfirmTime 确认时间 char[9] 
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''业务功能码'''
-        self.TradeCode = None
-    
-        '''银行代码'''
-        self.BankID = None
-    
-        '''银行分支机构代码'''
-        self.BankBranchID = None
-    
-        '''期商代码'''
+        '''经纪公司代码'''
         self.BrokerID = None
     
-        '''期商分支机构代码'''
-        self.BrokerBranchID = None
+        '''投资者代码'''
+        self.InvestorID = None
     
-        '''交易日期'''
-        self.TradeDate = None
+        '''确认日期'''
+        self.ConfirmDate = None
     
-        '''交易时间'''
-        self.TradeTime = None
-    
-        '''银行流水号'''
-        self.BankSerial = None
-    
-        '''交易系统日期'''
-        self.TradingDay = None
-    
-        '''银期平台消息流水号'''
-        self.PlateSerial = None
-    
-        '''最后分片标志'''
-        self.LastFragment = None
-    
-        '''会话号'''
-        self.SessionID = None
-    
-        '''安装编号'''
-        self.InstallID = None
-    
-        '''用户标识'''
-        self.UserID = None
-    
-        '''摘要'''
-        self.Digest = None
-    
-        '''币种代码'''
-        self.CurrencyID = None
-    
-        '''渠道标志'''
-        self.DeviceID = None
-    
-        '''期货公司银行编码'''
-        self.BrokerIDByBank = None
-    
-        '''交易柜员'''
-        self.OperNo = None
-    
-        '''请求编号'''
-        self.RequestID = None
-    
-        '''交易ID'''
-        self.TID = None
-    
-        '''错误代码'''
-        self.ErrorID = None
-    
-        '''错误信息'''
-        self.ErrorMsg = None
-    
-        '''PIN密钥'''
-        self.PinKey = None
-    
-        '''MAC密钥'''
-        self.MacKey = None
+        '''确认时间'''
+        self.ConfirmTime = None
     
         self.__dict__.update(fields)
 
@@ -13504,43 +13838,97 @@ class CThostFtdcTransferBankToFutureRspField:
 
 
 
-class CThostFtdcParkedOrderActionField:
+class CThostFtdcSyncDepositField:
     '''
-    输入预埋单操作
+    出入金同步
+        
+        DepositSeqNo 出入金流水号 char[15] 
         
         BrokerID 经纪公司代码 char[11] 
         
         InvestorID 投资者代码 char[13] 
         
-        OrderActionRef 报单操作引用 int
+        Deposit 入金金额 double
         
-        OrderRef 报单引用 char[13] 
+        IsForce 是否强制进行 int
+        
+        CurrencyID 币种代码 char[4] 
+    '''
+
+    def __init__(self,**fields):
+        ''' '''
+    
+        '''出入金流水号'''
+        self.DepositSeqNo = None
+    
+        '''经纪公司代码'''
+        self.BrokerID = None
+    
+        '''投资者代码'''
+        self.InvestorID = None
+    
+        '''入金金额'''
+        self.Deposit = None
+    
+        '''是否强制进行'''
+        self.IsForce = None
+    
+        '''币种代码'''
+        self.CurrencyID = None
+    
+        self.__dict__.update(fields)
+
+    def toDict(self):
+        ''' '''
+        return {k:v for k,v in self.__dict__.iteritems() if v != None}
+
+
+
+class CThostFtdcRspFutureSignOutField:
+    '''
+    期商签退响应
+        
+        TradeCode 业务功能码 char[7] 
+        
+        BankID 银行代码 char[4] 
+        
+        BankBranchID 银行分支机构代码 char[5] 
+        
+        BrokerID 期商代码 char[11] 
+        
+        BrokerBranchID 期商分支机构代码 char[31] 
+        
+        TradeDate 交易日期 char[9] 
+        
+        TradeTime 交易时间 char[9] 
+        
+        BankSerial 银行流水号 char[13] 
+        
+        TradingDay 交易系统日期 char[9] 
+        
+        PlateSerial 银期平台消息流水号 int
+        
+        LastFragment 最后分片标志 char
+        
+        SessionID 会话号 int
+        
+        InstallID 安装编号 int
+        
+        UserID 用户标识 char[16] 
+        
+        Digest 摘要 char[36] 
+        
+        CurrencyID 币种代码 char[4] 
+        
+        DeviceID 渠道标志 char[3] 
+        
+        BrokerIDByBank 期货公司银行编码 char[33] 
+        
+        OperNo 交易柜员 char[17] 
         
         RequestID 请求编号 int
         
-        FrontID 前置编号 int
-        
-        SessionID 会话编号 int
-        
-        ExchangeID 交易所代码 char[9] 
-        
-        OrderSysID 报单编号 char[21] 
-        
-        ActionFlag 操作标志 char
-        
-        LimitPrice 价格 double
-        
-        VolumeChange 数量变化 int
-        
-        UserID 用户代码 char[16] 
-        
-        InstrumentID 合约代码 char[31] 
-        
-        ParkedOrderActionID 预埋撤单单编号 char[13] 
-        
-        UserType 用户类型 char
-        
-        Status 预埋撤单状态 char
+        TID 交易ID int
         
         ErrorID 错误代码 int
         
@@ -13550,56 +13938,68 @@ class CThostFtdcParkedOrderActionField:
     def __init__(self,**fields):
         ''' '''
     
-        '''经纪公司代码'''
+        '''业务功能码'''
+        self.TradeCode = None
+    
+        '''银行代码'''
+        self.BankID = None
+    
+        '''银行分支机构代码'''
+        self.BankBranchID = None
+    
+        '''期商代码'''
         self.BrokerID = None
     
-        '''投资者代码'''
-        self.InvestorID = None
+        '''期商分支机构代码'''
+        self.BrokerBranchID = None
     
-        '''报单操作引用'''
-        self.OrderActionRef = None
+        '''交易日期'''
+        self.TradeDate = None
     
-        '''报单引用'''
-        self.OrderRef = None
+        '''交易时间'''
+        self.TradeTime = None
+    
+        '''银行流水号'''
+        self.BankSerial = None
+    
+        '''交易系统日期'''
+        self.TradingDay = None
+    
+        '''银期平台消息流水号'''
+        self.PlateSerial = None
+    
+        '''最后分片标志'''
+        self.LastFragment = None
+    
+        '''会话号'''
+        self.SessionID = None
+    
+        '''安装编号'''
+        self.InstallID = None
+    
+        '''用户标识'''
+        self.UserID = None
+    
+        '''摘要'''
+        self.Digest = None
+    
+        '''币种代码'''
+        self.CurrencyID = None
+    
+        '''渠道标志'''
+        self.DeviceID = None
+    
+        '''期货公司银行编码'''
+        self.BrokerIDByBank = None
+    
+        '''交易柜员'''
+        self.OperNo = None
     
         '''请求编号'''
         self.RequestID = None
     
-        '''前置编号'''
-        self.FrontID = None
-    
-        '''会话编号'''
-        self.SessionID = None
-    
-        '''交易所代码'''
-        self.ExchangeID = None
-    
-        '''报单编号'''
-        self.OrderSysID = None
-    
-        '''操作标志'''
-        self.ActionFlag = None
-    
-        '''价格'''
-        self.LimitPrice = None
-    
-        '''数量变化'''
-        self.VolumeChange = None
-    
-        '''用户代码'''
-        self.UserID = None
-    
-        '''合约代码'''
-        self.InstrumentID = None
-    
-        '''预埋撤单单编号'''
-        self.ParkedOrderActionID = None
-    
-        '''用户类型'''
-        self.UserType = None
-    
-        '''预埋撤单状态'''
-        self.Status = None
+        '''交易ID'''
+        self.TID = None
     
         '''错误代码'''
         self.ErrorID = None
@@ -13736,17 +14136,17 @@ class CThostFtdcFutureSignIOField:
 
 
 
-class CThostFtdcTradingAccountReserveField:
+class CThostFtdcBrokerField:
     '''
-    资金账户基本准备金
+    经纪公司
         
         BrokerID 经纪公司代码 char[11] 
         
-        AccountID 投资者帐号 char[13] 
+        BrokerAbbr 经纪公司简称 char[9] 
         
-        Reserve 基本准备金 double
+        BrokerName 经纪公司名称 char[81] 
         
-        CurrencyID 币种代码 char[4] 
+        IsActive 是否活跃 int
     '''
 
     def __init__(self,**fields):
@@ -13755,14 +14155,14 @@ class CThostFtdcTradingAccountReserveField:
         '''经纪公司代码'''
         self.BrokerID = None
     
-        '''投资者帐号'''
-        self.AccountID = None
+        '''经纪公司简称'''
+        self.BrokerAbbr = None
     
-        '''基本准备金'''
-        self.Reserve = None
+        '''经纪公司名称'''
+        self.BrokerName = None
     
-        '''币种代码'''
-        self.CurrencyID = None
+        '''是否活跃'''
+        self.IsActive = None
     
         self.__dict__.update(fields)
 
@@ -13936,101 +14336,13 @@ class CThostFtdcBrokerUserFunctionField:
 
 
 
-class CThostFtdcTradingAccountField:
+class CThostFtdcQryCFMMCTradingAccountKeyField:
     '''
-    资金账户
+    请求查询保证金监管系统经纪公司资金账户密钥
         
         BrokerID 经纪公司代码 char[11] 
         
-        AccountID 投资者帐号 char[13] 
-        
-        PreMortgage 上次质押金额 double
-        
-        PreCredit 上次信用额度 double
-        
-        PreDeposit 上次存款额 double
-        
-        PreBalance 上次结算准备金 double
-        
-        PreMargin 上次占用的保证金 double
-        
-        InterestBase 利息基数 double
-        
-        Interest 利息收入 double
-        
-        Deposit 入金金额 double
-        
-        Withdraw 出金金额 double
-        
-        FrozenMargin 冻结的保证金 double
-        
-        FrozenCash 冻结的资金 double
-        
-        FrozenCommission 冻结的手续费 double
-        
-        CurrMargin 当前保证金总额 double
-        
-        CashIn 资金差额 double
-        
-        Commission 手续费 double
-        
-        CloseProfit 平仓盈亏 double
-        
-        PositionProfit 持仓盈亏 double
-        
-        Balance 期货结算准备金 double
-        
-        Available 可用资金 double
-        
-        WithdrawQuota 可取资金 double
-        
-        Reserve 基本准备金 double
-        
-        TradingDay 交易日 char[9] 
-        
-        SettlementID 结算编号 int
-        
-        Credit 信用额度 double
-        
-        Mortgage 质押金额 double
-        
-        ExchangeMargin 交易所保证金 double
-        
-        DeliveryMargin 投资者交割保证金 double
-        
-        ExchangeDeliveryMargin 交易所交割保证金 double
-        
-        ReserveBalance 保底期货结算准备金 double
-        
-        CurrencyID 币种代码 char[4] 
-        
-        PreFundMortgageIn 上次货币质入金额 double
-        
-        PreFundMortgageOut 上次货币质出金额 double
-        
-        FundMortgageIn 货币质入金额 double
-        
-        FundMortgageOut 货币质出金额 double
-        
-        FundMortgageAvailable 货币质押余额 double
-        
-        MortgageableFund 可质押货币金额 double
-        
-        SpecProductMargin 特殊产品占用保证金 double
-        
-        SpecProductFrozenMargin 特殊产品冻结保证金 double
-        
-        SpecProductCommission 特殊产品手续费 double
-        
-        SpecProductFrozenCommission 特殊产品冻结手续费 double
-        
-        SpecProductPositionProfit 特殊产品持仓盈亏 double
-        
-        SpecProductCloseProfit 特殊产品平仓盈亏 double
-        
-        SpecProductPositionProfitByAlg 根据持仓盈亏算法计算的特殊产品持仓盈亏 double
-        
-        SpecProductExchangeMargin 特殊产品交易所保证金 double
+        InvestorID 投资者代码 char[13] 
     '''
 
     def __init__(self,**fields):
@@ -14039,140 +14351,8 @@ class CThostFtdcTradingAccountField:
         '''经纪公司代码'''
         self.BrokerID = None
     
-        '''投资者帐号'''
-        self.AccountID = None
-    
-        '''上次质押金额'''
-        self.PreMortgage = None
-    
-        '''上次信用额度'''
-        self.PreCredit = None
-    
-        '''上次存款额'''
-        self.PreDeposit = None
-    
-        '''上次结算准备金'''
-        self.PreBalance = None
-    
-        '''上次占用的保证金'''
-        self.PreMargin = None
-    
-        '''利息基数'''
-        self.InterestBase = None
-    
-        '''利息收入'''
-        self.Interest = None
-    
-        '''入金金额'''
-        self.Deposit = None
-    
-        '''出金金额'''
-        self.Withdraw = None
-    
-        '''冻结的保证金'''
-        self.FrozenMargin = None
-    
-        '''冻结的资金'''
-        self.FrozenCash = None
-    
-        '''冻结的手续费'''
-        self.FrozenCommission = None
-    
-        '''当前保证金总额'''
-        self.CurrMargin = None
-    
-        '''资金差额'''
-        self.CashIn = None
-    
-        '''手续费'''
-        self.Commission = None
-    
-        '''平仓盈亏'''
-        self.CloseProfit = None
-    
-        '''持仓盈亏'''
-        self.PositionProfit = None
-    
-        '''期货结算准备金'''
-        self.Balance = None
-    
-        '''可用资金'''
-        self.Available = None
-    
-        '''可取资金'''
-        self.WithdrawQuota = None
-    
-        '''基本准备金'''
-        self.Reserve = None
-    
-        '''交易日'''
-        self.TradingDay = None
-    
-        '''结算编号'''
-        self.SettlementID = None
-    
-        '''信用额度'''
-        self.Credit = None
-    
-        '''质押金额'''
-        self.Mortgage = None
-    
-        '''交易所保证金'''
-        self.ExchangeMargin = None
-    
-        '''投资者交割保证金'''
-        self.DeliveryMargin = None
-    
-        '''交易所交割保证金'''
-        self.ExchangeDeliveryMargin = None
-    
-        '''保底期货结算准备金'''
-        self.ReserveBalance = None
-    
-        '''币种代码'''
-        self.CurrencyID = None
-    
-        '''上次货币质入金额'''
-        self.PreFundMortgageIn = None
-    
-        '''上次货币质出金额'''
-        self.PreFundMortgageOut = None
-    
-        '''货币质入金额'''
-        self.FundMortgageIn = None
-    
-        '''货币质出金额'''
-        self.FundMortgageOut = None
-    
-        '''货币质押余额'''
-        self.FundMortgageAvailable = None
-    
-        '''可质押货币金额'''
-        self.MortgageableFund = None
-    
-        '''特殊产品占用保证金'''
-        self.SpecProductMargin = None
-    
-        '''特殊产品冻结保证金'''
-        self.SpecProductFrozenMargin = None
-    
-        '''特殊产品手续费'''
-        self.SpecProductCommission = None
-    
-        '''特殊产品冻结手续费'''
-        self.SpecProductFrozenCommission = None
-    
-        '''特殊产品持仓盈亏'''
-        self.SpecProductPositionProfit = None
-    
-        '''特殊产品平仓盈亏'''
-        self.SpecProductCloseProfit = None
-    
-        '''根据持仓盈亏算法计算的特殊产品持仓盈亏'''
-        self.SpecProductPositionProfitByAlg = None
-    
-        '''特殊产品交易所保证金'''
-        self.SpecProductExchangeMargin = None
+        '''投资者代码'''
+        self.InvestorID = None
     
         self.__dict__.update(fields)
 
@@ -14451,193 +14631,18 @@ class CThostFtdcInstrumentMarginRateField:
 
 
 
-class CThostFtdcReqQueryAccountField:
+class CThostFtdcMarketDataAveragePriceField:
     '''
-    查询账户信息请求
+    成交均价
         
-        TradeCode 业务功能码 char[7] 
-        
-        BankID 银行代码 char[4] 
-        
-        BankBranchID 银行分支机构代码 char[5] 
-        
-        BrokerID 期商代码 char[11] 
-        
-        BrokerBranchID 期商分支机构代码 char[31] 
-        
-        TradeDate 交易日期 char[9] 
-        
-        TradeTime 交易时间 char[9] 
-        
-        BankSerial 银行流水号 char[13] 
-        
-        TradingDay 交易系统日期 char[9] 
-        
-        PlateSerial 银期平台消息流水号 int
-        
-        LastFragment 最后分片标志 char
-        
-        SessionID 会话号 int
-        
-        CustomerName 客户姓名 char[51] 
-        
-        IdCardType 证件类型 char
-        
-        IdentifiedCardNo 证件号码 char[51] 
-        
-        CustType 客户类型 char
-        
-        BankAccount 银行帐号 char[41] 
-        
-        BankPassWord 银行密码 char[41] 
-        
-        AccountID 投资者帐号 char[13] 
-        
-        Password 期货密码 char[41] 
-        
-        FutureSerial 期货公司流水号 int
-        
-        InstallID 安装编号 int
-        
-        UserID 用户标识 char[16] 
-        
-        VerifyCertNoFlag 验证客户证件号码标志 char
-        
-        CurrencyID 币种代码 char[4] 
-        
-        Digest 摘要 char[36] 
-        
-        BankAccType 银行帐号类型 char
-        
-        DeviceID 渠道标志 char[3] 
-        
-        BankSecuAccType 期货单位帐号类型 char
-        
-        BrokerIDByBank 期货公司银行编码 char[33] 
-        
-        BankSecuAcc 期货单位帐号 char[41] 
-        
-        BankPwdFlag 银行密码标志 char
-        
-        SecuPwdFlag 期货资金密码核对标志 char
-        
-        OperNo 交易柜员 char[17] 
-        
-        RequestID 请求编号 int
-        
-        TID 交易ID int
+        AveragePrice 当日均价 double
     '''
 
     def __init__(self,**fields):
         ''' '''
     
-        '''业务功能码'''
-        self.TradeCode = None
-    
-        '''银行代码'''
-        self.BankID = None
-    
-        '''银行分支机构代码'''
-        self.BankBranchID = None
-    
-        '''期商代码'''
-        self.BrokerID = None
-    
-        '''期商分支机构代码'''
-        self.BrokerBranchID = None
-    
-        '''交易日期'''
-        self.TradeDate = None
-    
-        '''交易时间'''
-        self.TradeTime = None
-    
-        '''银行流水号'''
-        self.BankSerial = None
-    
-        '''交易系统日期'''
-        self.TradingDay = None
-    
-        '''银期平台消息流水号'''
-        self.PlateSerial = None
-    
-        '''最后分片标志'''
-        self.LastFragment = None
-    
-        '''会话号'''
-        self.SessionID = None
-    
-        '''客户姓名'''
-        self.CustomerName = None
-    
-        '''证件类型'''
-        self.IdCardType = None
-    
-        '''证件号码'''
-        self.IdentifiedCardNo = None
-    
-        '''客户类型'''
-        self.CustType = None
-    
-        '''银行帐号'''
-        self.BankAccount = None
-    
-        '''银行密码'''
-        self.BankPassWord = None
-    
-        '''投资者帐号'''
-        self.AccountID = None
-    
-        '''期货密码'''
-        self.Password = None
-    
-        '''期货公司流水号'''
-        self.FutureSerial = None
-    
-        '''安装编号'''
-        self.InstallID = None
-    
-        '''用户标识'''
-        self.UserID = None
-    
-        '''验证客户证件号码标志'''
-        self.VerifyCertNoFlag = None
-    
-        '''币种代码'''
-        self.CurrencyID = None
-    
-        '''摘要'''
-        self.Digest = None
-    
-        '''银行帐号类型'''
-        self.BankAccType = None
-    
-        '''渠道标志'''
-        self.DeviceID = None
-    
-        '''期货单位帐号类型'''
-        self.BankSecuAccType = None
-    
-        '''期货公司银行编码'''
-        self.BrokerIDByBank = None
-    
-        '''期货单位帐号'''
-        self.BankSecuAcc = None
-    
-        '''银行密码标志'''
-        self.BankPwdFlag = None
-    
-        '''期货资金密码核对标志'''
-        self.SecuPwdFlag = None
-    
-        '''交易柜员'''
-        self.OperNo = None
-    
-        '''请求编号'''
-        self.RequestID = None
-    
-        '''交易ID'''
-        self.TID = None
+        '''当日均价'''
+        self.AveragePrice = None
     
         self.__dict__.update(fields)
 
@@ -15207,21 +15212,32 @@ class CThostFtdcMarketDataField:
 
 
 
-class CThostFtdcQryInvestorProductGroupMarginField:
+class CThostFtdcEWarrantOffsetField:
     '''
-    查询投资者品种/跨品种保证金
+    仓单折抵信息
+        
+        TradingDay 交易日期 char[9] 
         
         BrokerID 经纪公司代码 char[11] 
         
         InvestorID 投资者代码 char[13] 
         
-        ProductGroupID 品种/跨品种标示 char[31] 
+        ExchangeID 交易所代码 char[9] 
+        
+        InstrumentID 合约代码 char[31] 
+        
+        Direction 买卖方向 char
         
         HedgeFlag 投机套保标志 char
+        
+        Volume 数量 int
     '''
 
     def __init__(self,**fields):
         ''' '''
+    
+        '''交易日期'''
+        self.TradingDay = None
     
         '''经纪公司代码'''
         self.BrokerID = None
@@ -15229,11 +15245,20 @@ class CThostFtdcQryInvestorProductGroupMarginField:
         '''投资者代码'''
         self.InvestorID = None
     
-        '''品种/跨品种标示'''
-        self.ProductGroupID = None
+        '''交易所代码'''
+        self.ExchangeID = None
+    
+        '''合约代码'''
+        self.InstrumentID = None
+    
+        '''买卖方向'''
+        self.Direction = None
     
         '''投机套保标志'''
         self.HedgeFlag = None
+    
+        '''数量'''
+        self.Volume = None
     
         self.__dict__.update(fields)
 
@@ -15284,9 +15309,87 @@ class CThostFtdcUserIPField:
 
 
 
-class CThostFtdcRspFutureSignOutField:
+class CThostFtdcQryBrokerField:
     '''
-    期商签退响应
+    查询经纪公司
+        
+        BrokerID 经纪公司代码 char[11] 
+    '''
+
+    def __init__(self,**fields):
+        ''' '''
+    
+        '''经纪公司代码'''
+        self.BrokerID = None
+    
+        self.__dict__.update(fields)
+
+    def toDict(self):
+        ''' '''
+        return {k:v for k,v in self.__dict__.iteritems() if v != None}
+
+
+
+class CThostFtdcQryPartBrokerField:
+    '''
+    查询经纪公司会员代码
+        
+        ExchangeID 交易所代码 char[9] 
+        
+        BrokerID 经纪公司代码 char[11] 
+        
+        ParticipantID 会员代码 char[11] 
+    '''
+
+    def __init__(self,**fields):
+        ''' '''
+    
+        '''交易所代码'''
+        self.ExchangeID = None
+    
+        '''经纪公司代码'''
+        self.BrokerID = None
+    
+        '''会员代码'''
+        self.ParticipantID = None
+    
+        self.__dict__.update(fields)
+
+    def toDict(self):
+        ''' '''
+        return {k:v for k,v in self.__dict__.iteritems() if v != None}
+
+
+
+class CThostFtdcSettlementRefField:
+    '''
+    结算引用
+        
+        TradingDay 交易日 char[9] 
+        
+        SettlementID 结算编号 int
+    '''
+
+    def __init__(self,**fields):
+        ''' '''
+    
+        '''交易日'''
+        self.TradingDay = None
+    
+        '''结算编号'''
+        self.SettlementID = None
+    
+        self.__dict__.update(fields)
+
+    def toDict(self):
+        ''' '''
+        return {k:v for k,v in self.__dict__.iteritems() if v != None}
+
+
+
+class CThostFtdcReqFutureSignOutField:
+    '''
+    期商签退请求
         
         TradeCode 业务功能码 char[7] 
         
@@ -15329,10 +15432,6 @@ class CThostFtdcRspFutureSignOutField:
         RequestID 请求编号 int
         
         TID 交易ID int
-        
-        ErrorID 错误代码 int
-        
-        ErrorMsg 错误信息 char[81] 
     '''
 
     def __init__(self,**fields):
@@ -15400,115 +15499,6 @@ class CThostFtdcRspFutureSignOutField:
     
         '''交易ID'''
         self.TID = None
-    
-        '''错误代码'''
-        self.ErrorID = None
-    
-        '''错误信息'''
-        self.ErrorMsg = None
-    
-        self.__dict__.update(fields)
-
-    def toDict(self):
-        ''' '''
-        return {k:v for k,v in self.__dict__.iteritems() if v != None}
-
-
-
-class CThostFtdcQryPartBrokerField:
-    '''
-    查询经纪公司会员代码
-        
-        ExchangeID 交易所代码 char[9] 
-        
-        BrokerID 经纪公司代码 char[11] 
-        
-        ParticipantID 会员代码 char[11] 
-    '''
-
-    def __init__(self,**fields):
-        ''' '''
-    
-        '''交易所代码'''
-        self.ExchangeID = None
-    
-        '''经纪公司代码'''
-        self.BrokerID = None
-    
-        '''会员代码'''
-        self.ParticipantID = None
-    
-        self.__dict__.update(fields)
-
-    def toDict(self):
-        ''' '''
-        return {k:v for k,v in self.__dict__.iteritems() if v != None}
-
-
-
-class CThostFtdcSpecificInstrumentField:
-    '''
-    指定的合约
-        
-        InstrumentID 合约代码 char[31] 
-    '''
-
-    def __init__(self,**fields):
-        ''' '''
-    
-        '''合约代码'''
-        self.InstrumentID = None
-    
-        self.__dict__.update(fields)
-
-    def toDict(self):
-        ''' '''
-        return {k:v for k,v in self.__dict__.iteritems() if v != None}
-
-
-
-class CThostFtdcVerifyFuturePasswordAndCustInfoField:
-    '''
-    验证期货资金密码和客户信息
-        
-        CustomerName 客户姓名 char[51] 
-        
-        IdCardType 证件类型 char
-        
-        IdentifiedCardNo 证件号码 char[51] 
-        
-        CustType 客户类型 char
-        
-        AccountID 投资者帐号 char[13] 
-        
-        Password 期货密码 char[41] 
-        
-        CurrencyID 币种代码 char[4] 
-    '''
-
-    def __init__(self,**fields):
-        ''' '''
-    
-        '''客户姓名'''
-        self.CustomerName = None
-    
-        '''证件类型'''
-        self.IdCardType = None
-    
-        '''证件号码'''
-        self.IdentifiedCardNo = None
-    
-        '''客户类型'''
-        self.CustType = None
-    
-        '''投资者帐号'''
-        self.AccountID = None
-    
-        '''期货密码'''
-        self.Password = None
-    
-        '''币种代码'''
-        self.CurrencyID = None
     
         self.__dict__.update(fields)
 
@@ -15732,11 +15722,15 @@ class CThostFtdcReqDayEndFileReadyField:
 
 
 
-class CThostFtdcLoadSettlementInfoField:
+class CThostFtdcQryTradingAccountField:
     '''
-    装载结算信息
+    查询资金账户
         
         BrokerID 经纪公司代码 char[11] 
+        
+        InvestorID 投资者代码 char[13] 
+        
+        CurrencyID 币种代码 char[4] 
     '''
 
     def __init__(self,**fields):
@@ -15744,6 +15738,12 @@ class CThostFtdcLoadSettlementInfoField:
     
         '''经纪公司代码'''
         self.BrokerID = None
+    
+        '''投资者代码'''
+        self.InvestorID = None
+    
+        '''币种代码'''
+        self.CurrencyID = None
     
         self.__dict__.update(fields)
 
