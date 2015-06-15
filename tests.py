@@ -113,9 +113,6 @@ def test_SystemHighLoadWithoutTraderQueryIntervalOption():
 
 
 
-
-
-
 @attr('TraderChannel')
 @attr('test_TraderChannelCleanCTPProcess')
 def test_TraderChannelCleanCTPProcess():
