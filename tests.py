@@ -8,6 +8,8 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from time import sleep
 import psutil
+import subprocess
+import shlex
 
 def setup():
     '''
@@ -80,6 +82,38 @@ def test_QueryApiDelayMechanismCounterExample():
     result = traderChannel.QryTradingAccount(data)
     # 由于没有延迟设置所以调用不成功
     assert result[0] == -3,u'调用api返回错误(result[0]=%d,result[1]=%s)' % (result[0],result[1])
+
+
+
+@attr('TraderChannel')
+@attr('test_QueryApiDelayMechanism')
+@attr('test_SystemHighLoadWithoutTraderQueryIntervalOption')
+def test_SystemHighLoadWithoutTraderQueryIntervalOption():
+    '''
+    测试在系统高负荷情况下不使用转换器的流量控制选项,可能间歇性的出现错误
+    '''
+    ctpQueryInterval = 1
+    traderChannel = TraderChannel(
+        frontAddress,brokerID,userID,password,ctpQueryInterval=ctpQueryInterval,
+        timeout=10,useTraderQueryIntervalOption = False
+    )
+    data = CThostFtdcQryTradingAccountField()
+
+    # 模拟系统过载的情况
+    commandLine = shlex.split('stress --cpu 3 --io 3 --vm 8 --timeout 10')
+    subprocess.Popen(commandLine,stdout=open('/dev/null'))
+
+    # 连续调用10次查询api
+    for i in range(10):
+        result = traderChannel.QryTradingAccount(data)
+        if result[0] != 0 :
+            print result[1]
+        assert result[0] == 0
+
+
+
+
+
 
 
 @attr('TraderChannel')
