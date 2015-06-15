@@ -215,7 +215,7 @@ class TraderChannel :
 		traderProcessStartupTime = 1.5
 		self.lastQueryTime = datetime.now() - timedelta(seconds=ctpQueryInterval)
 		self.lastQueryTime +=  timedelta(seconds=traderProcessStartupTime)
-		self.queryInterval = ctpQueryInterval * 1000
+		self.queryIntervalMillisecond = ctpQueryInterval * 1000
 
 
 		# 为ctp转换器分配通讯管道地址
@@ -237,7 +237,7 @@ class TraderChannel :
 		]
 		if useTraderQueryIntervalOption:
 			commandLine.append('--queryInterval')
-			commandLine.append(str(self.queryInterval))
+			commandLine.append(str(self.queryIntervalMillisecond))
 
 		# 创建转换器子进程
 		traderStdout = open(fileOutput, 'w')
@@ -250,7 +250,7 @@ class TraderChannel :
 		socket.connect(self.requestPipe)
 		socket.setsockopt(zmq.LINGER,0)
 		self.request = socket
-		self.timeout = 1000 * timeout
+		self.timeoutMillisecond = 1000 * timeout
 
 		# 检查ctp通道是否建立，如果失败抛出异常
 		if not self.__testChannel():
@@ -326,7 +326,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -353,7 +353,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -430,7 +430,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -457,7 +457,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -528,7 +528,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -555,7 +555,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -632,7 +632,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -659,7 +659,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -736,7 +736,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -763,7 +763,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -840,7 +840,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -867,7 +867,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -938,7 +938,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -965,7 +965,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -1042,7 +1042,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -1069,7 +1069,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -1146,7 +1146,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -1173,7 +1173,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -1250,7 +1250,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -1277,7 +1277,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -1354,7 +1354,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -1381,7 +1381,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -1452,7 +1452,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -1479,7 +1479,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -1550,7 +1550,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -1577,7 +1577,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -1654,7 +1654,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -1681,7 +1681,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -1758,7 +1758,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -1785,7 +1785,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -1862,7 +1862,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -1889,7 +1889,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -1966,7 +1966,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -1993,7 +1993,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -2070,7 +2070,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -2097,7 +2097,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -2174,7 +2174,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -2201,7 +2201,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -2272,7 +2272,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -2299,7 +2299,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -2370,7 +2370,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -2397,7 +2397,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -2474,7 +2474,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -2501,7 +2501,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -2572,7 +2572,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -2599,7 +2599,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -2676,7 +2676,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -2703,7 +2703,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -2774,7 +2774,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -2801,7 +2801,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -2878,7 +2878,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -2905,7 +2905,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -2982,7 +2982,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -3009,7 +3009,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -3080,7 +3080,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -3107,7 +3107,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -3184,7 +3184,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -3211,7 +3211,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -3282,7 +3282,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -3309,7 +3309,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -3380,7 +3380,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -3407,7 +3407,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -3484,7 +3484,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -3511,7 +3511,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -3582,7 +3582,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -3609,7 +3609,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -3686,7 +3686,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -3713,7 +3713,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -3790,7 +3790,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -3817,7 +3817,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -3894,7 +3894,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -3921,7 +3921,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -3998,7 +3998,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -4025,7 +4025,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -4102,7 +4102,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -4129,7 +4129,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -4206,7 +4206,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -4233,7 +4233,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -4310,7 +4310,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -4337,7 +4337,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -4414,7 +4414,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -4441,7 +4441,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -4512,7 +4512,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -4539,7 +4539,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -4616,7 +4616,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -4643,7 +4643,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -4720,7 +4720,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -4747,7 +4747,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -4824,7 +4824,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -4851,7 +4851,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -4928,7 +4928,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -4955,7 +4955,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -5032,7 +5032,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -5059,7 +5059,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -5136,7 +5136,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -5163,7 +5163,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -5240,7 +5240,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -5267,7 +5267,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
@@ -5338,7 +5338,7 @@ class TraderChannel :
 		# 读取服务
 		poller = zmq.Poller()
 		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeout))
+		sockets = dict(poller.poll(self.timeoutMillisecond))
 		if not (self.request in sockets) :
 			return ResponseTimeOut
 
@@ -5365,7 +5365,7 @@ class TraderChannel :
 		# 循环读取所有数据
 		respnoseDataList = []
 		while(True):
-			sockets = dict(poller.poll(self.timeout))
+			sockets = dict(poller.poll(self.timeoutMillisecond))
 			if not (self.request in sockets) :
 				return ResponseTimeOut
 
