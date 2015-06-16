@@ -108,13 +108,17 @@ def test_SystemHighLoadWithoutTraderQueryIntervalOption():
     # 启动转换器的流量控制功能调用就能成功
     traderChannel = TraderChannel(
         frontAddress,brokerID,userID,password,queryInterval = 0,
-        converterQueryInterval = 1
+        timeout=5,converterQueryInterval = 1
     )
     data = CThostFtdcQryTradingAccountField()
     # 连续调用2次查询api
     result = traderChannel.QryTradingAccount(data)
+    if result[0] != 0:
+        print result[1]
     assert result[0] == 0
     result = traderChannel.QryTradingAccount(data)
+    if result[0] != 0:
+        print result[1]
     assert result[0] == 0
 
 
