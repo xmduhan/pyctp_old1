@@ -111,8 +111,6 @@ def test_SystemHighLoadWithoutTraderQueryIntervalOption():
         converterQueryInterval = 1
     )
     data = CThostFtdcQryTradingAccountField()
-    # 由于将queryInterval设为0,破坏查询等待机制,需要等待一下,否则连第1个查询都会出错
-    #sleep(1)
     # 连续调用2次查询api
     result = traderChannel.QryTradingAccount(data)
     assert result[0] == 0
