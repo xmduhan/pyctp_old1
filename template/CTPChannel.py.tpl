@@ -189,7 +189,7 @@ class TraderChannel :
 
 
 	def __init__(self,frontAddress,brokerID,userID,password,fileOutput='/dev/null'
-		,ctpQueryInterval=1,timeout=1,useTraderQueryIntervalOption=True):
+		,queryInterval=1,timeout=1,useTraderQueryIntervalOption=True):
 		'''
 		初始化过程:
 		1.创建ctp转换器进程
@@ -202,20 +202,20 @@ class TraderChannel :
 		userID   用户编号
 		password   密码
 		fileOutput   ctp trader通讯进程的日志信息的保存路径,默认抛弃('/dev/null')
-		ctpQueryInterval  查询间隔时间(单位:秒)
+		queryInterval  查询间隔时间(单位:秒)
 		timeout 等待响应时间(单位:秒)
 		useTraderQueryIntervalOption 是否使用转换器级的流量控制,实际使用应该开启,增加此选项主要是方便测试
 		'''
 		# 设置上次查询时间
-		self.ctpQueryInterval = ctpQueryInterval
+		self.queryInterval = queryInterval
 		# NOTE:虽然这里之前没有ctp query请求,仍然要预留等待时间,是由于启动转化器进程是需要时
 		# 间的,转化器此时还无法响应请求,而初始化过程马上就发出一个查询请,以测试通道是否通畅,
 		# 该请求会在zmq队列中排队,排队时间也是计时的.而ctp流量控制计算的是发向服务器的时间,
 		# 是不是送到zmq消息队列的时间.所以这里要考虑ctp trader转换器的时间这里暂定为1秒
 		traderProcessStartupTime = 1.5
-		self.lastQueryTime = datetime.now() - timedelta(seconds=ctpQueryInterval)
+		self.lastQueryTime = datetime.now() - timedelta(seconds=queryInterval)
 		self.lastQueryTime +=  timedelta(seconds=traderProcessStartupTime)
-		self.queryIntervalMillisecond = ctpQueryInterval * 1000
+		self.queryIntervalMillisecond = queryInterval * 1000
 
 
 		# 为ctp转换器分配通讯管道地址
@@ -272,7 +272,7 @@ class TraderChannel :
 		'''
 		获取查询需要等待的时间
 		'''
-		needWait = self.ctpQueryInterval - (datetime.now() - self.lastQueryTime).total_seconds()
+		needWait = self.queryInterval - (datetime.now() - self.lastQueryTime).total_seconds()
 		if needWait > 0 :
 			return needWait
 		else:

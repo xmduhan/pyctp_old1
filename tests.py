@@ -37,9 +37,9 @@ def test_QueryApiDelayMechanism():
     '''
     测试query api的延迟机制
     '''
-    ctpQueryInterval = 1.1
+    queryInterval = 1.1
     traderChannel = TraderChannel(
-        frontAddress,brokerID,userID,password,ctpQueryInterval=ctpQueryInterval
+        frontAddress,brokerID,userID,password,queryInterval=queryInterval
     )
     data = CThostFtdcQryTradingAccountField()
     # 第1次调用api
@@ -56,7 +56,7 @@ def test_QueryApiDelayMechanism():
     assert executeTime > queryWaitTime
     assert executeTime - queryWaitTime < .1
     # 确定第2次调用进行了延迟操作
-    assert executeTime > (ctpQueryInterval * 0.9) ,u'延迟调用没有生效'
+    assert executeTime > (queryInterval * 0.9) ,u'延迟调用没有生效'
     # 检查返回是否成功
     assert result[0] == 0, u'调用api返回错误(result[0]=%d,result[1]=%s)' % (result[0],result[1])
 
@@ -69,9 +69,9 @@ def test_QueryApiDelayMechanismCounterExample():
     '''
     延迟机制的反向测试用例
     '''
-    ctpQueryInterval = 0
+    queryInterval = 0
     traderChannel = TraderChannel(
-        frontAddress,brokerID,userID,password,ctpQueryInterval=ctpQueryInterval
+        frontAddress,brokerID,userID,password,queryInterval=queryInterval
     )
     data = CThostFtdcQryTradingAccountField()
     sleep(1)
@@ -92,16 +92,16 @@ def test_SystemHighLoadWithoutTraderQueryIntervalOption():
     '''
     测试在系统高负荷情况下不使用转换器的流量控制选项,可能间歇性的出现错误
     '''
-    ctpQueryInterval = 1
+    queryInterval = 1
     traderChannel = TraderChannel(
-        frontAddress,brokerID,userID,password,ctpQueryInterval=ctpQueryInterval,
+        frontAddress,brokerID,userID,password,queryInterval=queryInterval,
         timeout=10,useTraderQueryIntervalOption = False
     )
     data = CThostFtdcQryTradingAccountField()
 
     # 模拟系统过载的情况
-    commandLine = shlex.split('stress --cpu 3 --io 3 --vm 8 --timeout 10')
-    subprocess.Popen(commandLine,stdout=open('/dev/null'))
+    #commandLine = shlex.split('stress --cpu 3 --io 3 --vm 8 --timeout 10')
+    #subprocess.Popen(commandLine,stdout=open('/dev/null'))
 
     # 连续调用10次查询api
     for i in range(10):
@@ -165,18 +165,17 @@ def test_TraderChannelStartupStressTest():
 
 
 
-
 @attr('TraderChannelPool')
 @attr('test_TraderChannelPoolForFaster')
 def test_TraderChannelPoolForFaster():
     '''
     测试使用TraderChannelPool为查询api加速
     '''
-    ctpQueryInterval = 1.1
+    queryInterval = 1.1
 
     # 使用TraderChannel
     traderChannel = TraderChannel(
-        frontAddress,brokerID,userID,password,ctpQueryInterval=ctpQueryInterval
+        frontAddress,brokerID,userID,password,queryInterval=queryInterval
     )
     data = CThostFtdcQryTradingAccountField()
     beginTime = datetime.now()
@@ -190,7 +189,7 @@ def test_TraderChannelPoolForFaster():
 
     # 使用TraderChannelPool
     traderChannelPool = TraderChannelPool(
-        frontAddress,brokerID,userID,password,nChannel=5,ctpQueryInterval=ctpQueryInterval
+        frontAddress,brokerID,userID,password,nChannel=5,queryInterval=queryInterval
     )
     data = CThostFtdcQryTradingAccountField()
     beginTime = datetime.now()
