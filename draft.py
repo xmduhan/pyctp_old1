@@ -14,15 +14,20 @@
 1、实现一个实验性的TraderChannelPool(ok)
 1、延迟响应机制和TraderChannelPool的测试用例(ok)
 1、TraderChannel进程清理的测试用例(ok)
+1、行情api的测试用例(ok)
 
 #%% 待处理
-test_SystemHighLoadWithoutTraderQueryIntervalOption = 
-1、去掉TraderChannel流量控制机制，仅保留最后查询时间(看来还不能去掉)
-1、行情api的测试用例
-1、按照实际交易的需求编写一个测试用例集合
+
+1、不同的convert进程如果同时启动会产生.con文件会不会出现冲突的问题?
 1、打开的文件没有关闭会不会有问题
 1、TraderChannelPool多个Channel写同一个文件会不会有问题
+1、按照实际交易的需求编写一个测试用例集合
+1、增加异步功能api,同时增加同步api的容错能力
 1、使用pep8修改代码
+
+
+#%% 暂缓
+1、去掉TraderChannel流量控制机制，仅保留最后查询时间(看来还不能去掉)
 
 #%% 启动trader进程的测试代码
 import uuid
