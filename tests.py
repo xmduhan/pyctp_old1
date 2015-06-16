@@ -69,9 +69,8 @@ def test_QueryApiDelayMechanismCounterExample():
     '''
     延迟机制的反向测试用例
     '''
-    queryInterval = 0
     traderChannel = TraderChannel(
-        frontAddress,brokerID,userID,password,queryInterval=queryInterval
+        frontAddress,brokerID,userID,password,queryInterval=0
     )
     data = CThostFtdcQryTradingAccountField()
     sleep(1)
@@ -79,9 +78,13 @@ def test_QueryApiDelayMechanismCounterExample():
     result = traderChannel.QryTradingAccount(data)
     assert result[0] == 0, u'调用api返回错误(result[0]=%d,result[1]=%s)' % (result[0],result[1])
     # 第1次调用api
-    result = traderChannel.QryTradingAccount(data)
-    # 由于没有延迟设置所以调用不成功
-    assert result[0] == -3,u'调用api返回错误(result[0]=%d,result[1]=%s)' % (result[0],result[1])
+    for i in range(10):
+        result = traderChannel.QryTradingAccount(data)
+        # 由于没有延迟设置所以调用不成功
+        if result[0] == -3:
+            break
+    else :
+        raise Exception(u'没有发生预期的流量控制错误')
 
 
 
@@ -102,8 +105,13 @@ def test_SystemHighLoadWithoutTraderQueryIntervalOption():
     # 连续调用2次查询api
     result = traderChannel.QryTradingAccount(data)
     assert result[0] == 0
-    result = traderChannel.QryTradingAccount(data)
-    assert result[0] == -3
+    for i in range(10):
+        result = traderChannel.QryTradingAccount(data)
+        # 由于没有延迟设置所以调用不成功
+        if result[0] == -3:
+            break
+    else :
+        raise Exception(u'没有发生预期的流量控制错误')
 
     # 启动转换器的流量控制功能调用就能成功
     traderChannel = TraderChannel(
