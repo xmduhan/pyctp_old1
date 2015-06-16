@@ -189,7 +189,7 @@ class TraderChannel :
 
 
 	def __init__(self,frontAddress,brokerID,userID,password,fileOutput='/dev/null'
-		,queryInterval=1,timeout=1,converterQueryInterval=None):
+		,queryInterval=1,timeout=3,converterQueryInterval=None):
 		'''
 		初始化过程:
 		1.创建ctp转换器进程
