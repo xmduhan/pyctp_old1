@@ -189,7 +189,7 @@ class TraderChannel :
 
 
 	def __init__(self,frontAddress,brokerID,userID,password,fileOutput='/dev/null'
-		,queryInterval=1,timeout=1,useTraderQueryIntervalOption=True):
+		,queryInterval=1,timeout=1,converterQueryInterval=None):
 		'''
 		初始化过程:
 		1.创建ctp转换器进程
@@ -204,7 +204,7 @@ class TraderChannel :
 		fileOutput   ctp trader通讯进程的日志信息的保存路径,默认抛弃('/dev/null')
 		queryInterval  查询间隔时间(单位:秒)
 		timeout 等待响应时间(单位:秒)
-		useTraderQueryIntervalOption 是否使用转换器级的流量控制,实际使用应该开启,增加此选项主要是方便测试
+		converterQueryInterval 转换器的流量控制时间间隔(单位:秒),如果为None默认取queryInterval
 		'''
 		# 设置上次查询时间
 		self.queryInterval = queryInterval
@@ -215,8 +215,11 @@ class TraderChannel :
 		traderProcessStartupTime = 1.5
 		self.lastQueryTime = datetime.now() - timedelta(seconds=queryInterval)
 		self.lastQueryTime +=  timedelta(seconds=traderProcessStartupTime)
-		self.queryIntervalMillisecond = queryInterval * 1000
 
+		self.queryIntervalMillisecond = int(queryInterval * 1000)
+		if converterQueryInterval == None :
+			converterQueryInterval = queryInterval
+		self.converterQueryIntervalMillisecond = int(converterQueryInterval * 1000)
 
 		# 为ctp转换器分配通讯管道地址
 		self.requestPipe = mallocIpcAddress()
@@ -233,11 +236,8 @@ class TraderChannel :
 		'--PushbackPipe', self.pushbackPipe,
 		'--PublishPipe', self.publishPipe,
 		'--loyalty',
-		#'--queryInterval',str(queryIntervalMillisecond)
+		'--queryInterval',str(self.converterQueryIntervalMillisecond)
 		]
-		if useTraderQueryIntervalOption:
-			commandLine.append('--queryInterval')
-			commandLine.append(str(self.queryIntervalMillisecond))
 
 		# 创建转换器子进程
 		traderStdout = open(fileOutput, 'w')

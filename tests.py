@@ -90,27 +90,34 @@ def test_QueryApiDelayMechanismCounterExample():
 @attr('test_SystemHighLoadWithoutTraderQueryIntervalOption')
 def test_SystemHighLoadWithoutTraderQueryIntervalOption():
     '''
-    测试在系统高负荷情况下不使用转换器的流量控制选项,可能间歇性的出现错误
+    测试在系统高负荷情况下出现查询请求排队的现象
     '''
-    queryInterval = 1
+    # 模拟两个查询请求同时到达队列,但没有启用转换器的流量控制功能
+    # NOTE 默认情况下转换器流量控制延迟和queryInterval一致
     traderChannel = TraderChannel(
-        frontAddress,brokerID,userID,password,queryInterval=queryInterval,
-        timeout=10,useTraderQueryIntervalOption = False
+        frontAddress,brokerID,userID,password,queryInterval = 0)
+    data = CThostFtdcQryTradingAccountField()
+    # 由于将queryInterval设为0,破坏查询等待机制,需要等待一下,否则连第1个查询都会出错
+    sleep(1)
+    # 连续调用2次查询api
+    result = traderChannel.QryTradingAccount(data)
+    assert result[0] == 0
+    result = traderChannel.QryTradingAccount(data)
+    assert result[0] == -3
+
+    # 启动转换器的流量控制功能调用就能成功
+    traderChannel = TraderChannel(
+        frontAddress,brokerID,userID,password,queryInterval = 0,
+        converterQueryInterval = 1
     )
     data = CThostFtdcQryTradingAccountField()
-
-    # 模拟系统过载的情况
-    #commandLine = shlex.split('stress --cpu 3 --io 3 --vm 8 --timeout 10')
-    #subprocess.Popen(commandLine,stdout=open('/dev/null'))
-
-    # 连续调用10次查询api
-    for i in range(10):
-        result = traderChannel.QryTradingAccount(data)
-        if result[0] != 0 :
-            print result[1]
-        assert result[0] == 0
-
-
+    # 由于将queryInterval设为0,破坏查询等待机制,需要等待一下,否则连第1个查询都会出错
+    #sleep(1)
+    # 连续调用2次查询api
+    result = traderChannel.QryTradingAccount(data)
+    assert result[0] == 0
+    result = traderChannel.QryTradingAccount(data)
+    assert result[0] == 0
 
 
 @attr('TraderChannel')
