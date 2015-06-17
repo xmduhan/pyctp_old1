@@ -243,7 +243,7 @@ def test_TraderChannelPoolForFaster():
     assert executeTime < 1.5
 
 
-@attr('MdChannelPool')
+@attr('MdChannel')
 @attr('test_MdChannelCreate')
 def test_MdChannelCreate():
     '''
@@ -255,3 +255,22 @@ def test_MdChannelCreate():
     assert isinstance(result,CThostFtdcDepthMarketDataField)
     data = result.toDict()
     assert data['InstrumentID'] == instrumentID
+
+
+@attr('MdChannel')
+@attr('TraderChannel')
+@attr('TraderChannelPool')
+@attr('test_ChannelClassUseWithStatment')
+def test_ChannelClassUseWithStatment():
+    '''
+    确认Channel相关对象可以使用with语句
+    '''
+    with TraderChannel(frontAddress,brokerID,userID,password) as traderChannel:
+        pass
+
+    with TraderChannelPool(frontAddress,brokerID,userID,password) as traderChannelPool:
+        pass
+
+    instrumentID = datetime.strftime(datetime.now() + relativedelta(months=1),"IF%y%m")
+    with MdChannel(mdFrontAddress,brokerID,userID,password,[instrumentID]) as mdChannel:
+        pass

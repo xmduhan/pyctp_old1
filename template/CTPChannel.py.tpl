@@ -130,6 +130,17 @@ class MdChannel :
 			raise Exception(u'无法建立ctp连接,具体错误请查看ctp转换器的日志信息')
 
 
+	def __enter__(self):
+		''' 让MdChannel可以使用with语句 '''
+		#print '__enter__():被调用'
+		pass
+
+
+	def __exit__(self, type, value, tb):
+		''' 让MdChannel可以使用with语句 '''
+		#print '__exit__():被调用',type,value,tb
+		pass
+
 
 	def __del__(self):
 		'''
@@ -137,7 +148,6 @@ class MdChannel :
 		1.结束ctp转换器进程
 		'''
 		self.__delTraderProcess()
-
 
 
 	def readMarketData(self,timeout=1):
@@ -257,6 +267,18 @@ class TraderChannel :
 			self.__delTraderProcess()
 			raise Exception('无法建立ctp连接,具体错误请查看ctp转换器的日志信息')
 			#raise Exception('''can't not connect to ctp server.''')
+
+
+	def __enter__(self):
+		''' 让TraderChannel可以使用with语句 '''
+		#print '__enter__():被调用'
+		pass
+
+
+	def __exit__(self, type, value, tb):
+		''' 让TraderChannel可以使用with语句 '''
+		#print '__exit__():被调用',type,value,tb
+		pass
 
 
 	def __del__(self):

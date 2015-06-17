@@ -26,6 +26,24 @@ class TraderChannelPool:
                 fileOutput=fileOutput,queryInterval=queryInterval)
             self.pool.append(traderPool)
 
+    def testfunction(self):
+        pass
+
+    def __enter__(self):
+        ''' 让TraderChannelPool可以使用with语句 '''
+        #print '__enter__():被调用'
+        pass
+
+
+    def __exit__(self, type, value, tb):
+        ''' 让TraderChannelPool可以使用with语句 '''
+        #print '__exit__():被调用',type,value,tb
+        pass
+
+    def __del__(self):
+        ''' 对象销毁的处理 '''
+        pass
+
 
     def getQueryWaitTime(self):
         '''
