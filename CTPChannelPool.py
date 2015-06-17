@@ -32,7 +32,7 @@ class TraderChannelPool:
     def __enter__(self):
         ''' 让TraderChannelPool可以使用with语句 '''
         #print '__enter__():被调用'
-        pass
+        return self
 
 
     def __exit__(self, type, value, tb):

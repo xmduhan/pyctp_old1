@@ -266,11 +266,11 @@ def test_ChannelClassUseWithStatment():
     确认Channel相关对象可以使用with语句
     '''
     with TraderChannel(frontAddress,brokerID,userID,password) as traderChannel:
-        pass
+        assert traderChannel
 
     with TraderChannelPool(frontAddress,brokerID,userID,password) as traderChannelPool:
-        pass
+        assert traderChannelPool
 
     instrumentID = datetime.strftime(datetime.now() + relativedelta(months=1),"IF%y%m")
     with MdChannel(mdFrontAddress,brokerID,userID,password,[instrumentID]) as mdChannel:
-        pass
+        assert mdChannel

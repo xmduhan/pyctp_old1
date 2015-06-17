@@ -133,7 +133,7 @@ class MdChannel :
 	def __enter__(self):
 		''' 让MdChannel可以使用with语句 '''
 		#print '__enter__():被调用'
-		pass
+		return self
 
 
 	def __exit__(self, type, value, tb):
@@ -272,7 +272,7 @@ class TraderChannel :
 	def __enter__(self):
 		''' 让TraderChannel可以使用with语句 '''
 		#print '__enter__():被调用'
-		pass
+		return self
 
 
 	def __exit__(self, type, value, tb):
