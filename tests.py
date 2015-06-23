@@ -33,7 +33,8 @@ def setup():
 
 @attr('TraderChannel')
 @attr('test_QueryApiDelayMechanism')
-def test_QueryApiDelayMechanism():
+@attr('test_QueryApiDelayMechanismBasicTest')
+def test_QueryApiDelayMechanismBasicTest():
     '''
     测试query api的延迟机制
     '''

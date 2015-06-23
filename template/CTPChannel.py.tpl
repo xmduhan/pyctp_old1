@@ -72,12 +72,13 @@ class MdChannel :
 		'''
 		清除trader转换器进程
 		'''
-		self.mdProcess.kill()
-		self.mdProcess.wait()
+		if hasattr(self, 'mdProcess'):
+			self.mdProcess.kill()
+			self.mdProcess.wait()
 
 
 
-	def __init__(self,frontAddress,brokerID,userID,password,instrumentIdList,fileOutput='/dev/null'):
+	def __init__(self,frontAddress,brokerID,userID,password,instrumentIdList):
 		'''
 		1.创建ctp转换器进程
 		2.创建和ctp通讯进程的通讯管道
@@ -124,9 +125,10 @@ class MdChannel :
 		]
 
 		# 创建转换器子进程
+		fileOutput = os.path.join(self.workdir,'md.log')
 		traderStdout = open(fileOutput, 'w')
 		#self.mdProcess = subprocess.Popen(commandLine,stdout=traderStdout
-		self.mdProcess = subprocess.Popen(commandLine,stdout=traderStdout,cwd=tempfile.mkdtemp())
+		self.mdProcess = subprocess.Popen(commandLine,stdout=traderStdout,cwd=self.workdir)
 
 		# 检查ctp通道是否建立，如果失败抛出异常
 		if not self.__testChannel():
@@ -202,8 +204,8 @@ class TraderChannel :
 		self.traderProcess.wait()
 
 
-	def __init__(self,frontAddress,brokerID,userID,password,fileOutput='/dev/null'
-		,queryInterval=1,timeout=3,converterQueryInterval=None):
+	def __init__(self,frontAddress,brokerID,userID,password,
+		queryInterval=1,timeout=3,converterQueryInterval=None):
 		'''
 		初始化过程:
 		1.创建ctp转换器进程
@@ -257,9 +259,10 @@ class TraderChannel :
 		]
 
 		# 创建转换器子进程
+		fileOutput = os.path.join(self.workdir,'trader.log')
 		traderStdout = open(fileOutput, 'w')
 		#self.traderProcess = subprocess.Popen(commandLine,stdout=traderStdout)
-		self.traderProcess = subprocess.Popen(commandLine,stdout=traderStdout,cwd=tempfile.mkdtemp())
+		self.traderProcess = subprocess.Popen(commandLine,stdout=traderStdout,cwd=self.workdir)
 
 		# 创建请求通讯通道
 		context = zmq.Context()
