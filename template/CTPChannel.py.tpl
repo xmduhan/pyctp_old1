@@ -200,8 +200,9 @@ class TraderChannel :
 		'''
 		清除trader转换器进程
 		'''
-		self.traderProcess.kill()
-		self.traderProcess.wait()
+		if hasattr(self, 'traderProcess'):
+			self.traderProcess.kill()
+			self.traderProcess.wait()
 
 
 	def __init__(self,frontAddress,brokerID,userID,password,
