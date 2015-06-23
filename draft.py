@@ -15,12 +15,14 @@
 1、延迟响应机制和TraderChannelPool的测试用例(ok)
 1、TraderChannel进程清理的测试用例(ok)
 1、行情api的测试用例(ok)
+1、不同的convert进程如果同时启动会产生.con文件会不会出现冲突的问题?(ok)
+1、TraderChannelPool多个Channel写同一个文件会不会有问题(ok)
 
 #%% 待处理（问题列表）
 1、为MdChannel，TraderChannel增加__exit__和__enter__
-1、不同的convert进程如果同时启动会产生.con文件会不会出现冲突的问题?
+
 1、打开的文件没有关闭会不会有问题
-1、TraderChannelPool多个Channel写同一个文件会不会有问题
+
 1、按照实际交易的需求编写一个测试用例集合
 1、增加异步功能api,同时增加同步api的容错能力
 1、convert启动是否完成需要通过检查日志，而不是设定延时
