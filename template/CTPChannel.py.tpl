@@ -89,7 +89,6 @@ class MdChannel :
 		userID   用户Id
 		password   密码
 		instrumentIdList   需要订阅的品种的Id列表
-		fileOutput   ctp trader通讯进程的日志信息的保存路径,默认抛弃('/dev/null')
 		'''
 		# 创建临时工作目录
 		self.workdir = tempfile.mkdtemp()
@@ -206,7 +205,7 @@ class TraderChannel :
 
 
 	def __init__(self,frontAddress,brokerID,userID,password,
-		queryInterval=1,timeout=3,converterQueryInterval=None):
+		queryInterval=1,timeout=10,converterQueryInterval=None):
 		'''
 		初始化过程:
 		1.创建ctp转换器进程
@@ -218,7 +217,6 @@ class TraderChannel :
 		brokerID   代理商编号
 		userID   用户编号
 		password   密码
-		fileOutput   ctp trader通讯进程的日志信息的保存路径,默认抛弃('/dev/null')
 		queryInterval  查询间隔时间(单位:秒)
 		timeout 等待响应时间(单位:秒)
 		converterQueryInterval 转换器的流量控制时间间隔(单位:秒),如果为None默认取queryInterval

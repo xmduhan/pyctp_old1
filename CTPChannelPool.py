@@ -9,8 +9,7 @@ class TraderChannelPool:
     的通道中去执行,突破ctp trader api的流量控制限制.
     目前还不清楚ctp正式环境账号多次登录是否可行,该方法是否可能需要进一步验证
     '''
-    def __init__(self,frontAddress,brokerID,userID,password,nChannel=2,
-        fileOutput='/dev/null',queryInterval=1):
+    def __init__(self,frontAddress,brokerID,userID,password,nChannel=2,queryInterval=1):
         '''
         参数:
         frontAddress   ctp服务器地址
@@ -23,7 +22,7 @@ class TraderChannelPool:
         self.pool = []
         for i in range(nChannel):
             traderPool = TraderChannel(frontAddress,brokerID,userID,password,
-                fileOutput=fileOutput,queryInterval=queryInterval)
+                queryInterval=queryInterval)
             self.pool.append(traderPool)
 
     def testfunction(self):

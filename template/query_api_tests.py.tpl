@@ -56,6 +56,7 @@ def test_{{ method['name'][3:]}}():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_{{ method['name'][3:]}}():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 

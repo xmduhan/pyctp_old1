@@ -56,6 +56,7 @@ def test_QryTradingAccount():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryTradingAccount():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -94,6 +95,7 @@ def test_QryCFMMCTradingAccountKey():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryCFMMCTradingAccountKey():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -134,6 +136,7 @@ def test_QryTradingNotice():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryTradingNotice():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -172,6 +175,7 @@ def test_QryTrade():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryTrade():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -210,6 +214,7 @@ def test_QueryMaxOrderVolume():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QueryMaxOrderVolume():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -250,6 +255,7 @@ def test_QryInvestorPosition():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryInvestorPosition():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -288,6 +294,7 @@ def test_QryBrokerTradingAlgos():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryBrokerTradingAlgos():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -326,6 +333,7 @@ def test_QryOrder():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryOrder():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -364,6 +372,7 @@ def test_QryExchange():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryExchange():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -406,6 +415,7 @@ def test_QryExchangeRate():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryExchangeRate():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -444,6 +454,7 @@ def test_QryInvestorPositionDetail():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryInvestorPositionDetail():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -482,6 +493,7 @@ def test_QrySettlementInfoConfirm():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QrySettlementInfoConfirm():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -520,6 +532,7 @@ def test_QryBrokerTradingParams():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryBrokerTradingParams():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -558,6 +571,7 @@ def test_QueryCFMMCTradingAccountToken():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QueryCFMMCTradingAccountToken():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -596,6 +610,7 @@ def test_QryNotice():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryNotice():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -638,6 +653,7 @@ def test_QryInvestorPositionCombineDetail():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryInvestorPositionCombineDetail():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -678,6 +694,7 @@ def test_QrySecAgentACIDMap():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QrySecAgentACIDMap():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -718,6 +735,7 @@ def test_QueryBankAccountMoneyByFuture():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QueryBankAccountMoneyByFuture():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -756,6 +774,7 @@ def test_QryParkedOrderAction():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryParkedOrderAction():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -796,6 +815,7 @@ def test_QryExchangeMarginRate():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryExchangeMarginRate():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -838,6 +858,7 @@ def test_QryInstrument():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryInstrument():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -878,6 +899,7 @@ def test_QryInstrumentCommissionRate():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryInstrumentCommissionRate():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -916,6 +938,7 @@ def test_QryInstrumentMarginRate():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryInstrumentMarginRate():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -954,6 +977,7 @@ def test_QryInvestor():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryInvestor():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -992,6 +1016,7 @@ def test_QryExchangeMarginRateAdjust():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryExchangeMarginRateAdjust():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -1030,6 +1055,7 @@ def test_QryInvestorProductGroupMargin():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryInvestorProductGroupMargin():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -1068,6 +1094,7 @@ def test_QryEWarrantOffset():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryEWarrantOffset():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -1106,6 +1133,7 @@ def test_QryDepthMarketData():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryDepthMarketData():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -1144,6 +1172,7 @@ def test_QryTransferBank():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryTransferBank():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -1184,6 +1213,7 @@ def test_QryProduct():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryProduct():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -1222,6 +1252,7 @@ def test_QryTradingCode():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryTradingCode():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -1260,6 +1291,7 @@ def test_QrySettlementInfo():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QrySettlementInfo():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -1298,6 +1330,7 @@ def test_QryAccountregister():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryAccountregister():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -1336,6 +1369,7 @@ def test_QryParkedOrder():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryParkedOrder():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -1374,6 +1408,7 @@ def test_QryTransferSerial():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryTransferSerial():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
@@ -1412,6 +1447,7 @@ def test_QryContractBank():
         print u'出错:','errorID=',errorID,'errorMsg=',errorMsg
 
     print u'test_QryContractBank():请求完成'
+    print errorID,errorMsg
 
     assert errorID == 0 or errorMsg== u'CTP:无此权限',u'请求失败'
 
