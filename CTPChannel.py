@@ -90,6 +90,9 @@ class MdChannel :
 		instrumentIdList   需要订阅的品种的Id列表
 		fileOutput   ctp trader通讯进程的日志信息的保存路径,默认抛弃('/dev/null')
 		'''
+		# 创建临时工作目录
+		self.workdir = tempfile.mkdtemp()
+
 		# 为ctp md转换器分配通讯管道地址
 		self.pushbackPipe = mallocIpcAddress()
 		self.publishPipe = mallocIpcAddress()
@@ -122,7 +125,8 @@ class MdChannel :
 
 		# 创建转换器子进程
 		traderStdout = open(fileOutput, 'w')
-		self.mdProcess = subprocess.Popen(commandLine,stdout=traderStdout)
+		#self.mdProcess = subprocess.Popen(commandLine,stdout=traderStdout
+		self.mdProcess = subprocess.Popen(commandLine,stdout=traderStdout,cwd=tempfile.mkdtemp())
 
 		# 检查ctp通道是否建立，如果失败抛出异常
 		if not self.__testChannel():
@@ -216,6 +220,9 @@ class TraderChannel :
 		timeout 等待响应时间(单位:秒)
 		converterQueryInterval 转换器的流量控制时间间隔(单位:秒),如果为None默认取queryInterval
 		'''
+		# 创建临时工作目录
+		self.workdir = tempfile.mkdtemp()
+
 		# 设置上次查询时间
 		self.queryInterval = queryInterval
 		# NOTE:虽然这里之前没有ctp query请求,仍然要预留等待时间,是由于启动转化器进程是需要时
@@ -251,7 +258,8 @@ class TraderChannel :
 
 		# 创建转换器子进程
 		traderStdout = open(fileOutput, 'w')
-		self.traderProcess = subprocess.Popen(commandLine,stdout=traderStdout)
+		#self.traderProcess = subprocess.Popen(commandLine,stdout=traderStdout)
+		self.traderProcess = subprocess.Popen(commandLine,stdout=traderStdout,cwd=tempfile.mkdtemp())
 
 		# 创建请求通讯通道
 		context = zmq.Context()

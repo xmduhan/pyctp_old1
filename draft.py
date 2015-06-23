@@ -184,25 +184,13 @@ timeDelta = endTime-beginTime
 needWait = 1-timeDelta.total_seconds()
 sleep(needWait)
 
-#%% 
+#%% 计算间隔时间 
 beginTime = datetime.now()
 endTime = beginTime - timedelta(seconds=1)
 (endTime-beginTime).total_seconds()
 
 
-#%%
-import subprocess
-ps = subprocess.Popen(('ps', '-ef'), stdout=subprocess.PIPE)
-output = subprocess.check_output(('grep', 'm'), stdin=ps.stdout)
-ps.wait()
-
-#%%
-import psutil
-process = psutil.Process()
-childrenNameList = [child.name() for child in process.children() ]
-'trader' in childrenNameList
-
-#%%
+#%% 子进程信息查询
 import psutil
 process = psutil.Process()
 childrenNameList = [child.name() for child in process.children() ]
@@ -213,5 +201,12 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 datetime.strftime(datetime.now() + relativedelta(months=1),"%y%m")  
 
-#%%
-print u'\u672a\u5904\u7406\u8bf7\u6c42\u8d85\u8fc7\u8bb8\u53ef\u6570'
+
+#%% 格式化毫秒
+from datetime import datetime
+print datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+
+#%% 生成一个
+import uuid
+'ipc///tmp/%s' % uuid.uuid1()
+
