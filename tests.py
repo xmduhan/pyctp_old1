@@ -275,3 +275,36 @@ def test_ChannelClassUseWithStatment():
     instrumentID = datetime.strftime(datetime.now() + relativedelta(months=1),"IF%y%m")
     with MdChannel(mdFrontAddress,brokerID,userID,password,[instrumentID]) as mdChannel:
         assert mdChannel
+
+
+@attr('MdChannel')
+@attr('TraderChannel')
+@attr('test_OutputFileDirectoryIsolation')
+def test_OutputFileDirectoryIsolation():
+    '''
+    测试通道目录的隔离
+    '''
+    # 测试交易通道
+    with TraderChannel(frontAddress,brokerID,userID,password) as traderChannel:
+        assert traderChannel
+        assert os.path.exists(traderChannel.workdir)
+        filenameList =  os.listdir(traderChannel.workdir)
+        print filenameList
+        assert 'QueryRsp.con' in filenameList
+        assert 'DialogRsp.con' in filenameList
+        assert 'TradingDay.con' in filenameList
+        assert 'Private.con' in filenameList
+        assert 'Public.con' in filenameList
+        assert 'trader.log' in filenameList
+
+    # 测试行情通道
+    instrumentID = datetime.strftime(datetime.now() + relativedelta(months=1),"IF%y%m")
+    with MdChannel(mdFrontAddress,brokerID,userID,password,[instrumentID]) as mdChannel:
+        assert mdChannel
+        assert os.path.exists(mdChannel.workdir)
+        filenameList =  os.listdir(mdChannel.workdir)
+        print filenameList
+        assert 'QueryRsp.con' in filenameList
+        assert 'DialogRsp.con' in filenameList
+        assert 'TradingDay.con' in filenameList
+        assert 'md.log' in filenameList
