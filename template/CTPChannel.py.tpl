@@ -199,6 +199,7 @@ class TraderChannel :
 		'''
 		清除trader转换器进程
 		'''
+
 		if hasattr(self, 'traderProcess'):
 			self.traderProcess.kill()
 			self.traderProcess.wait()
@@ -320,6 +321,7 @@ class TraderChannel :
 
 
 {% for method in reqMethodDict.itervalues() %}
+{% if method['name'][3:6] == 'Qry' or method['name'][3:8] == 'Query' %}
 	{% set parameter = method['parameters'][0]  %}
 	def {{ method['name'][3:]}}(self,data):
 		'''
@@ -421,6 +423,5 @@ class TraderChannel :
 		# 返回成功
 		return 0,'',respnoseDataList
 
-
-
+{% endif %}
 {% endfor %}

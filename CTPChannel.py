@@ -320,6 +320,7 @@ class TraderChannel :
 
 
 
+
 	
 	def QryTradingAccount(self,data):
 		'''
@@ -420,6 +421,7 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
+
 
 
 
@@ -528,101 +530,6 @@ class TraderChannel :
 
 
 
-	
-	def UserPasswordUpdate(self,data):
-		'''
-		用户口令更新请求
-		data 调用api需要填写参数表单,类型为CThostFtdcUserPasswordUpdateField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcUserPasswordUpdateField):
-			return InvalidRequestFormat
-
-
-		requestApiName = 'ReqUserPasswordUpdate'
-		responseApiName = 'OnRspUserPasswordUpdate'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeoutMillisecond))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidMessageFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeoutMillisecond))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName in (responseApiName,requestApiName)
-			if not (c1 and c2 and c3) :
-				return InvalidMessageFormat
-
-			# 提取消息中的出错信息
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcUserPasswordUpdateField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
-
 
 
 
@@ -726,6 +633,7 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
+
 
 
 
@@ -834,6 +742,7 @@ class TraderChannel :
 
 
 
+
 	
 	def QueryMaxOrderVolume(self,data):
 		'''
@@ -937,101 +846,6 @@ class TraderChannel :
 
 
 
-
-	
-	def SettlementInfoConfirm(self,data):
-		'''
-		投资者结算结果确认
-		data 调用api需要填写参数表单,类型为CThostFtdcSettlementInfoConfirmField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcSettlementInfoConfirmField):
-			return InvalidRequestFormat
-
-
-		requestApiName = 'ReqSettlementInfoConfirm'
-		responseApiName = 'OnRspSettlementInfoConfirm'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeoutMillisecond))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidMessageFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeoutMillisecond))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName in (responseApiName,requestApiName)
-			if not (c1 and c2 and c3) :
-				return InvalidMessageFormat
-
-			# 提取消息中的出错信息
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcSettlementInfoConfirmField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
 
 
 
@@ -1140,6 +954,7 @@ class TraderChannel :
 
 
 
+
 	
 	def QryBrokerTradingAlgos(self,data):
 		'''
@@ -1240,6 +1055,7 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
+
 
 
 
@@ -1348,6 +1164,7 @@ class TraderChannel :
 
 
 
+
 	
 	def QryExchange(self,data):
 		'''
@@ -1452,198 +1269,7 @@ class TraderChannel :
 
 
 
-	
-	def UserLogin(self,data):
-		'''
-		用户登录请求
-		data 调用api需要填写参数表单,类型为CThostFtdcReqUserLoginField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcReqUserLoginField):
-			return InvalidRequestFormat
 
-
-		requestApiName = 'ReqUserLogin'
-		responseApiName = 'OnRspUserLogin'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeoutMillisecond))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidMessageFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeoutMillisecond))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName in (responseApiName,requestApiName)
-			if not (c1 and c2 and c3) :
-				return InvalidMessageFormat
-
-			# 提取消息中的出错信息
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcRspUserLoginField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
-
-
-
-
-	
-	def FromFutureToBankByFuture(self,data):
-		'''
-		期货发起期货资金转银行请求
-		data 调用api需要填写参数表单,类型为CThostFtdcReqTransferField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcReqTransferField):
-			return InvalidRequestFormat
-
-
-		requestApiName = 'ReqFromFutureToBankByFuture'
-		responseApiName = 'OnRspFromFutureToBankByFuture'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeoutMillisecond))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidMessageFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeoutMillisecond))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName in (responseApiName,requestApiName)
-			if not (c1 and c2 and c3) :
-				return InvalidMessageFormat
-
-			# 提取消息中的出错信息
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcReqTransferField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
 
 
 
@@ -1752,6 +1378,7 @@ class TraderChannel :
 
 
 
+
 	
 	def QryInvestorPositionDetail(self,data):
 		'''
@@ -1852,6 +1479,7 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
+
 
 
 
@@ -1960,6 +1588,7 @@ class TraderChannel :
 
 
 
+
 	
 	def QryBrokerTradingParams(self,data):
 		'''
@@ -2060,6 +1689,7 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
+
 
 
 
@@ -2168,6 +1798,7 @@ class TraderChannel :
 
 
 
+
 	
 	def QryNotice(self,data):
 		'''
@@ -2272,198 +1903,7 @@ class TraderChannel :
 
 
 
-	
-	def FromBankToFutureByFuture(self,data):
-		'''
-		期货发起银行资金转期货请求
-		data 调用api需要填写参数表单,类型为CThostFtdcReqTransferField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcReqTransferField):
-			return InvalidRequestFormat
 
-
-		requestApiName = 'ReqFromBankToFutureByFuture'
-		responseApiName = 'OnRspFromBankToFutureByFuture'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeoutMillisecond))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidMessageFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeoutMillisecond))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName in (responseApiName,requestApiName)
-			if not (c1 and c2 and c3) :
-				return InvalidMessageFormat
-
-			# 提取消息中的出错信息
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcReqTransferField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
-
-
-
-
-	
-	def ParkedOrderInsert(self,data):
-		'''
-		预埋单录入请求
-		data 调用api需要填写参数表单,类型为CThostFtdcParkedOrderField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcParkedOrderField):
-			return InvalidRequestFormat
-
-
-		requestApiName = 'ReqParkedOrderInsert'
-		responseApiName = 'OnRspParkedOrderInsert'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeoutMillisecond))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidMessageFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeoutMillisecond))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName in (responseApiName,requestApiName)
-			if not (c1 and c2 and c3) :
-				return InvalidMessageFormat
-
-			# 提取消息中的出错信息
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcParkedOrderField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
 
 
 
@@ -2572,101 +2012,6 @@ class TraderChannel :
 
 
 
-	
-	def OrderInsert(self,data):
-		'''
-		报单录入请求
-		data 调用api需要填写参数表单,类型为CThostFtdcInputOrderField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcInputOrderField):
-			return InvalidRequestFormat
-
-
-		requestApiName = 'ReqOrderInsert'
-		responseApiName = 'OnRspOrderInsert'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeoutMillisecond))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidMessageFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeoutMillisecond))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName in (responseApiName,requestApiName)
-			if not (c1 and c2 and c3) :
-				return InvalidMessageFormat
-
-			# 提取消息中的出错信息
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcInputOrderField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
-
 
 
 
@@ -2773,101 +2118,6 @@ class TraderChannel :
 
 
 
-
-	
-	def ParkedOrderAction(self,data):
-		'''
-		预埋撤单录入请求
-		data 调用api需要填写参数表单,类型为CThostFtdcParkedOrderActionField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcParkedOrderActionField):
-			return InvalidRequestFormat
-
-
-		requestApiName = 'ReqParkedOrderAction'
-		responseApiName = 'OnRspParkedOrderAction'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeoutMillisecond))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidMessageFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeoutMillisecond))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName in (responseApiName,requestApiName)
-			if not (c1 and c2 and c3) :
-				return InvalidMessageFormat
-
-			# 提取消息中的出错信息
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcParkedOrderActionField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
 
 
 
@@ -2976,6 +2226,7 @@ class TraderChannel :
 
 
 
+
 	
 	def QryParkedOrderAction(self,data):
 		'''
@@ -3079,101 +2330,6 @@ class TraderChannel :
 
 
 
-
-	
-	def Authenticate(self,data):
-		'''
-		客户端认证请求
-		data 调用api需要填写参数表单,类型为CThostFtdcReqAuthenticateField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcReqAuthenticateField):
-			return InvalidRequestFormat
-
-
-		requestApiName = 'ReqAuthenticate'
-		responseApiName = 'OnRspAuthenticate'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeoutMillisecond))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidMessageFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeoutMillisecond))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName in (responseApiName,requestApiName)
-			if not (c1 and c2 and c3) :
-				return InvalidMessageFormat
-
-			# 提取消息中的出错信息
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcRspAuthenticateField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
 
 
 
@@ -3282,198 +2438,7 @@ class TraderChannel :
 
 
 
-	
-	def TradingAccountPasswordUpdate(self,data):
-		'''
-		资金账户口令更新请求
-		data 调用api需要填写参数表单,类型为CThostFtdcTradingAccountPasswordUpdateField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcTradingAccountPasswordUpdateField):
-			return InvalidRequestFormat
 
-
-		requestApiName = 'ReqTradingAccountPasswordUpdate'
-		responseApiName = 'OnRspTradingAccountPasswordUpdate'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeoutMillisecond))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidMessageFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeoutMillisecond))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName in (responseApiName,requestApiName)
-			if not (c1 and c2 and c3) :
-				return InvalidMessageFormat
-
-			# 提取消息中的出错信息
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcTradingAccountPasswordUpdateField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
-
-
-
-
-	
-	def UserLogout(self,data):
-		'''
-		登出请求
-		data 调用api需要填写参数表单,类型为CThostFtdcUserLogoutField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcUserLogoutField):
-			return InvalidRequestFormat
-
-
-		requestApiName = 'ReqUserLogout'
-		responseApiName = 'OnRspUserLogout'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeoutMillisecond))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidMessageFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeoutMillisecond))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName in (responseApiName,requestApiName)
-			if not (c1 and c2 and c3) :
-				return InvalidMessageFormat
-
-			# 提取消息中的出错信息
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcUserLogoutField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
 
 
 
@@ -3582,101 +2547,6 @@ class TraderChannel :
 
 
 
-	
-	def OrderAction(self,data):
-		'''
-		报单操作请求
-		data 调用api需要填写参数表单,类型为CThostFtdcInputOrderActionField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcInputOrderActionField):
-			return InvalidRequestFormat
-
-
-		requestApiName = 'ReqOrderAction'
-		responseApiName = 'OnRspOrderAction'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeoutMillisecond))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidMessageFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeoutMillisecond))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName in (responseApiName,requestApiName)
-			if not (c1 and c2 and c3) :
-				return InvalidMessageFormat
-
-			# 提取消息中的出错信息
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcInputOrderActionField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
-
 
 
 
@@ -3780,6 +2650,7 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
+
 
 
 
@@ -3888,6 +2759,7 @@ class TraderChannel :
 
 
 
+
 	
 	def QryInvestor(self,data):
 		'''
@@ -3988,6 +2860,7 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
+
 
 
 
@@ -4096,6 +2969,7 @@ class TraderChannel :
 
 
 
+
 	
 	def QryInvestorProductGroupMargin(self,data):
 		'''
@@ -4196,6 +3070,7 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
+
 
 
 
@@ -4304,6 +3179,7 @@ class TraderChannel :
 
 
 
+
 	
 	def QryDepthMarketData(self,data):
 		'''
@@ -4404,6 +3280,7 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
+
 
 
 
@@ -4512,101 +3389,6 @@ class TraderChannel :
 
 
 
-	
-	def RemoveParkedOrderAction(self,data):
-		'''
-		请求删除预埋撤单
-		data 调用api需要填写参数表单,类型为CThostFtdcRemoveParkedOrderActionField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcRemoveParkedOrderActionField):
-			return InvalidRequestFormat
-
-
-		requestApiName = 'ReqRemoveParkedOrderAction'
-		responseApiName = 'OnRspRemoveParkedOrderAction'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeoutMillisecond))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidMessageFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeoutMillisecond))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName in (responseApiName,requestApiName)
-			if not (c1 and c2 and c3) :
-				return InvalidMessageFormat
-
-			# 提取消息中的出错信息
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcRemoveParkedOrderActionField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
-
 
 
 
@@ -4710,6 +3492,7 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
+
 
 
 
@@ -4818,6 +3601,7 @@ class TraderChannel :
 
 
 
+
 	
 	def QrySettlementInfo(self,data):
 		'''
@@ -4918,6 +3702,7 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
+
 
 
 
@@ -5026,6 +3811,7 @@ class TraderChannel :
 
 
 
+
 	
 	def QryParkedOrder(self,data):
 		'''
@@ -5126,6 +3912,7 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
+
 
 
 
@@ -5234,6 +4021,7 @@ class TraderChannel :
 
 
 
+
 	
 	def QryContractBank(self,data):
 		'''
@@ -5336,102 +4124,6 @@ class TraderChannel :
 		return 0,'',respnoseDataList
 
 
-
-
-	
-	def RemoveParkedOrder(self,data):
-		'''
-		请求删除预埋单
-		data 调用api需要填写参数表单,类型为CThostFtdcRemoveParkedOrderField,具体参见其定义文件
-		返回信息格式[errorID,errorMsg,responseData=[...]]
-		注意:同步调用没有metaData参数,因为没有意义
-		'''
-		if not isinstance(data,CThostFtdcRemoveParkedOrderField):
-			return InvalidRequestFormat
-
-
-		requestApiName = 'ReqRemoveParkedOrder'
-		responseApiName = 'OnRspRemoveParkedOrder'
-
-		# 打包消息格式
-		reqInfo = packageReqInfo(requestApiName,data.toDict())
-		metaData={}
-		requestMessage = RequestMessage()
-		requestMessage.header = 'REQUEST'
-		requestMessage.apiName = requestApiName
-		requestMessage.reqInfo = json.dumps(reqInfo)
-		requestMessage.metaData = json.dumps(metaData)
-
-		
-
-		# 发送到服务器
-		requestMessage.send(self.request)
-		################### 等待服务器的REQUESTID响应 ###################
-		# 读取服务
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeoutMillisecond))
-		if not (self.request in sockets) :
-			return ResponseTimeOut
-
-		# 从request通讯管道读取返回信息
-		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
-
-		# 检查接收的消息格式
-		c1 = requestIDMessage.header == 'REQUESTID'
-		c2 = requestIDMessage.apiName == requestApiName
-		if not ( c1 and c2 ):
-			return InvalidMessageFormat
-
-		# 如果没有收到RequestID,返回转换器的出错信息
-		if not (int(requestIDMessage.requestID) > 0):
-			errorInfo = json.loads(requestIDMessage.errorInfo)
-			return errorInfo['ErrorID'],errorInfo['ErrorMsg'],[]
-
-
-		################### 等待服务器的返回的数据信息 ###################
-		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-
-		# 循环读取所有数据
-		respnoseDataList = []
-		while(True):
-			sockets = dict(poller.poll(self.timeoutMillisecond))
-			if not (self.request in sockets) :
-				return ResponseTimeOut
-
-			# 从request通讯管道读取返回信息
-			responseMessage = ResponseMessage()
-			responseMessage.recv(self.request)
-
-			# 返回数据信息格式符合要求
-			c1 = responseMessage.header == 'RESPONSE'
-			c2 = responseMessage.requestID == requestIDMessage.requestID
-			c3 = responseMessage.apiName in (responseApiName,requestApiName)
-			if not (c1 and c2 and c3) :
-				return InvalidMessageFormat
-
-			# 提取消息中的出错信息
-			respInfo = json.loads(responseMessage.respInfo)
-			errorID = respInfo['Parameters']['RspInfo']['ErrorID']
-			errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
-			if errorID != 0 :
-				return errorID,errorMsg,[]
-
-			# 提取消息中的数据
-			
-			respnoseDataDict = respInfo['Parameters']['Data']
-			if respnoseDataDict:
-				respnoseData = CThostFtdcRemoveParkedOrderField(**respnoseDataDict)
-				respnoseDataList.append(respnoseData)
-
-			# 判断是否已是最后一条消息
-			if int(responseMessage.isLast) == 1:
-				break;
-
-		# 返回成功
-		return 0,'',respnoseDataList
 
 
 
