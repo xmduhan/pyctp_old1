@@ -75,6 +75,7 @@ class MdChannel :
 		if hasattr(self, 'mdProcess'):
 			self.mdProcess.kill()
 			self.mdProcess.wait()
+			del self.mdProcess
 
 
 
@@ -199,9 +200,11 @@ class TraderChannel :
 		'''
 		清除trader转换器进程
 		'''
+
 		if hasattr(self, 'traderProcess'):
 			self.traderProcess.kill()
 			self.traderProcess.wait()
+			del self.traderProcess
 
 
 	def __init__(self,frontAddress,brokerID,userID,password,
@@ -425,7 +428,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QryCFMMCTradingAccountKey(self,data):
 		'''
@@ -526,7 +528,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -637,7 +638,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QryTrade(self,data):
 		'''
@@ -738,7 +738,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -849,7 +848,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QryInvestorPosition(self,data):
 		'''
@@ -950,7 +948,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -1059,7 +1056,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QryOrder(self,data):
 		'''
@@ -1160,7 +1156,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -1273,7 +1268,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QryExchangeRate(self,data):
 		'''
@@ -1374,7 +1368,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -1483,7 +1476,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QrySettlementInfoConfirm(self,data):
 		'''
@@ -1584,7 +1576,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -1693,7 +1684,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QueryCFMMCTradingAccountToken(self,data):
 		'''
@@ -1798,7 +1788,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QryNotice(self,data):
 		'''
@@ -1899,7 +1888,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -2014,7 +2002,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QrySecAgentACIDMap(self,data):
 		'''
@@ -2115,7 +2102,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -2226,7 +2212,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QryParkedOrderAction(self,data):
 		'''
@@ -2327,7 +2312,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -2442,7 +2426,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QryInstrument(self,data):
 		'''
@@ -2543,7 +2526,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -2654,7 +2636,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QryInstrumentMarginRate(self,data):
 		'''
@@ -2755,7 +2736,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -2864,7 +2844,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QryExchangeMarginRateAdjust(self,data):
 		'''
@@ -2965,7 +2944,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -3074,7 +3052,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QryEWarrantOffset(self,data):
 		'''
@@ -3179,7 +3156,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QryDepthMarketData(self,data):
 		'''
@@ -3280,7 +3256,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -3391,7 +3366,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QryProduct(self,data):
 		'''
@@ -3492,7 +3466,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -3601,7 +3574,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QrySettlementInfo(self,data):
 		'''
@@ -3702,7 +3674,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -3811,7 +3782,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QryParkedOrder(self,data):
 		'''
@@ -3912,7 +3882,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
@@ -4021,7 +3990,6 @@ class TraderChannel :
 
 
 
-
 	
 	def QryContractBank(self,data):
 		'''
@@ -4122,7 +4090,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 

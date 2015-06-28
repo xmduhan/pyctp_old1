@@ -75,6 +75,7 @@ class MdChannel :
 		if hasattr(self, 'mdProcess'):
 			self.mdProcess.kill()
 			self.mdProcess.wait()
+			del self.mdProcess
 
 
 
@@ -203,6 +204,7 @@ class TraderChannel :
 		if hasattr(self, 'traderProcess'):
 			self.traderProcess.kill()
 			self.traderProcess.wait()
+			del self.traderProcess
 
 
 	def __init__(self,frontAddress,brokerID,userID,password,
