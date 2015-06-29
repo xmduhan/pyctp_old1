@@ -322,6 +322,46 @@ class TraderChannel :
 
 
 
+	
+	
+	def OrderInsert(self,data):
+		'''
+		报单录入请求
+		data 调用api需要填写参数表单,类型为CThostFtdcInputOrderField,具体参见其定义文件
+		返回信息格式[errorID,errorMsg,responseData=[...]]
+		注意:同步调用没有metaData参数,因为没有意义
+		'''
+		if not isinstance(data,CThostFtdcInputOrderField):
+			return InvalidRequestFormat
+
+
+		requestApiName = 'ReqOrderInsert'
+		responseApiName = 'OnRspOrderInsert'
+		returnApiName = 'OnRtnOrder'
+		resultApiName = 'OnRtnTrade'
+
+		# 打包消息格式
+		reqInfo = packageReqInfo(requestApiName,data.toDict())
+		metaData={}
+		requestMessage = RequestMessage()
+		requestMessage.header = 'REQUEST'
+		requestMessage.apiName = requestApiName
+		requestMessage.reqInfo = json.dumps(reqInfo)
+		requestMessage.metaData = json.dumps(metaData)
+
+		# 发送到服务器
+		requestMessage.send(self.request)
+
+		# 等待RequestID响应
+		poller = zmq.Poller()
+		poller.register(self.request, zmq.POLLIN)
+		sockets = dict(poller.poll(self.timeoutMillisecond))
+		if not (self.request in sockets) :
+			return ResponseTimeOut
+		requestIDMessage = RequestIDMessage()
+		requestIDMessage.recv(self.request)
+
+
 
 
 	
@@ -348,6 +388,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -452,6 +493,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -558,6 +600,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -662,6 +705,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -766,6 +810,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -872,6 +917,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -976,6 +1022,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -1080,6 +1127,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -1184,6 +1232,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -1292,6 +1341,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -1396,6 +1446,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -1500,6 +1551,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -1604,6 +1656,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -1708,6 +1761,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -1812,6 +1866,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -1920,6 +1975,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -2026,6 +2082,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -2132,6 +2189,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -2236,6 +2294,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -2342,6 +2401,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -2450,6 +2510,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -2556,6 +2617,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -2660,6 +2722,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -2764,6 +2827,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -2868,6 +2932,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -2972,6 +3037,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -3076,6 +3142,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -3180,6 +3247,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -3284,6 +3352,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -3390,6 +3459,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -3494,6 +3564,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -3598,6 +3669,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -3702,6 +3774,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -3806,6 +3879,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -3910,6 +3984,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
@@ -4014,6 +4089,7 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
+		# TODO 判断现在多余了,应该去掉
 		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
