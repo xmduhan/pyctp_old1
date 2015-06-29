@@ -330,6 +330,10 @@ class TraderChannel :
 		sleep(self.getQueryWaitTime())
 
 
+	{# 交易结果确认方法 #}
+	{% set method = reqMethodDict['ReqSettlementInfoConfirm'] %}
+	{% include 'ReqRespMethod.tpl' %}
+
 
 	{% set method = reqMethodDict['ReqOrderInsert'] %}
 	{% set parameter = method['parameters'][0]  %}

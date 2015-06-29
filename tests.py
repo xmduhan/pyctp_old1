@@ -324,6 +324,6 @@ def test_SettlementInfoConfirm():
     requestData.ConfirmTime = ''
     result = traderChannel.SettlementInfoConfirm(requestData)
     assert result[0] == 0
-    responseData = result[2].toDict()
+    responseData = result[2][0]
     assert responseData.BrokerID == brokerID
     assert responseData.InvestorID == userID
