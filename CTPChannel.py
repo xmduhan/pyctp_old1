@@ -266,14 +266,22 @@ class TraderChannel :
 		#self.traderProcess = subprocess.Popen(commandLine,stdout=traderStdout)
 		self.traderProcess = subprocess.Popen(commandLine,stdout=traderStdout,cwd=self.workdir)
 
-		# 创建请求通讯通道
+		# 创建zmq通讯环境
 		context = zmq.Context()
 		self.context = context
-		socket = context.socket(zmq.DEALER)
-		socket.connect(self.requestPipe)
-		socket.setsockopt(zmq.LINGER,0)
-		self.request = socket
 		self.timeoutMillisecond = 1000 * timeout
+
+		# 创建请求通讯通道
+		request = context.socket(zmq.DEALER)
+		request.connect(self.requestPipe)
+		request.setsockopt(zmq.LINGER,0)
+		self.request = request
+
+		# 创建接收广播消息的管道
+		publish = context.socket(zmq.SUB)
+		publish.connect(self.publishPipe)
+		publish.setsockopt_string(zmq.SUBSCRIBE,u'')
+		self.publish = publish
 
 		# 检查ctp通道是否建立，如果失败抛出异常
 		if not self.__testChannel():
