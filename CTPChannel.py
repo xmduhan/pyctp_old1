@@ -329,7 +329,7 @@ class TraderChannel :
 		'''
 		sleep(self.getQueryWaitTime())
 
-
+	
 	
 	
 		
@@ -587,7 +587,7 @@ class TraderChannel :
 
 
 
-	
+		
 	def QryTradingAccount(self,data):
 		'''
 		请求查询资金账户
@@ -691,8 +691,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryCFMMCTradingAccountKey(self,data):
 		'''
 		请求查询保证金监管系统经纪公司资金账户密钥
@@ -798,8 +797,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryTradingNotice(self,data):
 		'''
 		请求查询交易通知
@@ -903,8 +901,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryTrade(self,data):
 		'''
 		请求查询成交
@@ -1008,8 +1005,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QueryMaxOrderVolume(self,data):
 		'''
 		查询最大报单数量请求
@@ -1115,8 +1111,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryInvestorPosition(self,data):
 		'''
 		请求查询投资者持仓
@@ -1220,8 +1215,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryBrokerTradingAlgos(self,data):
 		'''
 		请求查询经纪公司交易算法
@@ -1325,8 +1319,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryOrder(self,data):
 		'''
 		请求查询报单
@@ -1430,8 +1423,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryExchange(self,data):
 		'''
 		请求查询交易所
@@ -1539,8 +1531,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryExchangeRate(self,data):
 		'''
 		请求查询汇率
@@ -1644,8 +1635,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryInvestorPositionDetail(self,data):
 		'''
 		请求查询投资者持仓明细
@@ -1749,8 +1739,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QrySettlementInfoConfirm(self,data):
 		'''
 		请求查询结算信息确认
@@ -1854,8 +1843,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryBrokerTradingParams(self,data):
 		'''
 		请求查询经纪公司交易参数
@@ -1959,8 +1947,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QueryCFMMCTradingAccountToken(self,data):
 		'''
 		请求查询监控中心用户令牌
@@ -2064,8 +2051,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryNotice(self,data):
 		'''
 		请求查询客户通知
@@ -2173,8 +2159,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryInvestorPositionCombineDetail(self,data):
 		'''
 		请求查询投资者持仓明细
@@ -2280,8 +2265,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QrySecAgentACIDMap(self,data):
 		'''
 		请求查询二级代理操作员银期权限
@@ -2387,8 +2371,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QueryBankAccountMoneyByFuture(self,data):
 		'''
 		期货发起查询银行余额请求
@@ -2492,8 +2475,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryParkedOrderAction(self,data):
 		'''
 		请求查询预埋撤单
@@ -2599,8 +2581,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryExchangeMarginRate(self,data):
 		'''
 		请求查询交易所保证金率
@@ -2708,8 +2689,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryInstrument(self,data):
 		'''
 		请求查询合约
@@ -2815,8 +2795,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryInstrumentCommissionRate(self,data):
 		'''
 		请求查询合约手续费率
@@ -2920,8 +2899,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryInstrumentMarginRate(self,data):
 		'''
 		请求查询合约保证金率
@@ -3025,8 +3003,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryInvestor(self,data):
 		'''
 		请求查询投资者
@@ -3130,8 +3107,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryExchangeMarginRateAdjust(self,data):
 		'''
 		请求查询交易所调整保证金率
@@ -3235,8 +3211,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryInvestorProductGroupMargin(self,data):
 		'''
 		请求查询投资者品种/跨品种保证金
@@ -3340,8 +3315,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryEWarrantOffset(self,data):
 		'''
 		请求查询仓单折抵信息
@@ -3445,8 +3419,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryDepthMarketData(self,data):
 		'''
 		请求查询行情
@@ -3550,8 +3523,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryTransferBank(self,data):
 		'''
 		请求查询转帐银行
@@ -3657,8 +3629,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryProduct(self,data):
 		'''
 		请求查询产品
@@ -3762,8 +3733,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryTradingCode(self,data):
 		'''
 		请求查询交易编码
@@ -3867,8 +3837,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QrySettlementInfo(self,data):
 		'''
 		请求查询投资者结算结果
@@ -3972,8 +3941,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryAccountregister(self,data):
 		'''
 		请求查询银期签约关系
@@ -4077,8 +4045,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryParkedOrder(self,data):
 		'''
 		请求查询预埋单
@@ -4182,8 +4149,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryTransferSerial(self,data):
 		'''
 		请求查询转帐流水
@@ -4287,8 +4253,7 @@ class TraderChannel :
 
 
 
-
-	
+		
 	def QryContractBank(self,data):
 		'''
 		请求查询签约银行
@@ -4389,7 +4354,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
-
 
 
 
