@@ -308,3 +308,22 @@ def test_OutputFileDirectoryIsolation():
         assert 'DialogRsp.con' in filenameList
         assert 'TradingDay.con' in filenameList
         assert 'md.log' in filenameList
+
+
+@attr('TraderChannel')
+@attr('test_SettlementInfoConfirm')
+def test_SettlementInfoConfirm():
+    '''
+    测试结算确认
+    '''
+    traderChannel = TraderChannel(frontAddress,brokerID,userID,password)
+    requestData = CThostFtdcSettlementInfoConfirmField()
+    requestData.BrokerID = brokerID
+    requestData.InvestorID = userID
+    requestData.ConfirmDate = ''
+    requestData.ConfirmTime = ''
+    result = traderChannel.SettlementInfoConfirm(requestData)
+    assert result[0] == 0
+    responseData = result[2].toDict()
+    assert responseData.BrokerID == brokerID
+    assert responseData.InvestorID == userID
