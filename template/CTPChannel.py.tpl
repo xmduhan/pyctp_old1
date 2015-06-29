@@ -350,6 +350,7 @@ class TraderChannel :
 		responseApiName = 'OnRsp{{method['name'][3:]}}'
 		returnApiName = '{{returnApiName}}'
 		resultApiName = '{{resultApiName}}'
+		errReturnApiName = '{{errReturnApiName}}'
 
 		# 打包消息格式
 		reqInfo = packageReqInfo(requestApiName,data.toDict())
@@ -410,17 +411,28 @@ class TraderChannel :
 				respInfo = json.loads(responseMessage.respInfo)
 				errorID = respInfo['Parameters']['RspInfo']['ErrorID']
 				errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
+
 				# 这里应该收到的是一个错误信息
 				if errorID == 0 :
 					return InvalidMessageFormat
 
-				# TODO 这里还会收到一条OnRtnError消息
+				# 这里还会收到一条OnRtnError消息,将尝试接受它
+				poller = zmq.Poller()
+				poller.register(publish, zmq.POLLIN)
+				sockets = dict(poller.poll(timeout))
+				if request not in sockets:
+					return ResponseTimeOut
 
+				# 接受消息避免扰乱下一次调用
+				publishMessage = PublishMessage()
+				publishMessage.recv(publish)
+				c1 =  publishMessage.header == 'PUBLISH'
+				c2 =  publishMessage.apiName == errReturnApiName
+				if not ( c1 and c2 ):
+					return InvalidMessageFormat
 
+				# 将出错信息返回调用者
 				return errorID,errorMsg,[]
-
-
-
 
 			if publish in sockets:
 				# 如果接受到Publish消息说明已经收到了订单提交的信息

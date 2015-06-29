@@ -345,10 +345,12 @@ class TraderChannel :
 
 		
 		
+		
 		requestApiName = 'ReqOrderInsert'
 		responseApiName = 'OnRspOrderInsert'
 		returnApiName = 'OnRtnOrder'
 		resultApiName = 'OnRtnTrade'
+		errReturnApiName = 'OnErrRtnOrderInsert'
 
 		# 打包消息格式
 		reqInfo = packageReqInfo(requestApiName,data.toDict())
@@ -394,8 +396,43 @@ class TraderChannel :
 
 			if request in sockets:
 				# 此时如果接受到Response消息说明参数错误，ctp接口立即返回了
+				# 从request通讯管道读取返回信息
+				responseMessage = ResponseMessage()
+				responseMessage.recv(self.request)
 
-				pass
+				# 检查接收消息格式是否正确
+				c1 = responseMessage.header == 'RESPONSE'
+				c2 = responseMessage.requestID == requestIDMessage.requestID
+				c3 = responseMessage.apiName in responseApiName
+				if not (c1 and c2 and c3) :
+					return InvalidMessageFormat
+
+				# 读取返回信息并检查
+				respInfo = json.loads(responseMessage.respInfo)
+				errorID = respInfo['Parameters']['RspInfo']['ErrorID']
+				errorMsg = respInfo['Parameters']['RspInfo']['ErrorMsg']
+
+				# 这里应该收到的是一个错误信息
+				if errorID == 0 :
+					return InvalidMessageFormat
+
+				# TODO 这里还会收到一条OnRtnError消息
+				poller = zmq.Poller()
+				poller.register(publish, zmq.POLLIN)
+				sockets = dict(poller.poll(timeout))
+				if request not in sockets:
+					return ResponseTimeOut
+
+				# 接受消息避免扰乱下一次调用
+				publishMessage = PublishMessage()
+				publishMessage.recv(publish)
+				c1 =  publishMessage.header == 'PUBLISH'
+				c2 =  publishMessage.apiName == errReturnApiName
+				if not ( c1 and c2 ):
+					return InvalidMessageFormat
+
+				return errorID,errorMsg,[]
+
 
 			if publish in sockets:
 				# 如果接受到Publish消息说明已经收到了订单提交的信息
