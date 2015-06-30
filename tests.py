@@ -327,3 +327,122 @@ def test_SettlementInfoConfirm():
     responseData = result[2][0]
     assert responseData.BrokerID == brokerID
     assert responseData.InvestorID == userID
+
+
+
+orderRefSeq = 0
+def getOrderRef():
+    '''
+    获取OrderRef序列值
+    '''
+    global orderRefSeq
+    orderRefSeq += 1
+    return ('%12d' % orderRefSeq).replace(' ','0') # '000000000001'
+
+
+def getDefaultInstrumentID():
+    '''
+    获得一个保证可以使用的合同代码
+    '''
+    return datetime.strftime(datetime.now() + relativedelta(months=1),"IF%y%m")
+
+
+
+def getDefaultInputOrderField():
+    '''
+    获得一个默认的参数合法的,提交请求结构
+    '''
+    inputOrderField = CThostFtdcInputOrderField()
+    inputOrderField.BrokerID = brokerID
+    inputOrderField.InvestorID = userID
+    inputOrderField.InstrumentID = getDefaultInstrumentID()
+    inputOrderField.OrderRef =  getOrderRef() #
+    inputOrderField.UserID = userID
+    inputOrderField.OrderPriceType = '1'     # 任意价
+    #inputOrderField.Direction = '0'          # 买
+    #inputOrderField.CombOffsetFlag = '0'     # 开仓
+    inputOrderField.CombHedgeFlag = '1'      # 投机
+    inputOrderField.LimitPrice = 0           # 限价 0表不限制
+    inputOrderField.VolumeTotalOriginal = 1  # 手数
+    inputOrderField.TimeCondition = '1'      # 立即完成否则撤消
+    inputOrderField.GTDDate = ''
+    inputOrderField.VolumeCondition = '1'    # 成交类型  '1' 任何数量  '2' 最小数量 '3'全部数量
+    inputOrderField.MinVolume = 1            # 最小数量
+    inputOrderField.ContingentCondition = '1' # 触发类型 '1' 立即否则撤消
+    inputOrderField.StopPrice = 0             # 止损价
+    inputOrderField.ForceCloseReason = '0'    # 强平标识 '0'非强平
+    inputOrderField.IsAutoSuspend = 0         # 自动挂起标识
+    inputOrderField.BusinessUnit = ''         # 业务单元
+    inputOrderField.RequestID = 1
+    inputOrderField.UserForceClose = 0        # 用户强平标识
+    inputOrderField.IsSwapOrder = 0           # 互换单标识
+    return inputOrderField
+
+
+def getDefaultInputOrderField_buyOpen():
+    '''
+    获得一个默认的多头开仓报单数据
+    '''
+    inputOrderField = getDefaultInputOrderField()
+    inputOrderField.Direction = '0'          # 买
+    inputOrderField.CombOffsetFlag = '0'     # 开仓
+    return inputOrderField
+
+def getDefaultInputOrderField_buySell():
+    '''
+    获得一个默认的多头平仓报单数据
+    '''
+    inputOrderField = getDefaultInputOrderField()
+    inputOrderField.Direction = '1'          # 卖
+    inputOrderField.CombOffsetFlag = '1'     # 平仓
+    return inputOrderField
+
+def getDefaultInputOrderField_sellOpen():
+    '''
+    获得一个默认的空头开仓报单数据
+    '''
+    inputOrderField = getDefaultInputOrderField()
+    inputOrderField.Direction = '1'          # 卖
+    inputOrderField.CombOffsetFlag = '0'     # 开仓
+    return inputOrderField
+
+
+def getDefaultInputOrderField_sellClose():
+    '''
+    获得一个默认的空头平仓报单数据
+    '''
+    inputOrderField = getDefaultInputOrderField()
+    inputOrderField.Direction = '0'          # 买
+    inputOrderField.CombOffsetFlag = '1'     # 平仓
+    return inputOrderField
+
+
+@attr('TraderChannel')
+@attr('test_OrderInsert')
+@attr('test_OrderInsert_OpenAndClose')
+def test_OrderInsert_OpenAndClose():
+    '''
+    测试报单
+    '''
+    traderChannel = TraderChannel(frontAddress,brokerID,userID,password,timeout = 1)
+    print 'tail -f %s/trader.log' % traderChannel.workdir
+    requestData = getDefaultInputOrderField_buyOpen()
+    result = traderChannel.OrderInsert(requestData)
+    assert result[0] == -2003
+
+
+@attr('TraderChannel')
+@attr('test_OrderInsert')
+@attr('test_OrderInsert_WithInvalidValue')
+def test_OrderInsert_WithInvalidValue():
+    '''
+    测试报单
+    '''
+    traderChannel = TraderChannel(frontAddress,brokerID,userID,password,timeout = 1)
+    print 'tail -f %s/trader.log' % traderChannel.workdir
+    requestData = getDefaultInputOrderField_buyOpen()
+    requestData.VolumeTotalOriginal = 0         # 手数=0 使表单无效
+    result = traderChannel.OrderInsert(requestData)
+    print result
+    assert result[0] == 15
+    assert result[1] == u'CTP:报单字段有误'

@@ -329,7 +329,7 @@ class TraderChannel :
 		'''
 		sleep(self.getQueryWaitTime())
 
-	
+
 	
 	
 		
@@ -447,6 +447,10 @@ class TraderChannel :
 		if not isinstance(data,CThostFtdcInputOrderField):
 			return InvalidRequestFormat
 
+		request = self.request
+		publish = self.publish
+		timeoutMillisecond = self.timeoutMillisecond
+
 		
 		
 		
@@ -466,22 +470,24 @@ class TraderChannel :
 		requestMessage.metaData = json.dumps(metaData)
 
 		# 发送到服务器
-		requestMessage.send(self.request)
+		requestMessage.send(request)
 
 		# 等待RequestID响应
 		poller = zmq.Poller()
-		poller.register(self.request, zmq.POLLIN)
-		sockets = dict(poller.poll(self.timeoutMillisecond))
-		if not (self.request in sockets) :
+		poller.register(request, zmq.POLLIN)
+		sockets = dict(poller.poll(timeoutMillisecond))
+		if not (request in sockets) :
 			return ResponseTimeOut
 		requestIDMessage = RequestIDMessage()
-		requestIDMessage.recv(self.request)
+		requestIDMessage.recv(request)
+
 
 		# 检查接收的消息格式
 		c1 = requestIDMessage.header == 'REQUESTID'
 		c2 = requestIDMessage.apiName == requestApiName
 		if not ( c1 and c2 ):
 			return InvalidMessageFormat
+
 
 		# 如果没有收到RequestID,返回转换器的出错信息
 		if not (int(requestIDMessage.requestID) > 0):
@@ -492,17 +498,18 @@ class TraderChannel :
 			poller = zmq.Poller()
 			poller.register(request, zmq.POLLIN)
 			poller.register(publish, zmq.POLLIN)
-			sockets = dict(poller.poll(timeout))
+			sockets = dict(poller.poll(timeoutMillisecond))
 
 			# 判断是否超时
 			if request not in sockets and publish not in sockets :
 				return ResponseTimeOut
 
 			if request in sockets:
+				print '-----1-----'
 				# 此时如果接受到Response消息说明参数错误，ctp接口立即返回了
 				# 从request通讯管道读取返回信息
 				responseMessage = ResponseMessage()
-				responseMessage.recv(self.request)
+				responseMessage.recv(request)
 
 				# 检查接收消息格式是否正确
 				c1 = responseMessage.header == 'RESPONSE'
@@ -511,6 +518,7 @@ class TraderChannel :
 				if not (c1 and c2 and c3) :
 					return InvalidMessageFormat
 
+				print '-----2-----'
 				# 读取返回信息并检查
 				respInfo = json.loads(responseMessage.respInfo)
 				errorID = respInfo['Parameters']['RspInfo']['ErrorID']
@@ -523,9 +531,11 @@ class TraderChannel :
 				# 这里还会收到一条OnRtnError消息,将尝试接受它
 				poller = zmq.Poller()
 				poller.register(publish, zmq.POLLIN)
-				sockets = dict(poller.poll(timeout))
-				if request not in sockets:
+				sockets = dict(poller.poll(timeoutMillisecond))
+				if publish not in sockets:
 					return ResponseTimeOut
+
+				print '-----3-----'
 
 				# 接受消息避免扰乱下一次调用
 				publishMessage = PublishMessage()
@@ -562,12 +572,19 @@ class TraderChannel :
 					break
 
 		# 订单状态已经变化,说明系统已经处理完毕,检查处理结果
+		# 如果出错返回出错信息
 		c1 = orderSubmitStatus == '0'   #已经提交
 		c2 = orderStatus == '0'   # 全部成交
 		if not ( c1 and c2 ) :
 			return FailToInsertOrder(statusMsg)
 
 		# 到了这里说明订单已经提交成功了,读取成交记录信息
+		poller = zmq.Poller()
+		poller.register(publish, zmq.POLLIN)
+		sockets = dict(poller.poll(timeoutMillisecond))
+		if publish not in sockets:
+			return ResponseTimeOut
+
 		publishMessage = PublishMessage()
 		publishMessage.recv(publish)
 		c1 = publishMessage.header == 'PUBLISH'
