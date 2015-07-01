@@ -424,11 +424,28 @@ def test_OrderInsert_OpenAndClose():
     '''
     测试报单
     '''
+    # 创建交易通道
     traderChannel = TraderChannel(frontAddress,brokerID,userID,password,timeout = 1)
-    print 'tail -f %s/trader.log' % traderChannel.workdir
+    print u'日志文件输出到:%s/trader.log' % traderChannel.workdir
+
+    # 交易确认
+    requestData = CThostFtdcSettlementInfoConfirmField()
+    requestData.BrokerID = brokerID
+    requestData.InvestorID = userID
+    result = traderChannel.SettlementInfoConfirm(requestData)
+    assert result[0] == 0
+
+    # 尝试提交订单
     requestData = getDefaultInputOrderField_buyOpen()
     result = traderChannel.OrderInsert(requestData)
-    assert result[0] == -2003
+    print result[0],result[1]
+    assert result[0] in (0,-2003)
+
+    if result[0] == -2003 : # 非交易时段提交订单报此错误
+        return
+
+    assert False
+
 
 
 @attr('TraderChannel')
@@ -439,7 +456,9 @@ def test_OrderInsert_WithInvalidValue():
     测试报单
     '''
     traderChannel = TraderChannel(frontAddress,brokerID,userID,password,timeout = 1)
-    print 'tail -f %s/trader.log' % traderChannel.workdir
+    print u'日志文件输出到:%s/trader.log' % traderChannel.workdir
+
+    # 尝试提交订单
     requestData = getDefaultInputOrderField_buyOpen()
     requestData.VolumeTotalOriginal = 0         # 手数=0 使表单无效
     result = traderChannel.OrderInsert(requestData)
