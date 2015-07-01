@@ -505,7 +505,6 @@ class TraderChannel :
 				return ResponseTimeOut
 
 			if request in sockets:
-				print '-----1-----'
 				# 此时如果接受到Response消息说明参数错误，ctp接口立即返回了
 				# 从request通讯管道读取返回信息
 				responseMessage = ResponseMessage()
@@ -518,7 +517,6 @@ class TraderChannel :
 				if not (c1 and c2 and c3) :
 					return InvalidMessageFormat
 
-				print '-----2-----'
 				# 读取返回信息并检查
 				respInfo = json.loads(responseMessage.respInfo)
 				errorID = respInfo['Parameters']['RspInfo']['ErrorID']
@@ -534,8 +532,6 @@ class TraderChannel :
 				sockets = dict(poller.poll(timeoutMillisecond))
 				if publish not in sockets:
 					return ResponseTimeOut
-
-				print '-----3-----'
 
 				# 接受消息避免扰乱下一次调用
 				publishMessage = PublishMessage()
