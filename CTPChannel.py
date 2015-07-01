@@ -330,9 +330,9 @@ class TraderChannel :
 		sleep(self.getQueryWaitTime())
 
 
-
-
-
+	
+	
+		
 	def SettlementInfoConfirm(self,data):
 		'''
 		投资者结算结果确认
@@ -356,14 +356,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -421,7 +421,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcSettlementInfoConfirmField(**respnoseDataDict)
@@ -435,8 +435,8 @@ class TraderChannel :
 		return 0,'',respnoseDataList
 
 
-
-
+	
+	
 	def OrderInsert(self,data):
 		'''
 		报单录入请求
@@ -451,9 +451,9 @@ class TraderChannel :
 		publish = self.publish
 		timeoutMillisecond = self.timeoutMillisecond
 
-
-
-
+		
+		
+		
 		requestApiName = 'ReqOrderInsert'
 		responseApiName = 'OnRspOrderInsert'
 		returnApiName = 'OnRtnOrder'
@@ -591,16 +591,16 @@ class TraderChannel :
 		# 读取返回数据并返回
 		respInfo = json.loads(publishMessage.respInfo)
 		responseDataDict = respInfo['Parameters']['Data']
-
-
-		respnoseData = CThostFtdcTradeField(**responseDataDict)
+		
+		
+		respnoseData = CThostFtdcTradeField(**respnoseDataDict)
 		return 0,u'',[respnoseData]
 
 
 
 
 
-
+		
 	def QryTradingAccount(self,data):
 		'''
 		请求查询资金账户
@@ -624,14 +624,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -689,7 +689,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcTradingAccountField(**respnoseDataDict)
@@ -704,7 +704,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryCFMMCTradingAccountKey(self,data):
 		'''
 		请求查询保证金监管系统经纪公司资金账户密钥
@@ -728,14 +728,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -793,7 +793,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcCFMMCTradingAccountKeyField(**respnoseDataDict)
@@ -810,7 +810,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryTradingNotice(self,data):
 		'''
 		请求查询交易通知
@@ -834,14 +834,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -899,7 +899,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcTradingNoticeField(**respnoseDataDict)
@@ -914,7 +914,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryTrade(self,data):
 		'''
 		请求查询成交
@@ -938,14 +938,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -1003,7 +1003,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcTradeField(**respnoseDataDict)
@@ -1018,7 +1018,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QueryMaxOrderVolume(self,data):
 		'''
 		查询最大报单数量请求
@@ -1042,14 +1042,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -1107,7 +1107,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcQueryMaxOrderVolumeField(**respnoseDataDict)
@@ -1124,7 +1124,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryInvestorPosition(self,data):
 		'''
 		请求查询投资者持仓
@@ -1148,14 +1148,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -1213,7 +1213,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcInvestorPositionField(**respnoseDataDict)
@@ -1228,7 +1228,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryBrokerTradingAlgos(self,data):
 		'''
 		请求查询经纪公司交易算法
@@ -1252,14 +1252,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -1317,7 +1317,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcBrokerTradingAlgosField(**respnoseDataDict)
@@ -1332,7 +1332,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryOrder(self,data):
 		'''
 		请求查询报单
@@ -1356,14 +1356,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -1421,7 +1421,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcOrderField(**respnoseDataDict)
@@ -1436,7 +1436,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryExchange(self,data):
 		'''
 		请求查询交易所
@@ -1460,14 +1460,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -1525,7 +1525,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcExchangeField(**respnoseDataDict)
@@ -1544,7 +1544,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryExchangeRate(self,data):
 		'''
 		请求查询汇率
@@ -1568,14 +1568,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -1633,7 +1633,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcExchangeRateField(**respnoseDataDict)
@@ -1648,7 +1648,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryInvestorPositionDetail(self,data):
 		'''
 		请求查询投资者持仓明细
@@ -1672,14 +1672,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -1737,7 +1737,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcInvestorPositionDetailField(**respnoseDataDict)
@@ -1752,7 +1752,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QrySettlementInfoConfirm(self,data):
 		'''
 		请求查询结算信息确认
@@ -1776,14 +1776,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -1841,7 +1841,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcSettlementInfoConfirmField(**respnoseDataDict)
@@ -1856,7 +1856,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryBrokerTradingParams(self,data):
 		'''
 		请求查询经纪公司交易参数
@@ -1880,14 +1880,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -1945,7 +1945,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcBrokerTradingParamsField(**respnoseDataDict)
@@ -1960,7 +1960,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QueryCFMMCTradingAccountToken(self,data):
 		'''
 		请求查询监控中心用户令牌
@@ -1984,14 +1984,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -2049,7 +2049,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcQueryCFMMCTradingAccountTokenField(**respnoseDataDict)
@@ -2064,7 +2064,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryNotice(self,data):
 		'''
 		请求查询客户通知
@@ -2088,14 +2088,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -2153,7 +2153,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcNoticeField(**respnoseDataDict)
@@ -2172,7 +2172,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryInvestorPositionCombineDetail(self,data):
 		'''
 		请求查询投资者持仓明细
@@ -2196,14 +2196,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -2261,7 +2261,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcInvestorPositionCombineDetailField(**respnoseDataDict)
@@ -2278,7 +2278,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QrySecAgentACIDMap(self,data):
 		'''
 		请求查询二级代理操作员银期权限
@@ -2302,14 +2302,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -2367,7 +2367,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcSecAgentACIDMapField(**respnoseDataDict)
@@ -2384,7 +2384,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QueryBankAccountMoneyByFuture(self,data):
 		'''
 		期货发起查询银行余额请求
@@ -2408,14 +2408,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -2473,7 +2473,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcReqQueryAccountField(**respnoseDataDict)
@@ -2488,7 +2488,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryParkedOrderAction(self,data):
 		'''
 		请求查询预埋撤单
@@ -2512,14 +2512,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -2577,7 +2577,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcParkedOrderActionField(**respnoseDataDict)
@@ -2594,7 +2594,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryExchangeMarginRate(self,data):
 		'''
 		请求查询交易所保证金率
@@ -2618,14 +2618,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -2683,7 +2683,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcExchangeMarginRateField(**respnoseDataDict)
@@ -2702,7 +2702,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryInstrument(self,data):
 		'''
 		请求查询合约
@@ -2726,14 +2726,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -2791,7 +2791,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcInstrumentField(**respnoseDataDict)
@@ -2808,7 +2808,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryInstrumentCommissionRate(self,data):
 		'''
 		请求查询合约手续费率
@@ -2832,14 +2832,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -2897,7 +2897,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcInstrumentCommissionRateField(**respnoseDataDict)
@@ -2912,7 +2912,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryInstrumentMarginRate(self,data):
 		'''
 		请求查询合约保证金率
@@ -2936,14 +2936,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -3001,7 +3001,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcInstrumentMarginRateField(**respnoseDataDict)
@@ -3016,7 +3016,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryInvestor(self,data):
 		'''
 		请求查询投资者
@@ -3040,14 +3040,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -3105,7 +3105,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcInvestorField(**respnoseDataDict)
@@ -3120,7 +3120,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryExchangeMarginRateAdjust(self,data):
 		'''
 		请求查询交易所调整保证金率
@@ -3144,14 +3144,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -3209,7 +3209,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcExchangeMarginRateAdjustField(**respnoseDataDict)
@@ -3224,7 +3224,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryInvestorProductGroupMargin(self,data):
 		'''
 		请求查询投资者品种/跨品种保证金
@@ -3248,14 +3248,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -3313,7 +3313,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcInvestorProductGroupMarginField(**respnoseDataDict)
@@ -3328,7 +3328,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryEWarrantOffset(self,data):
 		'''
 		请求查询仓单折抵信息
@@ -3352,14 +3352,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -3417,7 +3417,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcEWarrantOffsetField(**respnoseDataDict)
@@ -3432,7 +3432,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryDepthMarketData(self,data):
 		'''
 		请求查询行情
@@ -3456,14 +3456,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -3521,7 +3521,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcDepthMarketDataField(**respnoseDataDict)
@@ -3536,7 +3536,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryTransferBank(self,data):
 		'''
 		请求查询转帐银行
@@ -3560,14 +3560,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -3625,7 +3625,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcTransferBankField(**respnoseDataDict)
@@ -3642,7 +3642,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryProduct(self,data):
 		'''
 		请求查询产品
@@ -3666,14 +3666,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -3731,7 +3731,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcProductField(**respnoseDataDict)
@@ -3746,7 +3746,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryTradingCode(self,data):
 		'''
 		请求查询交易编码
@@ -3770,14 +3770,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -3835,7 +3835,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcTradingCodeField(**respnoseDataDict)
@@ -3850,7 +3850,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QrySettlementInfo(self,data):
 		'''
 		请求查询投资者结算结果
@@ -3874,14 +3874,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -3939,7 +3939,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcSettlementInfoField(**respnoseDataDict)
@@ -3954,7 +3954,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryAccountregister(self,data):
 		'''
 		请求查询银期签约关系
@@ -3978,14 +3978,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -4043,7 +4043,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcAccountregisterField(**respnoseDataDict)
@@ -4058,7 +4058,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryParkedOrder(self,data):
 		'''
 		请求查询预埋单
@@ -4082,14 +4082,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -4147,7 +4147,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcParkedOrderField(**respnoseDataDict)
@@ -4162,7 +4162,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryTransferSerial(self,data):
 		'''
 		请求查询转帐流水
@@ -4186,14 +4186,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -4251,7 +4251,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcTransferSerialField(**respnoseDataDict)
@@ -4266,7 +4266,7 @@ class TraderChannel :
 
 
 
-
+		
 	def QryContractBank(self,data):
 		'''
 		请求查询签约银行
@@ -4290,14 +4290,14 @@ class TraderChannel :
 		requestMessage.reqInfo = json.dumps(reqInfo)
 		requestMessage.metaData = json.dumps(metaData)
 
-
-
+		
+		
 		# 查询前的等待,避免超过ctp查询api的流量控制
 		self.queryWait()
 		# NOTE:更新lastQueryTime不能放在同步调用的返回处,因为有的调用返回时间非常长,这样再
 		# 等待就没有必要
 		self.lastQueryTime = datetime.now()
-
+		
 
 		# 发送到服务器
 		requestMessage.send(self.request)
@@ -4355,7 +4355,7 @@ class TraderChannel :
 				return errorID,errorMsg,[]
 
 			# 提取消息中的数据
-
+			
 			respnoseDataDict = respInfo['Parameters']['Data']
 			if respnoseDataDict:
 				respnoseData = CThostFtdcContractBankField(**respnoseDataDict)
@@ -4367,3 +4367,6 @@ class TraderChannel :
 
 		# 返回成功
 		return 0,'',respnoseDataList
+
+
+
