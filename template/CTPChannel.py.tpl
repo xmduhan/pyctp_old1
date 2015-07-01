@@ -493,8 +493,8 @@ class TraderChannel :
 		responseDataDict = respInfo['Parameters']['Data']
 		{% set resultApiMethod = onRtnMethodDict[resultApiName] %}
 		{% set responseDataType = resultApiMethod['parameters'][0]['raw_type']%}
-		respnoseData = {{responseDataType}}(**respnoseDataDict)
-		return 0,u'',[respnoseData]
+		responseData = {{responseDataType}}(**responseDataDict)
+		return 0,u'',[responseData]
 
 
 {# 所有查询api的实现 #}

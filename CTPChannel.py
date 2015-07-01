@@ -593,8 +593,8 @@ class TraderChannel :
 		responseDataDict = respInfo['Parameters']['Data']
 		
 		
-		respnoseData = CThostFtdcTradeField(**respnoseDataDict)
-		return 0,u'',[respnoseData]
+		responseData = CThostFtdcTradeField(**responseDataDict)
+		return 0,u'',[responseData]
 
 
 
