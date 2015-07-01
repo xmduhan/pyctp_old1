@@ -388,7 +388,7 @@ def getDefaultInputOrderField_buyOpen():
     inputOrderField.CombOffsetFlag = '0'     # 开仓
     return inputOrderField
 
-def getDefaultInputOrderField_buySell():
+def getDefaultInputOrderField_buyClose():
     '''
     获得一个默认的多头平仓报单数据
     '''
@@ -444,8 +444,49 @@ def test_OrderInsert_OpenAndClose():
     if result[0] == -2003 : # 非交易时段提交订单报此错误
         return
 
-    assert False
+    # 程序能到这里说明开仓成功
+    responseDataList = result[2]
+    assert len(responseDataList) == 1
+    price0 = responseDataList[0].Price
 
+    # 查询头寸
+    requestData = CThostFtdcQryInvestorPositionField()
+    requestData.InstrumentID = getDefaultInstrumentID()
+    requestData.Direction = '0'   # 做多
+    result = traderChannel.QryInvestorPosition(requestData)
+    print result[0],result[1]
+    responseDataList = result[2]
+    assert len(responseDataList) == 1         # 指定了品种和头寸方,应该只有一条记录
+    openVolume0 = responseDataList[0].OpenVolume
+    closeVolume0 = responseDataList[0].CloseVolume
+    print 'openVolume0=',openVolume0,',closeVolume0=',closeVolume0
+    assert openVolume0 > 0
+    assert openVolume0 > closeVolume0
+
+    # 尝试进行平仓
+    requestData = getDefaultInputOrderField_buyClose()
+    result = traderChannel.OrderInsert(requestData)
+    assert result[0] == 0
+    responseDataList = result[2]
+    assert len(responseDataList) == 1
+    price1 = responseDataList[0].Price
+
+    # 查询头寸
+    requestData = CThostFtdcQryInvestorPositionField()
+    requestData.InstrumentID = getDefaultInstrumentID()
+    requestData.Direction = '0'   # 做多
+    result = traderChannel.QryInvestorPosition(requestData)
+    print result[0],result[1]
+    responseData = result[2]
+    assert len(responseData) == 1         # 指定了品种和头寸方,应该只有一条记录
+    openVolume1 = responseData[0].OpenVolume
+    closeVolume1 = responseData[0].CloseVolume
+    print 'openVolume1=',openVolume1,',closeVolume1=',closeVolume1
+    assert openVolume0 == openVolume1
+    assert closeVolume1 - closeVolume0 == 1
+
+    print 'price0=',price0,'price1=',price1
+    print 'diff=',price1-price0
 
 
 @attr('TraderChannel')
