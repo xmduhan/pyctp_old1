@@ -80,7 +80,7 @@ class MdChannel :
 
 
 
-	def __init__(self,frontAddress,brokerID,userID,password,instrumentIdList):
+	def __init__(self,frontAddress,brokerID,userID,password,instrumentIDList):
 		'''
 		1.创建ctp转换器进程
 		2.创建和ctp通讯进程的通讯管道
@@ -90,7 +90,7 @@ class MdChannel :
 		brokerID   代理商Id
 		userID   用户Id
 		password   密码
-		instrumentIdList   需要订阅的品种的Id列表
+		instrumentIDList   需要订阅的品种的Id列表
 		'''
 		# 创建临时工作目录
 		self.workdir = tempfile.mkdtemp()
@@ -101,9 +101,9 @@ class MdChannel :
 
 		# 生成md命令需要的临时配置文件(描述品种ID列表)
 		self.tempConfigFile = tempfile.mktemp(suffix='.json')
-		instrumentIdListJson = json.dumps(instrumentIdList)
+		instrumentIDListJson = json.dumps(instrumentIDList)
 		with open(self.tempConfigFile, 'w') as f:
-			f.write(instrumentIdListJson.encode('utf-8'))
+			f.write(instrumentIDListJson.encode('utf-8'))
 
 		# 创建接受行情数据的管道
 		context = zmq.Context()
